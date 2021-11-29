@@ -1,29 +1,43 @@
 import { StatusBar } from "expo-status-bar";
 import { registerRootComponent } from "expo";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button, Alert } from "react-native";
 import db from "./config/firebase";
 import {
   collection,
   getDocs,
+  query,
+  where,
   updateDoc,
   deleteDoc,
   doc,
   onSnapshot,
 } from "firebase/firestore";
 
-async function testDB() {
+async function testDB(): Promise<string> {
   const promptsRef = collection(db, "prompts");
-  const prompts = await getDocs(promptsRef);
-  console.log(prompts.docs);
+  //const prompts = await getDocs(promptsRef);
+  const q = query(
+    promptsRef
+    //where("prompt", "==", "Which is better, Harry Potter or Lord of the Rings?")
+  );
+  const querySnapshot = await getDocs(q);
+  const prompts: string[] = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    prompts.push(doc.data().prompt);
+  });
+  let randomNum = Math.floor(Math.random() * prompts.length);
+  return prompts[randomNum];
 }
 
 export default function App() {
-  testDB();
+  const prompt = testDB();
+  // returns a promise<string>, alert only works with a string
   return (
     <View style={styles.container}>
       <Text>Hello friends!</Text>
-      <Button title="Fetch!" onPress={() => Alert.alert(`Fetching...`)} />
+      <Button title="Fetch!" onPress={() => Alert.alert(prompt)} />
       <StatusBar style="auto" />
     </View>
   );
