@@ -1,42 +1,48 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
-import 'firebase/auth';
-import Constants from 'expo-constants';
+import firebase from "firebase/compat/app";
+import { getFirestore } from "firebase/firestore";
+// import { getAnalytics } from "firebase/analytics";
+import "firebase/compat/auth";
+import Constants from "expo-constants";
 
 interface Config {
-    apiKey: string,
-    authDomain: string,
-    projectId: string,
-    storageBucket: string,
-    messagingSenderId: string,
-    appId: string,
-    measurementId: string,
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+  appId: string;
+  measurementId: string;
 }
 
 const firebaseConfig: Config = {
-    apiKey: Constants.manifest!.extra!.apiKey,
-    authDomain: Constants.manifest!.extra!.authDomain,
-    projectId: Constants.manifest!.extra!.projectId,
-    storageBucket: Constants.manifest!.extra!.storageBucket,
-    messagingSenderId: Constants.manifest!.extra!.messagingSenderId,
-    appId: Constants.manifest!.extra!.appId,
-    measurementId: Constants.manifest!.extra!.measurementId
-  }; 
-  
-let Firebase;
-try {
-    Firebase = firebase.getApp();
-}catch(err){
-    Firebase = firebase.initializeApp(firebaseConfig);
-}
+  apiKey: Constants.manifest!.extra!.apiKey,
+  authDomain: Constants.manifest!.extra!.authDomain,
+  projectId: Constants.manifest!.extra!.projectId,
+  storageBucket: Constants.manifest!.extra!.storageBucket,
+  messagingSenderId: Constants.manifest!.extra!.messagingSenderId,
+  appId: Constants.manifest!.extra!.appId,
+  measurementId: Constants.manifest!.extra!.measurementId,
+};
 
-const analytics = getAnalytics(Firebase);
-// if (firebase.apps.length === 0) {
-//   Firebase = firebase.initializeApp(firebaseConfig);
-//   
+// let app;
+// try {
+//   app = firebase.getApp();
+// } catch (err) {
+//   app = firebase.initializeApp(firebaseConfig);
 // }
 
-//const db = firebase.getFirestore(Firebase, {}) might need this?
+// const app = firebase.initializeApp(firebaseConfig);
 
-export default Firebase;
+let app;
+
+if (firebase.apps.length === 0) {
+  app = firebase.initializeApp(firebaseConfig);
+} else {
+  app = firebase.app();
+}
+
+// const analytics = getAnalytics(app); // export?
+// expo-firebase-analytics
+const db = getFirestore(app);
+
+export default db;
