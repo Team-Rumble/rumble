@@ -27,13 +27,23 @@ async function testDB(): Promise<string> {
     // doc.data() is never undefined for query doc snapshots
     prompts.push(doc.data().prompt);
   });
-  let randomNum = Math.floor(Math.random() * prompts.length);
+  const randomNum = Math.floor(Math.random() * prompts.length);
   return prompts[randomNum];
 }
 
 export default function App() {
-  const prompt = testDB();
+  //const prompt = testDB();
   // returns a promise<string>, alert only works with a string
+
+  let prompt: string;
+
+  async function wrapper() {
+    prompt = await testDB();
+    console.log(prompt);
+  }
+
+  wrapper();
+
   return (
     <View style={styles.container}>
       <Text>Hello friends!</Text>
