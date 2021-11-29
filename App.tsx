@@ -32,8 +32,6 @@ async function testDB(): Promise<string> {
 }
 
 export default function App() {
-  //const prompt = testDB();
-  // returns a promise<string>, alert only works with a string
 
   let prompt: string;
 
