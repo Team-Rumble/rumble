@@ -45,4 +45,6 @@ if (firebase.apps.length === 0) {
 // expo-firebase-analytics
 const db = getFirestore(app);
 
+
+export const auth = firebase.auth;
 export default db;
