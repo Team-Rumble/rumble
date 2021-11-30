@@ -1,7 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
 import { KeyboardAvoidingView, View, TouchableOpacity, Text, Alert } from 'react-native';
 import styled from "styled-components/native";
-import {auth} from '../../config/firebase';
+import db, {auth, userRef} from '../../config/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
@@ -29,24 +30,29 @@ const SignIn: FC = () => {
     return unsubscribe
   }, [])
 
-  async function handleSignUp(){
-    auth.createUserWithEmailAndPassword(email, password)
-    .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log('Registered with:', user);
-    })
-    .catch(error => alert(error.message))
-  }
+  async function handleSignUp() {
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        console.log('Registered with: ', user);
+        await setDoc(doc(db, "users", user.uid ), {
+            email: email,
+            password: password
+        });
+      } catch (error: any) {
+            Alert.alert(error.message);
+      }
+  };
 
-  const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        console.log('Logged in with:', );
-      })
-      .catch(error => alert(error.message))
-  }
+    async function handleLogin() {
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            console.log('Logged in with: ', user);
+        } catch (error: any) {
+            Alert.alert(error.message);
+        }
+    };
 
   return (
     <Container>
