@@ -24,15 +24,6 @@ const firebaseConfig: Config = {
   measurementId: Constants.manifest!.extra!.measurementId,
 };
 
-// let app;
-// try {
-//   app = firebase.getApp();
-// } catch (err) {
-//   app = firebase.initializeApp(firebaseConfig);
-// }
-
-// const app = firebase.initializeApp(firebaseConfig);
-
 let app;
 
 if (firebase.apps.length === 0) {
@@ -44,7 +35,21 @@ if (firebase.apps.length === 0) {
 // const analytics = getAnalytics(app); // export?
 // expo-firebase-analytics
 const db = getFirestore(app);
+// console.log(firebase.auth);
 
-
-export const auth = firebase.auth;
+export const auth = firebase.auth();
 export default db;
+
+// export const auth = app.auth();
+// export const auth = firebase.auth(app);
+// export const auth = firebase.auth();
+
+// export auth;
+
+// let app;
+// try {
+//   app = firebase.getApp();
+// } catch (err) {
+//   app = firebase.initializeApp(firebaseConfig);
+// }
+// const app = firebase.initializeApp(firebaseConfig);

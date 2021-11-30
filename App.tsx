@@ -1,19 +1,22 @@
 import { StatusBar } from "expo-status-bar";
 import { registerRootComponent } from "expo";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { StyleSheet, Text, View, Button, Alert, SafeAreaView } from "react-native";
 import db from "./config/firebase";
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {
   collection,
   getDocs,
   query,
-  where,
-  updateDoc,
-  deleteDoc,
-  doc,
-  onSnapshot,
 } from "firebase/firestore";
+import {NavigationScreens} from './src/navigation/index';
+
+export type RootStackParamList = {
+  Navigation: undefined;
+  SignIn: undefined;
+  HomePage: undefined;
+}
+
 
 async function testDB(): Promise<string> {
   const promptsRef = collection(db, "prompts");
@@ -45,6 +48,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <NavigationScreens/>
     </SafeAreaProvider>
     // <View style={styles.container}>
     //   <Text>Hello friends!</Text>

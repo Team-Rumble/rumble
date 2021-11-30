@@ -1,24 +1,29 @@
 import React, { FC, useState, useEffect } from 'react';
-import { KeyboardAvoidingView, View, TouchableOpacity, Text } from 'react-native';
+import { KeyboardAvoidingView, View, TouchableOpacity, Text, Alert } from 'react-native';
 import styled from "styled-components/native";
 import {auth} from '../../config/firebase';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../App';
 // useContext
 
 interface Props {
   
 }
 
+type signInStack = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
+
 const SignIn: FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('');
 
-  const navigation = useNavigation();
-
+  const navigation = useNavigation<signInStack>();
+  // console.log(auth);
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.replace("Post")
+        navigation.replace("HomePage")
       }
     })
     return unsubscribe
@@ -45,7 +50,15 @@ const SignIn: FC = () => {
 
   return (
     <Container>
-
+      <View >
+        <Login>
+          <LoginText>Get Ready!</LoginText>
+          <Input placeholder='Email' value={email} onChangeText={text => setEmail(text)} ></Input>
+          <Input placeholder='Password' value={password} onChangeText={text => setPassword(text)} secureTextEntry ></Input>
+          <StyledButton title='Login' onPress={handleLogin} ></StyledButton>
+          <StyledButton title='Register' onPress={handleSignUp} ></StyledButton>
+        </Login>
+      </View>
     </Container>
   )
 }
@@ -57,6 +70,39 @@ const Container = styled.KeyboardAvoidingView`
   flex: 1;
   align-Items: center;
   justify-Content: center;
+`
+
+const LoginText = styled.Text`
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px;
+`
+const Login = styled.View`
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  border: 2px solid #000;
+  border-radius: 20px;
+  background: #eee;
+`
+const Input = styled.TextInput`
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px 10px;
+  width: 150px;
+`
+const StyledButton = styled.Button`
+  background: green;
+  color: #fff;
+  padding: 10px;
+  margin: 5px;
+  width: 150px;
+  border: none;
+  border-radius: 10px;
 `
 
 // Registered with: Object {
