@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
 import "firebase/compat/auth";
 import Constants from "expo-constants";
@@ -37,8 +37,39 @@ if (firebase.apps.length === 0) {
 const db = getFirestore(app);
 // console.log(firebase.auth);
 
+// Retrieve the collection of users
+export const userRef = collection(db, 'users');
+
 export const auth = firebase.auth();
 export default db;
+
+
+// let prompt: string;
+
+// async function wrapper() {
+//   prompt = await testDB();
+//   console.log(prompt);
+// }
+
+// wrapper();
+
+// async function testDB(): Promise<string> {
+//   const promptsRef = collection(db, "prompts");
+//   //const prompts = await getDocs(promptsRef);
+//   const q = query(
+//     promptsRef
+//     //where("prompt", "==", "Which is better, Harry Potter or Lord of the Rings?")
+//   );
+//   const querySnapshot = await getDocs(q);
+//   const prompts: string[] = [];
+//   querySnapshot.forEach((doc) => {
+//     // doc.data() is never undefined for query doc snapshots
+//     prompts.push(doc.data().prompt);
+//   });
+//   const randomNum = Math.floor(Math.random() * prompts.length);
+//   return prompts[randomNum];
+// }
+
 
 // export const auth = app.auth();
 // export const auth = firebase.auth(app);
