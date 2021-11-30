@@ -29,24 +29,37 @@ const SignIn: FC = () => {
     return unsubscribe
   }, [])
 
-  async function handleSignUp(){
-    auth.createUserWithEmailAndPassword(email, password)
-    .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log('Registered with:', user);
-    })
-    .catch(error => alert(error.message))
-  }
+  async function handleSignUp() {
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        console.log('Registered with: ', user);
 
-  const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        console.log('Logged in with:', );
-      })
-      .catch(error => alert(error.message))
-  }
+      } catch (error: any) {
+            Alert.alert(error.message);
+      }
+  };
+
+  
+
+//   const handleLogin = () => {
+//     auth
+//       .signInWithEmailAndPassword(email, password)
+//       .then(userCredentials => {
+//         const user = userCredentials.user;
+//         console.log('Logged in with:', );
+//       })
+//       .catch(error => alert(error.message))
+//   }
+    async function handleLogin() {
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            console.log('Logged in with: ', user);
+        } catch (error: any) {
+            Alert.alert(error.message);
+        }
+    };
 
   return (
     <Container>
