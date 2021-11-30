@@ -1,63 +1,63 @@
-// import React, { FC, useState, useEffect } from 'react';
-// import { KeyboardAvoidingView, View, TouchableOpacity, Text } from 'react-native';
-// import styled from "styled-components/native";
-// import {auth} from '../../config/firebase';
-// import { useNavigation } from '@react-navigation/native';
+import React, { FC, useState, useEffect } from 'react';
+import { KeyboardAvoidingView, View, TouchableOpacity, Text } from 'react-native';
+import styled from "styled-components/native";
+import {auth} from '../../config/firebase';
+import { useNavigation } from '@react-navigation/native';
 // useContext
 
-// interface Props {
+interface Props {
   
-// }
+}
 
-// const SignIn: FC = () => {
-//   const [email, setEmail] = useState('')
-//   const [password, setPassword] = useState('');
+const SignIn: FC = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('');
 
-//   const navigation = useNavigation();
+  const navigation = useNavigation();
 
-//   useEffect(() => {
-//     const unsubscribe = auth.onAuthStateChanged(user => {
-//       if (user) {
-//         navigation.replace("Post")
-//       }
-//     })
-//     return unsubscribe
-//   }, [])
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace("Post")
+      }
+    })
+    return unsubscribe
+  }, [])
 
-//   async function handleSignUp(){
-//     auth.createUserWithEmailAndPassword(email, password)
-//     .then(userCredentials => {
-//       const user = userCredentials.user;
-//       console.log('Registered with:', user);
-//     })
-//     .catch(error => alert(error.message))
-//   }
+  async function handleSignUp(){
+    auth.createUserWithEmailAndPassword(email, password)
+    .then(userCredentials => {
+      const user = userCredentials.user;
+      console.log('Registered with:', user);
+    })
+    .catch(error => alert(error.message))
+  }
 
-//   const handleLogin = () => {
-//     auth
-//       .signInWithEmailAndPassword(email, password)
-//       .then(userCredentials => {
-//         const user = userCredentials.user;
-//         console.log('Logged in with:', );
-//       })
-//       .catch(error => alert(error.message))
-//   }
+  const handleLogin = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user;
+        console.log('Logged in with:', );
+      })
+      .catch(error => alert(error.message))
+  }
 
-//   return (
-//     <Container>
+  return (
+    <Container>
 
-//     </Container>
-//   )
-// }
+    </Container>
+  )
+}
 
-// export default SignIn;
+export default SignIn;
 
-// const Container = styled.KeyboardAvoidingView`
-//   background-color: #581845;
-//   flex: 1;
-//   align-Items: center;
-//   justify-Content: center;
-// `
+const Container = styled.KeyboardAvoidingView`
+  background-color: #581845;
+  flex: 1;
+  align-Items: center;
+  justify-Content: center;
+`
 
 // Registered with: Object {
 //   "_redirectEventId": undefined,

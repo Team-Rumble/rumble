@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { registerRootComponent } from "expo";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import db from "./config/firebase";
 import {
   collection,
@@ -43,11 +44,13 @@ export default function App() {
   wrapper();
 
   return (
-    <View style={styles.container}>
-      <Text>Hello friends!</Text>
-      <Button title="Fetch!" onPress={() => Alert.alert(prompt)} />
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+    </SafeAreaProvider>
+    // <View style={styles.container}>
+    //   <Text>Hello friends!</Text>
+    //   <Button title="Fetch!" onPress={() => Alert.alert(prompt)} />
+    //   <StatusBar style="auto" />
+    // </View>
   );
 }
 
