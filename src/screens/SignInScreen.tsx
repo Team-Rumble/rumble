@@ -1,3 +1,4 @@
+
 import React, { FC, useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
@@ -19,6 +20,7 @@ import {
   StyledButton,
   StyledButtonText,
 } from "../components/Stylesheet";
+import SignUpScreen from './SignUpScreen';
 // useContext
 
 interface Props {}
@@ -40,23 +42,6 @@ const SignIn: FC = () => {
     });
     return unsubscribe;
   }, []);
-
-  async function handleSignUp() {
-    try {
-      const userCredential = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      const user = userCredential.user;
-      console.log("Registered with: ", user);
-      await setDoc(doc(db, "users", user.uid), {
-        email: email,
-        password: password,
-      });
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
-  }
 
   async function handleLogin() {
     try {
@@ -90,7 +75,7 @@ const SignIn: FC = () => {
           <StyledButton onPress={handleLogin}>
             <StyledButtonText>Login</StyledButtonText>
           </StyledButton>
-          <StyledButton onPress={handleSignUp}>
+          <StyledButton onPress={() => navigation.navigate("SignUp")}>
             <StyledButtonText>Register</StyledButtonText>
           </StyledButton>
         </Login>
