@@ -14,6 +14,7 @@ import {NavigationScreens} from './src/navigation/index';
 export type RootStackParamList = {
   Navigation: undefined;
   SignIn: undefined;
+  SignUp: undefined;
   HomePage: undefined;
 }
 

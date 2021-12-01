@@ -6,6 +6,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
+import SignUpScreen from './SignUpScreen';
 // useContext
 
 interface Props {
@@ -50,7 +51,7 @@ const SignIn: FC = () => {
           <Input placeholder='Email' value={email} onChangeText={text => setEmail(text)} ></Input>
           <Input placeholder='Password' value={password} onChangeText={text => setPassword(text)} secureTextEntry ></Input>
           <StyledButton title='Login' onPress={handleLogin} ></StyledButton>
-          <StyledButton title='Register' onPress={handleSignUp} ></StyledButton>
+          <StyledButton title='Register' onPress={() => navigation.navigate("SignUp")} ></StyledButton>
         </Login>
       </View>
     </Container>

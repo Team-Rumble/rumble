@@ -2,6 +2,7 @@ import React, {FC} from 'react'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import SignIn from '../screens/SignInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 import HomePageScreen from '../screens/HomePageScreen'
 import { RootStackParamList } from '../../App';
 
@@ -19,6 +20,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="HomePage" component={HomePageScreen} />
       </Stack.Navigator>
     </NavigationContainer>

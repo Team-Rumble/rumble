@@ -8,20 +8,34 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 
 
+type signUpStack = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
 export default function SignUpScreen () {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
     const [age, setAge] = useState('');
     const [bio, setBio] = useState('');
-    const [profileUrl, setProfileUrl] = useState(profileUrl || 'https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg');
+    const [profileUrl, setProfileUrl] = useState( '' || 'https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg');
+
+    const navigation = useNavigation<signUpStack>();
+  // console.log(auth);
+  
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace("HomePage")
+      }
+    })
+    return unsubscribe
+  }, [])
 
     async function handleSignUp() {
         try {
           const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-          const user = userCredential.user;
+
+           const user = userCredential.user;
           console.log('Registered with: ', user);
-          await setDoc(doc(db, "users", user.uid ), {
+          await setDoc(doc(db, "users", user.uid), {
               email: email,
               password: password
           });
@@ -31,14 +45,14 @@ export default function SignUpScreen () {
     };
   return (
     <Container>
-      <View >
-        <Login>
-          <LoginText>Get Ready!</LoginText>
+      <View>
+        <Signup>
+          <SignupText>Get Ready!</SignupText>
           <Input placeholder='Email' value={email} onChangeText={text => setEmail(text)} ></Input>
           <Input placeholder='Password' value={password} onChangeText={text => setPassword(text)} secureTextEntry ></Input>
 
           <StyledButton title='Register' onPress={handleSignUp} ></StyledButton>
-        </Login>
+        </Signup>
       </View>
     </Container>
   );
@@ -51,12 +65,12 @@ const Container = styled.KeyboardAvoidingView`
   justify-Content: center;
 `
 
-const LoginText = styled.Text`
+const SignupText = styled.Text`
   font-size: 25px;
   font-weight: bold;
   margin: 10px;
 `
-const Login = styled.View`
+const Signup = styled.View`
   display: flex;
   align-items: center;
   flex-flow: column;
