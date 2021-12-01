@@ -22,7 +22,7 @@ export const RumbleBtn = styled.TouchableOpacity`
 `;
 export const RumbleTxt = styled.Text`
   color: white;
-  font-family: "Verdana, sans-serif";
+  font-family: 'Helvetica';
   font-weight: bold;
   text-align: center;
 `;
