@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { KeyboardAvoidingView, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { KeyboardAvoidingView, View, TouchableOpacity, Text, Alert, TextInput, ScrollView } from 'react-native';
 import styled from "styled-components/native";
 import db, {auth, userRef} from '../../config/firebase';
 import { doc, setDoc } from 'firebase/firestore';
@@ -18,7 +18,6 @@ export default function SignUpScreen () {
     const [profileUrl, setProfileUrl] = useState( '' || 'https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg');
 
     const navigation = useNavigation<signUpStack>();
-  // console.log(auth);
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -47,13 +46,23 @@ export default function SignUpScreen () {
     <Container>
       <View>
         <Signup>
+          <ScrollView>
           <SignupText>Get Ready!</SignupText>
           <Input placeholder='Email' value={email} onChangeText={text => setEmail(text)} ></Input>
           <Input placeholder='Password' value={password} onChangeText={text => setPassword(text)} secureTextEntry ></Input>
-
           <StyledButton title='Register' onPress={handleSignUp} ></StyledButton>
+          <View>
+            <Input placeholder='Age' value={age} onChangeText={num => {
+              (Number(num) >= 18) ? setAge(num) : Alert.alert("You still crawling.....GET OUT OF HERE!")
+            }}/>
+            <Input placeholder='Enter Image Url' value={profileUrl} onChangeText={text => setProfileUrl(text)}/>
+            <BioInput multiline={true} style={{textAlignVertical: "top"}} placeholder='Enter a brief bio' value={bio} onChangeText={text => setBio(text) }/>
+          </View>
+          </ScrollView>
         </Signup>
+
       </View>
+
     </Container>
   );
 }
@@ -74,9 +83,9 @@ const Signup = styled.View`
   display: flex;
   align-items: center;
   flex-flow: column;
-  width: 300px;
-  height: 300px;
-  margin: 0 auto;
+  width: 350px;
+  /* height: 350px; */
+  /* margin: 0 auto; */
   border: 2px solid #000;
   border-radius: 20px;
   background: #eee;
@@ -86,7 +95,7 @@ const Input = styled.TextInput`
   border-radius: 10px;
   padding: 10px;
   margin: 20px 10px;
-  width: 150px;
+  width: 250px;
 `
 const StyledButton = styled.Button`
   background: green;
@@ -96,4 +105,10 @@ const StyledButton = styled.Button`
   width: 150px;
   border: none;
   border-radius: 10px;
+`
+
+const BioInput = styled.TextInput`
+  width: 280px;
+  height: 200px;
+  border: 1px solid #000;
 `
