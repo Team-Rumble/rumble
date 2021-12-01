@@ -30,19 +30,7 @@ const SignIn: FC = () => {
     return unsubscribe
   }, [])
 
-  async function handleSignUp() {
-      try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-        console.log('Registered with: ', user);
-        await setDoc(doc(db, "users", user.uid ), {
-            email: email,
-            password: password
-        });
-      } catch (error: any) {
-            Alert.alert(error.message);
-      }
-  };
+
 
     async function handleLogin() {
         try {
