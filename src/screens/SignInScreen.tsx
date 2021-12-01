@@ -17,6 +17,7 @@ import {
   Login,
   Input,
   StyledButton,
+  StyledButtonText,
 } from "../components/Stylesheet";
 // useContext
 
@@ -86,8 +87,12 @@ const SignIn: FC = () => {
             onChangeText={(text) => setPassword(text)}
             secureTextEntry
           ></Input>
-          <StyledButton title="Login" onPress={handleLogin}></StyledButton>
-          <StyledButton title="Register" onPress={handleSignUp}></StyledButton>
+          <StyledButton onPress={handleLogin}>
+            <StyledButtonText>Login</StyledButtonText>
+          </StyledButton>
+          <StyledButton onPress={handleSignUp}>
+            <StyledButtonText>Register</StyledButtonText>
+          </StyledButton>
         </Login>
       </View>
     </Container>
