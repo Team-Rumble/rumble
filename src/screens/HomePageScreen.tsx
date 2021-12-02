@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Text, View, Alert, Image, ScrollView, StyleSheet } from "react-native";
+import { Text, Alert, ScrollView, Modal, Button, View } from "react-native";
 import {
   RumbleBtn,
   RumbleTxt,
@@ -25,36 +25,49 @@ const dummyUser = {
   bio: "I hate zoom, I hate providing information and I especially hate answering questions. I love being vague and mysterious.",
 };
 
-//Can move this later, this is just for experimenting:
-// const styles = StyleSheet.create({
-//   container: {
-//     paddingTop: 50,
-//   },
-//   tinyLogo: {
-//     width: 50,
-//     height: 50,
-//   },
-//   logo: {
-//     width: 66,
-//     height: 58,
-//   },
-// });
-
 const HomePageScreen: FC = () => {
+  const [filtersVisible, setFiltersVisible] = useState(false);
   return (
     <ScrollView>
       <Text>HOME</Text>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={filtersVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setFiltersVisible(!filtersVisible);
+        }}
+      >
+        <View>
+          <View
+            style={{
+              margin: 20,
+              marginTop: 200,
+              backgroundColor: "white",
+              borderRadius: 20,
+              padding: 35,
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            <Text>Find rivals by:</Text>
+            <Button title="Hide" onPress={() => setFiltersVisible(false)} />
+          </View>
+        </View>
+      </Modal>
+      <Button title="Filters" onPress={() => setFiltersVisible(true)} />
       <SingleUser />
       <SingleUser />
     </ScrollView>
   );
-};
-
-// dropdown menu - could maybe live in its own file?
-// Does it come down from the Navbar component?
-const Filters: FC = () => {
-  // checkbox community package?
-  return <Text>Placeholder</Text>;
 };
 
 // single user for scrollable list
