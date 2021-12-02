@@ -16,7 +16,15 @@ import { RootStackParamList } from '../navigation/index';
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
-export default function SignUpScreen() {
+
+type UserProps = {
+  email: string;
+  password: string;
+  user: undefined;
+  age?: string;
+}
+
+const SignUpScreen: FC<UserProps> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
@@ -49,6 +57,9 @@ export default function SignUpScreen() {
       await setDoc(doc(db, "users", user.uid), {
         email: email,
         password: password,
+        age: age,
+        bio: bio,
+        profileUrl: profileUrl
       });
     } catch (error: any) {
       Alert.alert(error.message);
@@ -71,19 +82,17 @@ export default function SignUpScreen() {
               onChangeText={(text) => setPassword(text)}
               secureTextEntry
             ></Input>
-            <StyledButton
-              title="Register"
-              onPress={handleSignUp}
-            ></StyledButton>
             <View>
               <Input
                 placeholder="Age"
                 value={age}
-                onChangeText={(num) => {
-                  Number(num) >= 18
-                    ? setAge(num)
-                    : Alert.alert("You still crawling.....GET OUT OF HERE!");
-                }}
+                onChangeText={(age) => setAge(age)}
+                // onChangeText={(num) => {
+                //   console.log('Age num: ', num);
+                //   // Number(num) >= 18
+                //   //   ? setAge(num)
+                //   //   : Alert.alert("You still crawling.....GET OUT OF HERE!");
+                // }}
               />
               <Input
                 placeholder="Enter Image Url"
@@ -98,12 +107,30 @@ export default function SignUpScreen() {
                 onChangeText={(text) => setBio(text)}
               />
             </View>
+            <StyledButton
+              title="Let's Rumble"
+              onPress={() => 
+                Alert.alert(
+                  "Alert Title",
+                  "I acknowledge I will not discriminate based on the grounds of race, religion, sexual orientation, political beliefs, age, and gender. If I break this rule, I understand that I will be banned from the app permanently. Rumble is about having a good clean fight.",
+                  [
+                    {
+                      text: "Cancel",
+                      onPress: () => console.log("If you don't agree, can't Rumble my friend!"),
+                      style: "cancel"
+                    },
+                    { text: "I Accept", onPress: handleSignUp }
+                  ]
+                )}
+            ></StyledButton>
           </ScrollView>
         </Signup>
       </View>
     </Container>
   );
 }
+
+export default SignUpScreen;
 
 const Container = styled.KeyboardAvoidingView`
   background-color: #581845;
