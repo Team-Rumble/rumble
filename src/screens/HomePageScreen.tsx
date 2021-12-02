@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Text, View, Alert, Image, ScrollView } from "react-native";
+import { Text, View, Alert, Image, ScrollView, StyleSheet } from "react-native";
 import { RumbleBtn, RumbleTxt } from "../components/Stylesheet";
 
 /*
@@ -10,6 +10,27 @@ Scrollable view of potentials rivals
 - Username
 - Rumble button
 */
+
+const dummyUser = {
+  username: "classroom24",
+  imageUrl: 'https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg',
+  bio: "I hate zoom, I hate providing information and I especially hate answering questions. I love being vague and mysterious."
+}
+
+//Can move this later, this is just for experimenting:
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 50,
+  },
+  tinyLogo: {
+    width: 50,
+    height: 50,
+  },
+  logo: {
+    width: 66,
+    height: 58,
+  },
+});
 
 const HomePageScreen: FC = () => {
   return (
@@ -33,12 +54,18 @@ const Filters: FC = () => {
 const SingleUser: FC = () => {
   return (
     <View>
-      <Image
+      {/* <Image
         source={{
           uri: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
         }}
-      />
-      <Text>User Name</Text>
+      /> */}
+      <View>
+      <Text>{dummyUser.username}</Text>
+      <Image style={styles.tinyLogo}
+        source={{uri:'https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg'}}/>
+      <Text>{dummyUser.bio}</Text>
+      </View>
+      
       <RumbleBtn onPress={() => Alert.alert("Rumbled!")}>
         <RumbleTxt>Rumble</RumbleTxt>
       </RumbleBtn>
