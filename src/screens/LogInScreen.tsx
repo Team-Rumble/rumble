@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, Platform } from "react-native";
 import db, { auth, userRef } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
@@ -30,7 +30,7 @@ const LogIn: FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("HomePage");
+        navigation.navigate("HomePage");
       }
     });
     return unsubscribe;
@@ -50,7 +50,7 @@ const LogIn: FC = () => {
   }
 
   return (
-    <Container behavior="padding">
+    <Container {...Platform.OS === 'ios' ? {behavior: 'padding'} : null}>
       <View>
         <Login>
           <LoginText>Get Ready!</LoginText>
@@ -68,7 +68,8 @@ const LogIn: FC = () => {
           <StyledButton onPress={handleLogin}>
             <StyledButtonText>Login</StyledButtonText>
           </StyledButton>
-          <StyledButton onPress={() => navigation.navigate("SignUp")}>
+          <StyledButton onPress={() => {console.log("Am I pressing the button?")
+           navigation.navigate("SignUp")}}>
             <StyledButtonText>Register</StyledButtonText>
           </StyledButton>
         </Login>

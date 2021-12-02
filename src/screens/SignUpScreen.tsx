@@ -1,12 +1,11 @@
 import React, { FC, useState, useEffect } from "react";
 import {
-  KeyboardAvoidingView,
   View,
-  TouchableOpacity,
   Text,
   Alert,
   TextInput,
   ScrollView,
+  Platform
 } from "react-native";
 import styled from "styled-components/native";
 import db, {auth, userRef} from '../../config/firebase';
@@ -56,7 +55,7 @@ export default function SignUpScreen() {
     }
   }
   return (
-    <Container behavior="padding">
+    <Container behavior={Platform.OS === "ios" ? "padding": "height"}>
       <View>
         <Signup>
           <ScrollView>

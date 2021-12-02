@@ -22,7 +22,7 @@ export const RumbleBtn = styled.TouchableOpacity`
 `;
 export const RumbleTxt = styled.Text`
   color: white;
-  font-family: 'Helvetica';
+  font-family: 'Roboto';
   font-weight: bold;
   text-align: center;
 `;
@@ -50,7 +50,7 @@ export const Login = styled.View`
   align-items: center;
   flex-flow: column;
   width: 300px;
-  height: 300px;
+  height: 400px;
   margin: 0 auto;
   border: 2px solid #000;
   border-radius: 20px;
