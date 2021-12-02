@@ -22,9 +22,26 @@ export const RumbleBtn = styled.TouchableOpacity`
 `;
 export const RumbleTxt = styled.Text`
   color: white;
-  font-family: 'Roboto';
   font-weight: bold;
   text-align: center;
+`;
+export const SingleRivalBox = styled.View`
+  flex-direction: row;
+  margin: 10px;
+`;
+export const RivalPFP = styled.Image`
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+`;
+export const RivalName = styled.Text`
+  font-weight: bold;
+  font-size: 18px;
+  align-self: center;
+  padding: 10px;
+`;
+export const ClickableRival = styled.TouchableOpacity`
+  flex-direction: row;
 `;
 
 // filtering options drop-down menu

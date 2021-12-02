@@ -5,14 +5,14 @@ import {
   Alert,
   TextInput,
   ScrollView,
-  Platform
+  Platform,
 } from "react-native";
 import styled from "styled-components/native";
-import db, {auth, userRef} from '../../config/firebase';
-import { doc, setDoc } from 'firebase/firestore';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/index';
+import db, { auth, userRef } from "../../config/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/index";
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
@@ -66,7 +66,7 @@ const SignUpScreen: FC<UserProps> = () => {
     }
   }
   return (
-    <Container behavior={Platform.OS === "ios" ? "padding": "height"}>
+    <Container {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
       <View>
         <Signup>
           <ScrollView>
