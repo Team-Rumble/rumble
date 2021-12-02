@@ -6,7 +6,7 @@ Self-improvement can be difficult, especially if you lack motivation. Luckily, t
 
 # Introduction
 
-## Teach Stack
+## Tech Stack
 
 - React Native
 - Firebase (Authentication & Firestore)
@@ -20,6 +20,9 @@ Self-improvement can be difficult, especially if you lack motivation. Luckily, t
 
 - Account
 - Chat
+- Games
+- Intellectual Stimulation
+- Love
 
 # Next Steps
 
