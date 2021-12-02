@@ -30,7 +30,7 @@ const LogIn: FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("HomePage");
+        navigation.navigate("HomePage");
       }
     });
     return unsubscribe;
@@ -50,7 +50,7 @@ const LogIn: FC = () => {
   }
 
   return (
-    <Container behavior={Platform.OS === "ios"? "padding": "height"}>
+    <Container {...Platform.OS === 'ios' ? {behavior: 'padding'} : null}>
       <View>
         <Login>
           <LoginText>Get Ready!</LoginText>
@@ -68,7 +68,8 @@ const LogIn: FC = () => {
           <StyledButton onPress={handleLogin}>
             <StyledButtonText>Login</StyledButtonText>
           </StyledButton>
-          <StyledButton onPress={() => navigation.navigate("SignUp")}>
+          <StyledButton onPress={() => {console.log("Am I pressing the button?")
+           navigation.navigate("SignUp")}}>
             <StyledButtonText>Register</StyledButtonText>
           </StyledButton>
         </Login>
