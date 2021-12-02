@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, Platform } from "react-native";
 import db, { auth, userRef } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
@@ -50,7 +50,7 @@ const LogIn: FC = () => {
   }
 
   return (
-    <Container behavior="padding">
+    <Container behavior={Platform.OS === "ios"? "padding": "height"}>
       <View>
         <Login>
           <LoginText>Get Ready!</LoginText>
