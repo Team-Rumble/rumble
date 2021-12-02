@@ -18,7 +18,7 @@ import SignUpScreen from "./SignUpScreen";
 
 interface Props {}
 
-type signInStack = NativeStackNavigationProp<RootStackParamList, "SignIn">;
+type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
 const LogIn: FC = () => {
   const [email, setEmail] = useState("");
