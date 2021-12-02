@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, View, Alert } from "react-native";
+import React, { FC, useState, useEffect } from "react";
+import { Text, View, Alert, Image, ScrollView } from "react-native";
 import { RumbleBtn, RumbleTxt } from "../components/Stylesheet";
 
 /*
@@ -11,10 +11,34 @@ Scrollable view of potentials rivals
 - Rumble button
 */
 
-const HomePageScreen = () => {
+const HomePageScreen: FC = () => {
+  return (
+    <ScrollView>
+      <Text>HOME</Text>
+      <SingleUser />
+      <SingleUser />
+    </ScrollView>
+  );
+};
+
+// dropdown menu - could maybe live in its own file?
+// Does it come down from the Navbar component?
+const Filters: FC = () => {
+  // checkbox community package?
+  return <Text>Placeholder</Text>;
+};
+
+// single user for scrollable list
+// take props with user info (TS props formatting?)
+const SingleUser: FC = () => {
   return (
     <View>
-      <Text>THIS IS HOME PAGE Y'aLLL!!!</Text>
+      <Image
+        source={{
+          uri: "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+        }}
+      />
+      <Text>User Name</Text>
       <RumbleBtn onPress={() => Alert.alert("Rumbled!")}>
         <RumbleTxt>Rumble</RumbleTxt>
       </RumbleBtn>
