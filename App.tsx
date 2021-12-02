@@ -11,20 +11,20 @@ import {
 } from "firebase/firestore";
 import {NavigationScreens} from './src/navigation/index';
 
-export type RootStackParamList = {
-  Navigation: undefined;
-  SignIn: undefined;
-  SignUp: undefined;
-  HomePage: undefined;
-}
+
 
 export default function App() {
 
 
   return (
+    /**    
+     * @SafeAreaProvider: Allows you to position your content appropriately around notches, status bars, home indicators
+     * and other device or operating system specific interface elements. Provides SafeAreaView in place of View
+    */
     <SafeAreaProvider>
       <NavigationScreens/>
     </SafeAreaProvider>
+
     // <View style={styles.container}>
     //   <Text>Hello friends!</Text>
     //   <Button title="Fetch!" onPress={() => Alert.alert(prompt)} />
