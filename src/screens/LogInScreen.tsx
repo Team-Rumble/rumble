@@ -1,12 +1,5 @@
-
 import React, { FC, useState, useEffect } from "react";
-import {
-  KeyboardAvoidingView,
-  View,
-  TouchableOpacity,
-  Text,
-  Alert,
-} from "react-native";
+import { View, Text, Alert } from "react-native";
 import db, { auth, userRef } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
@@ -20,14 +13,14 @@ import {
   StyledButton,
   StyledButtonText,
 } from "../components/Stylesheet";
-import SignUpScreen from './SignUpScreen';
+import SignUpScreen from "./SignUpScreen";
 // useContext
 
 interface Props {}
 
-type signInStack = NativeStackNavigationProp<RootStackParamList, "SignIn">;
+type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
-const SignIn: FC = () => {
+const LogIn: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -57,7 +50,7 @@ const SignIn: FC = () => {
   }
 
   return (
-    <Container>
+    <Container behavior="padding">
       <View>
         <Login>
           <LoginText>Get Ready!</LoginText>
@@ -84,7 +77,7 @@ const SignIn: FC = () => {
   );
 };
 
-export default SignIn;
+export default LogIn;
 
 // Registered with: Object {
 //   "_redirectEventId": undefined,
