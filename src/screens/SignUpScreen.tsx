@@ -4,25 +4,16 @@ import {
   Alert,
   Image,
   ScrollView,
-  Platform, Text,
-  TouchableOpacity, Modal
+  Platform,
+  TouchableOpacity,
 } from "react-native";
 import styled from "styled-components/native";
-import db, { auth, userRef } from "../../config/firebase";
+import db, { auth } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
-import { RumbleBtn, RumbleTxt } from "../components/HomePage.style";
-
-const images = {
-  angryGirl:
-    "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg",
-  angryBaby:
-    "https://i.pinimg.com/474x/d6/c3/fe/d6c3fef25a327db1b138dbca81d4771b.jpg",
-  angryBird:
-    "https://d21tktytfo9riy.cloudfront.net/wp-content/uploads/2019/01/23140919/dream_blast_icon.jpg",
-};
+import {SignUpContainer, SignUpInput, Signup, SignupText, RumbleSignUpButton, RumbleSignUpTxt, BioInput, images} from "../components/Stylesheet"
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
@@ -32,18 +23,6 @@ interface UserProps {
   user: undefined;
   age?: string;
 }
-
-
-// const Agreement: FC = () => {
-//   const [modalVisible, setModalVisible] = useState(true)
-//   return (<Modal
-//     animationType="slide"
-//     visible={modalVisible}
-//     >
-//     <Text>Hello</Text>
-//   </Modal>)
-// }
-
 
 const SignUpScreen: FC<UserProps> = () => {
   const [username, setUsername] = useState("")
@@ -66,24 +45,6 @@ const SignUpScreen: FC<UserProps> = () => {
     });
     return unsubscribe;
   }, []);
-
-  // function agreement() {
-  //   Alert.alert(
-  //     "Alert Title",
-  //     "I acknowledge I will not discriminate based on the grounds of race, religion, sexual orientation, political beliefs, age, and gender. If I break this rule, I understand that I will be banned from the app permanently. Rumble is about having a good clean fight.",
-  //     [
-  //       {
-  //         text: "Cancel",
-  //         onPress: () =>
-  //           Alert.alert(
-  //             "If you don't agree, can't Rumble my friend!"
-  //           ),
-  //         style: "cancel",
-  //       },
-  //       { text: "I Accept", onPress: () => true},
-  //     ]
-  //   )
-  // }
 
   async function handleSignUp() {
     try {
@@ -122,9 +83,6 @@ const SignUpScreen: FC<UserProps> = () => {
             }},
           ]
         )
-        // if(agreement()){
-
-        // }
       }
     } catch (error: any) {
       Alert.alert(error.message);
@@ -139,37 +97,37 @@ const SignUpScreen: FC<UserProps> = () => {
   }
 
   return (
-    <Container {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
+    <SignUpContainer {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
       <View>
         <Signup>
           <ScrollView>
             <SignupText>Get Ready!</SignupText>
-            <Input
+            <SignUpInput
               clearButtonMode="while-editing"
               autoCapitalize="none"
               keyboardType="email-address"
               placeholder="Username"
               value={username}
               onChangeText={(text) => setUsername(text)}
-            ></Input>
-            <Input
+            ></SignUpInput>
+            <SignUpInput
               clearButtonMode="while-editing"
               autoCapitalize="none"
               keyboardType="email-address"
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
-            ></Input>
-            <Input
+            ></SignUpInput>
+            <SignUpInput
               clearButtonMode="while-editing"
               autoCapitalize="none"
               placeholder="Password"
               value={password}
               onChangeText={(text) => setPassword(text)}
               secureTextEntry
-            ></Input>
+            ></SignUpInput>
             <View>
-              <Input
+              <SignUpInput
                 clearButtonMode="while-editing"
                 keyboardType="number-pad"
                 maxLength={2}
@@ -177,6 +135,8 @@ const SignUpScreen: FC<UserProps> = () => {
                 value={age}
                 onChangeText={(age) => setAge(age)}
               />
+  
+              {/* Displaying (3) default profile images */}
               <View
                 style={{
                   paddingVertical: 20,
@@ -211,6 +171,8 @@ const SignUpScreen: FC<UserProps> = () => {
                   />
                 </TouchableOpacity>
               </View>
+              {/* --------- END profile images ------------------ */}
+
               <BioInput
                 keyboardType="twitter"
                 multiline={true}
@@ -221,63 +183,19 @@ const SignUpScreen: FC<UserProps> = () => {
                 onChangeText={(text) => setBio(text)}
               />
             </View>
-            <RumbleBtn
+            <RumbleSignUpButton
               style={{ marginTop: 20, marginBottom: 50 }}
               onPress={handleSignUp}
             >
-              <RumbleTxt>Let's Rumble</RumbleTxt>
-            </RumbleBtn>
+              <RumbleSignUpTxt>Let's Rumble</RumbleSignUpTxt>
+            </RumbleSignUpButton>
           </ScrollView>
         </Signup>
       </View>
-    </Container>
+    </SignUpContainer>
   );
 };
 
 export default SignUpScreen;
 
-const Container = styled.KeyboardAvoidingView`
-  background-color: #581845;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
 
-const SignupText = styled.Text`
-  font-size: 25px;
-  font-weight: bold;
-  margin: 10px;
-`;
-const Signup = styled.View`
-  display: flex;
-  align-items: center;
-  flex-flow: column;
-  width: 350px;
-  /* height: 350px; */
-  /* margin: 0 auto; */
-  border: 2px solid #000;
-  border-radius: 20px;
-  background: #eee;
-`;
-const Input = styled.TextInput`
-  border: 1px solid #000;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 20px 10px;
-  width: 250px;
-`;
-const StyledButton = styled.TouchableOpacity`
-  background: green;
-  color: #fff;
-  padding: 10px;
-  margin: 5px;
-  width: 150px;
-  border: none;
-  border-radius: 10px;
-`;
-
-const BioInput = styled.TextInput`
-  width: 280px;
-  height: 200px;
-  border: 1px solid #000;
-`;
