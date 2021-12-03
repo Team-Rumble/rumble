@@ -4,6 +4,7 @@ import {
   Text,
   Alert,
   TextInput,
+  Image,
   ScrollView,
   Platform,
 } from "react-native";
@@ -13,26 +14,28 @@ import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
+import {RumbleBtn, RumbleTxt} from '../components/Stylesheet'
+
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
-
-type UserProps = {
-  email: string;
-  password: string;
+interface UserProps{
+  email: string,
+  password: string,
   user: undefined;
   age?: string;
 }
 
 const SignUpScreen: FC<UserProps> = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [age, setAge] = useState("");
+  const [password, setPassword] = useState(""); // space replace& capital first letter
+  const [age, setAge] = useState(""); // handleNumber()
   const [bio, setBio] = useState("");
   const [profileUrl, setProfileUrl] = useState(
     "" ||
       "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg"
   );
+  
 
   const navigation = useNavigation<signUpStack>();
 
@@ -47,24 +50,32 @@ const SignUpScreen: FC<UserProps> = () => {
 
   async function handleSignUp() {
     try {
-      const userCredential = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-
-      const user = userCredential.user;
-      console.log("Registered with: ", user);
-      await setDoc(doc(db, "users", user.uid), {
-        email: email,
-        password: password,
-        age: age,
-        bio: bio,
-        profileUrl: profileUrl
-      });
+      if (handleAge()) {
+        const userCredential = await auth.createUserWithEmailAndPassword(
+          email,
+          password
+        );
+  
+        const user = userCredential.user;
+        console.log("Registered with: ", user);
+        await setDoc(doc(db, "users", user.uid), {
+          email: email,
+          password: password, // Try to sent user without password
+          age: age,
+          bio: bio,
+          profileUrl: profileUrl
+        });
+      }
     } catch (error: any) {
       Alert.alert(error.message);
     }
   }
+
+  function handleAge() {
+   return Number(age) >= 18 ?  true : Alert.alert('You still Crawling....Get out of here')
+  }
+
+  
   return (
     <Container {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
       <View>
@@ -72,11 +83,14 @@ const SignUpScreen: FC<UserProps> = () => {
           <ScrollView>
             <SignupText>Get Ready!</SignupText>
             <Input
+             autoCapitalize="none"
+             keyboardType="email-address"
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
             ></Input>
             <Input
+             autoCapitalize="none"
               placeholder="Password"
               value={password}
               onChangeText={(text) => setPassword(text)}
@@ -84,31 +98,34 @@ const SignUpScreen: FC<UserProps> = () => {
             ></Input>
             <View>
               <Input
+              keyboardType="number-pad"
+              maxLength={2}
+              // textContentType="oneTimeCode"
                 placeholder="Age"
                 value={age}
                 onChangeText={(age) => setAge(age)}
-                // onChangeText={(num) => {
-                //   console.log('Age num: ', num);
-                //   // Number(num) >= 18
-                //   //   ? setAge(num)
-                //   //   : Alert.alert("You still crawling.....GET OUT OF HERE!");
-                // }}
               />
-              <Input
+              <View style={{paddingVertical: 20, flex: 3, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                <Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg"}} />
+                <Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: "http://1.bp.blogspot.com/-1-yZXyA3oY8/VoK8n89SVOI/AAAAAAAAR2Q/tz5kFjjkQDU/s1600/brewing-anger.png"}} />
+                  <Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: "https://d21tktytfo9riy.cloudfront.net/wp-content/uploads/2019/01/23140919/dream_blast_icon.jpg"}} />
+              </View>
+              {/* <Input
                 placeholder="Enter Image Url"
                 value={profileUrl}
                 onChangeText={(text) => setProfileUrl(text)}
-              />
+              /> */}
               <BioInput
+              keyboardType="twitter"
                 multiline={true}
+                maxLength={280}
                 style={{ textAlignVertical: "top" }}
                 placeholder="Enter a brief bio"
                 value={bio}
                 onChangeText={(text) => setBio(text)}
               />
             </View>
-            <StyledButton
-              title="Let's Rumble"
+            <RumbleBtn style={{marginTop: 20, marginBottom: 50}}
               onPress={() => 
                 Alert.alert(
                   "Alert Title",
@@ -122,7 +139,7 @@ const SignUpScreen: FC<UserProps> = () => {
                     { text: "I Accept", onPress: handleSignUp }
                   ]
                 )}
-            ></StyledButton>
+            ><RumbleTxt>Let's Rumble</RumbleTxt></RumbleBtn>
           </ScrollView>
         </Signup>
       </View>
@@ -162,7 +179,7 @@ const Input = styled.TextInput`
   margin: 20px 10px;
   width: 250px;
 `;
-const StyledButton = styled.Button`
+const StyledButton = styled.TouchableOpacity`
   background: green;
   color: #fff;
   padding: 10px;

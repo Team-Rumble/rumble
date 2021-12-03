@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import { getFirestore, collection } from "firebase/firestore";
+
 // import { getAnalytics } from "firebase/analytics";
 import "firebase/compat/auth";
 import Constants from "expo-constants";
@@ -39,7 +40,6 @@ const db = getFirestore(app);
 
 // Retrieve the collection of users
 export const userRef = collection(db, 'users');
-
 export const auth = firebase.auth();
 export default db;
 

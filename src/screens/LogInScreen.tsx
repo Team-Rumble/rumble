@@ -55,6 +55,8 @@ const LogIn: FC = () => {
         <Login>
           <LoginText>Get Ready!</LoginText>
           <Input
+            autoCapitalize="none"
+            keyboardType="email-address"
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)}
