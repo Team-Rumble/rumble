@@ -3,7 +3,9 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import LogIn from "../screens/LogInScreen";
 import SignUpScreen from '../screens/SignUpScreen';
-import HomePageScreen from '../screens/HomePageScreen'
+import HomePageScreen from '../screens/HomePageScreen';
+import ChatScreen from '../screens/ChatScreen'
+import UserProfileScreen from '../screens/UserProfileScreen';
 
 
 /**
@@ -17,6 +19,8 @@ import HomePageScreen from '../screens/HomePageScreen'
   LogIn: undefined;
   SignUp: undefined;
   HomePage: undefined;
+  Chat: undefined;
+  UserProfile: undefined
 }
 
 /**
@@ -38,6 +42,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
         <Stack.Screen name="LogIn" component={LogIn} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="HomePage" component={HomePageScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
+        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
