@@ -1,22 +1,23 @@
 import React, { FC, useState, useEffect } from "react";
-import { Text, Alert, ScrollView, Modal, Button, View } from "react-native";
+import { Text, Alert, ScrollView, Modal, View, Pressable } from "react-native";
 import {
+  MenuView,
   RumbleBtn,
   RumbleTxt,
   SingleRivalBox,
   RivalPFP,
   RivalName,
   ClickableRival,
-} from "../components/Stylesheet";
-
-/*
-NavBar
-Filtering options dropdown menu
-Scrollable view of potentials rivals
-- Profile picture (clickable to show profile)
-- Username
-- Rumble button
-*/
+  Header,
+  HeaderBox,
+  FilterArrow,
+  FilterHeader,
+  FilterBody,
+  FilterX,
+  Interest,
+  InterestText,
+} from "../components/HomePage.style";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const dummyUser = {
   username: "classroom24",
@@ -27,46 +28,81 @@ const dummyUser = {
 
 const HomePageScreen: FC = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [art, filterArt] = useState(false);
+  const [cooking, filterCooking] = useState(false);
+  const [gaming, filterGaming] = useState(false);
+  const [math, filterMath] = useState(false);
+  const [sports, filterSports] = useState(false);
+
+  // filter list of rivals by state filter settings
   return (
-    <ScrollView>
-      <Text>HOME</Text>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={filtersVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setFiltersVisible(!filtersVisible);
-        }}
-      >
-        <View>
-          <View
-            style={{
-              margin: 20,
-              marginTop: 200,
-              backgroundColor: "white",
-              borderRadius: 20,
-              padding: 35,
-              alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-          >
-            <Text>Find rivals by:</Text>
-            <Button title="Hide" onPress={() => setFiltersVisible(false)} />
+    <View>
+      <HeaderBox>
+        <Header>Filter for Rivals</Header>
+        <FilterArrow onPress={() => setFiltersVisible(true)}>
+          <MaterialCommunityIcons
+            name="menu-down-outline"
+            size={40}
+            color="#510A32"
+          />
+        </FilterArrow>
+      </HeaderBox>
+      <ScrollView>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={filtersVisible}
+        >
+          <View>
+            <MenuView>
+              <FilterHeader>Find rivals in:</FilterHeader>
+              <FilterBody>
+                <View>
+                  <CheckBox name="Art" checked={art} onChange={filterArt} />
+                  <CheckBox
+                    name="Cooking"
+                    checked={cooking}
+                    onChange={filterCooking}
+                  />
+                </View>
+                <View>
+                  <CheckBox
+                    name="Gaming"
+                    checked={gaming}
+                    onChange={filterGaming}
+                  />
+                  <CheckBox name="Math" checked={math} onChange={filterMath} />
+                </View>
+                <View>
+                  <CheckBox
+                    name="Sports"
+                    checked={sports}
+                    onChange={filterSports}
+                  />
+                </View>
+              </FilterBody>
+              <FilterX onPress={() => setFiltersVisible(false)}>
+                <MaterialCommunityIcons
+                  name="close-box"
+                  size={30}
+                  color="#510A32"
+                />
+              </FilterX>
+            </MenuView>
           </View>
-        </View>
-      </Modal>
-      <Button title="Filters" onPress={() => setFiltersVisible(true)} />
-      <SingleUser />
-      <SingleUser />
-    </ScrollView>
+        </Modal>
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+      </ScrollView>
+    </View>
   );
 };
 
@@ -92,3 +128,34 @@ const SingleUser: FC = () => {
 };
 
 export default HomePageScreen;
+
+interface CheckboxProps {
+  name: string;
+  checked: boolean;
+  onChange: (arg0: boolean) => void;
+}
+
+const CheckBox: FC<CheckboxProps> = (props) => {
+  return (
+    <Interest>
+      <Pressable onPress={() => props.onChange(!props.checked)}>
+        {props.checked ? (
+          <MaterialCommunityIcons
+            name="checkbox-marked"
+            size={25}
+            color="#801336"
+          />
+        ) : (
+          <MaterialCommunityIcons
+            name="checkbox-blank-outline"
+            size={25}
+            color="#801336"
+          />
+        )}
+      </Pressable>
+      <Pressable onPress={() => props.onChange(!props.checked)}>
+        <InterestText>{props.name}</InterestText>
+      </Pressable>
+    </Interest>
+  );
+};
