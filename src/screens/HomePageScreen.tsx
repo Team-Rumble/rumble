@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Text, Alert, ScrollView, Modal, View, FlatList } from "react-native";
+import { Text, Alert, Modal, View, FlatList } from "react-native";
 import {
   MenuView,
   RumbleBtn,
@@ -79,11 +79,14 @@ const HomePageScreen: FC = () => {
 
   // filter list of rivals by state filter settings
 
-  useEffect(() => {
+  const applyFilters = () => {
+    setFiltersVisible(false);
     if (art) {
       setUsers(users.filter((user) => user.interests.art));
+    } else {
+      setUsers(rivals);
     }
-  }, [users]);
+  };
 
   return (
     <View>
@@ -126,7 +129,7 @@ const HomePageScreen: FC = () => {
                 />
               </View>
             </FilterBody>
-            <FilterX onPress={() => setFiltersVisible(false)}>
+            <FilterX onPress={applyFilters}>
               <MaterialCommunityIcons
                 name="close-box"
                 size={30}
