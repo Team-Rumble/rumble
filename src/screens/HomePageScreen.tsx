@@ -15,6 +15,7 @@ import {
   FilterBody,
   FilterX,
   Interest,
+  InterestText,
 } from "../components/HomePage.style";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -27,7 +28,13 @@ const dummyUser = {
 
 const HomePageScreen: FC = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [art, filterArt] = useState(false);
+  const [cooking, filterCooking] = useState(false);
+  const [gaming, filterGaming] = useState(false);
+  const [math, filterMath] = useState(false);
+  const [sports, filterSports] = useState(false);
 
+  // filter list of rivals by state filter settings
   return (
     <View>
       <HeaderBox>
@@ -45,30 +52,42 @@ const HomePageScreen: FC = () => {
           animationType="slide"
           transparent={true}
           visible={filtersVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setFiltersVisible(!filtersVisible);
-          }}
         >
           <View>
             <MenuView>
-              <FilterHeader>Find rivals by:</FilterHeader>
+              <FilterHeader>Find rivals in:</FilterHeader>
               <FilterBody>
                 <View>
-                  <CheckBox name="Art" checked={false} />
-                  <CheckBox name="Cooking" checked={false} />
-                  <CheckBox name="Gaming" checked={false} />
-                  <CheckBox name="Math" checked={false} />
-                  <CheckBox name="Sports" checked={false} />
-                </View>
-                <FilterX onPress={() => setFiltersVisible(false)}>
-                  <MaterialCommunityIcons
-                    name="close-box"
-                    size={40}
-                    color="#510A32"
+                  <CheckBox name="Art" checked={art} onChange={filterArt} />
+                  <CheckBox
+                    name="Cooking"
+                    checked={cooking}
+                    onChange={filterCooking}
                   />
-                </FilterX>
+                </View>
+                <View>
+                  <CheckBox
+                    name="Gaming"
+                    checked={gaming}
+                    onChange={filterGaming}
+                  />
+                  <CheckBox name="Math" checked={math} onChange={filterMath} />
+                </View>
+                <View>
+                  <CheckBox
+                    name="Sports"
+                    checked={sports}
+                    onChange={filterSports}
+                  />
+                </View>
               </FilterBody>
+              <FilterX onPress={() => setFiltersVisible(false)}>
+                <MaterialCommunityIcons
+                  name="close-box"
+                  size={30}
+                  color="#510A32"
+                />
+              </FilterX>
             </MenuView>
           </View>
         </Modal>
@@ -113,29 +132,30 @@ export default HomePageScreen;
 interface CheckboxProps {
   name: string;
   checked: boolean;
+  onChange: (arg0: boolean) => void;
 }
 
 const CheckBox: FC<CheckboxProps> = (props) => {
-  const [checked, onChange] = useState(props.checked);
-
   return (
     <Interest>
-      <Pressable onPress={() => onChange(!checked)}>
-        {checked ? (
+      <Pressable onPress={() => props.onChange(!props.checked)}>
+        {props.checked ? (
           <MaterialCommunityIcons
             name="checkbox-marked"
-            size={24}
+            size={25}
             color="#801336"
           />
         ) : (
           <MaterialCommunityIcons
             name="checkbox-blank-outline"
-            size={24}
+            size={25}
             color="#801336"
           />
         )}
       </Pressable>
-      <Text>{props.name}</Text>
+      <Pressable onPress={() => props.onChange(!props.checked)}>
+        <InterestText>{props.name}</InterestText>
+      </Pressable>
     </Interest>
   );
 };

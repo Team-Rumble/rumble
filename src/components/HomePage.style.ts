@@ -20,6 +20,8 @@ export const Header = styled.Text`
 export const HeaderBox = styled.View`
   flex-direction: row;
   justify-content: center;
+  border-bottom-color: ${COLORS.plum};
+  border-bottom-width: 5px;
 `;
 
 export const FilterArrow = styled.TouchableOpacity`
@@ -32,16 +34,17 @@ export const FilterHeader = styled.Text`
   font-weight: bold;
   color: ${COLORS.plum};
   font-size: 20px;
-  margin-bottom: 10px;
+  margin: auto;
 `;
 
 export const FilterBody = styled.View`
   flex-direction: row;
+  margin-top: 20px;
 `;
 
 export const FilterX = styled.TouchableOpacity`
   margin: auto;
-  margin-left: 40px;
+  margin-right: 5px;
 `;
 
 export const MenuView = styled.View`
@@ -78,6 +81,7 @@ export const RivalPFP = styled.Image`
   border-radius: 50px;
   border-color: ${COLORS.plum};
   border-width: 3px;
+  margin-left: 30px;
 `;
 
 export const RivalName = styled.Text`
@@ -95,4 +99,13 @@ export const ClickableRival = styled.TouchableOpacity`
 
 export const Interest = styled.View`
   flex-direction: row;
+  margin: 5px;
+`;
+
+export const InterestText = styled.Text`
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+  margin-left: 2px;
+  color: ${COLORS.crimson};
 `;
