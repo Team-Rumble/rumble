@@ -109,3 +109,23 @@ export const InterestText = styled.Text`
   margin-left: 2px;
   color: ${COLORS.crimson};
 `;
+
+export const RivalBio = styled.Text`
+  color: ${COLORS.crimson};
+`;
+
+export const RivalBioPFP = styled.Image`
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  border-color: ${COLORS.plum};
+  border-width: 5px;
+`;
+
+export const RivalBioName = styled.Text`
+  font-weight: bold;
+  font-size: 24px;
+  align-self: center;
+  padding: 10px;
+  color: ${COLORS.purple};
+`;
