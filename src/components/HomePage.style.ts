@@ -50,7 +50,7 @@ export const FilterX = styled.TouchableOpacity`
 
 export const MenuView = styled.View`
   margin: 20px;
-  margin-top: 200px;
+  margin-top: 300px;
   background-color: white;
   border-radius: 20px;
   padding: 20px;
@@ -74,7 +74,9 @@ export const RumbleTxt = styled.Text`
 
 export const SingleRivalBox = styled.View`
   flex-direction: row;
-  margin: 10px;
+  margin: 5px 10px 5px 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 `;
 
 export const RivalPFP = styled.Image`

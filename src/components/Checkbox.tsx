@@ -7,12 +7,18 @@ interface CheckboxProps {
   name: string;
   checked: boolean;
   onChange: (arg0: boolean) => void;
+  reset: () => void;
 }
 
 const Checkbox: FC<CheckboxProps> = (props) => {
+  const toggle = () => {
+    props.onChange(!props.checked);
+    props.reset();
+  };
+
   return (
     <Interest>
-      <Pressable onPress={() => props.onChange(!props.checked)}>
+      <Pressable onPress={toggle}>
         {props.checked ? (
           <MaterialCommunityIcons
             name="checkbox-marked"

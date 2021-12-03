@@ -74,15 +74,23 @@ const HomePageScreen: FC = () => {
   const [sports, filterSports] = useState(false);
   const [users, setUsers] = useState(rivals);
 
-  // filter list of rivals by state filter settings
-
   // hides filter modal and applies the selected filters to displayed rivals
   const applyFilters = () => {
+    const filters = { art, cooking, gaming, math, sports };
     setFiltersVisible(false);
-    if (art) {
-      setUsers(users.filter((user) => user.interests.art));
-    } else {
-      setUsers(rivals); // need to make sure there's still a variable holding ALL potential rivals
+
+    setUsers(rivals); // reset full rivals list
+
+    // if any filters are selected
+    if (art || cooking || gaming || math || sports) {
+      setUsers(
+        rivals.filter((user) => {
+          for (let filter in filters) {
+            // TS config? this isn't a code-breaking error but a warning
+            if (filters[filter] && user.interests[filter]) return user;
+          }
+        })
+      );
     }
   };
 
@@ -113,11 +121,17 @@ const HomePageScreen: FC = () => {
             <FilterHeader>Find rivals in:</FilterHeader>
             <FilterBody>
               <View>
-                <Checkbox name="Art" checked={art} onChange={filterArt} />
+                <Checkbox
+                  name="Art"
+                  checked={art}
+                  onChange={filterArt}
+                  reset={() => setUsers(rivals)}
+                />
                 <Checkbox
                   name="Cooking"
                   checked={cooking}
                   onChange={filterCooking}
+                  reset={() => setUsers(rivals)}
                 />
               </View>
               <View>
@@ -125,14 +139,21 @@ const HomePageScreen: FC = () => {
                   name="Gaming"
                   checked={gaming}
                   onChange={filterGaming}
+                  reset={() => setUsers(rivals)}
                 />
-                <Checkbox name="Math" checked={math} onChange={filterMath} />
+                <Checkbox
+                  name="Math"
+                  checked={math}
+                  onChange={filterMath}
+                  reset={() => setUsers(rivals)}
+                />
               </View>
               <View>
                 <Checkbox
                   name="Sports"
                   checked={sports}
                   onChange={filterSports}
+                  reset={() => setUsers(rivals)}
                 />
               </View>
             </FilterBody>
