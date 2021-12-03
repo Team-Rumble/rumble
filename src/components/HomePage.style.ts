@@ -11,7 +11,7 @@ const COLORS = {
 
 export const Header = styled.Text`
   text-align: center;
-  color: ${COLORS.plum};
+  color: white;
   font-weight: bold;
   font-size: 30px;
   margin: 20px;
@@ -20,8 +20,9 @@ export const Header = styled.Text`
 export const HeaderBox = styled.View`
   flex-direction: row;
   justify-content: center;
-  border-bottom-color: ${COLORS.plum};
-  border-bottom-width: 5px;
+  margin-top: auto;
+  padding-bottom: 10px;
+  background-color: ${COLORS.plum};
 `;
 
 export const FilterArrow = styled.TouchableOpacity`

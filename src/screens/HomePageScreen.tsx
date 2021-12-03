@@ -21,9 +21,6 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Checkbox from "../components/Checkbox";
 
-// we will probably want to use FlatList to render the rival list, because it could be a very long list
-// possibility of putting filtering menu buttom at bottom of screen not top? (icon down instead of up)
-
 const dummyUser24 = {
   username: "classroom24",
   imageUrl:
@@ -79,24 +76,34 @@ const HomePageScreen: FC = () => {
 
   // filter list of rivals by state filter settings
 
+  // hides filter modal and applies the selected filters to displayed rivals
   const applyFilters = () => {
     setFiltersVisible(false);
     if (art) {
       setUsers(users.filter((user) => user.interests.art));
     } else {
-      setUsers(rivals);
+      setUsers(rivals); // need to make sure there's still a variable holding ALL potential rivals
     }
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
+      <View>
+        <FlatList
+          style={{ flexGrow: 0, marginBottom: 85 }}
+          data={users}
+          renderItem={({ item, index }) => (
+            <SingleUser key={index} user={item} />
+          )}
+        />
+      </View>
       <HeaderBox>
         <Header>Filter for Rivals</Header>
         <FilterArrow onPress={() => setFiltersVisible(true)}>
           <MaterialCommunityIcons
-            name="arrow-down-drop-circle-outline"
+            name="arrow-up-drop-circle-outline"
             size={40}
-            color="#510A32"
+            color="white"
           />
         </FilterArrow>
       </HeaderBox>
@@ -139,10 +146,6 @@ const HomePageScreen: FC = () => {
           </MenuView>
         </View>
       </Modal>
-      <FlatList
-        data={users}
-        renderItem={({ item, index }) => <SingleUser key={index} user={item} />}
-      />
     </View>
   );
 };
