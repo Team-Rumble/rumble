@@ -8,6 +8,7 @@ const COLORS = {
   crimson: "#801336",
   plum: "#510A32", // header navbar, log-in BG, sign-up btn
   purple: "#2D142C", // log-in btn, rumble btn
+  white: "#FFFFFF"
 };
 
 // input resuable styling?
@@ -25,7 +26,7 @@ export const Container = styled.KeyboardAvoidingView`
   justify-content: center;
 `;
 export const LoginText = styled.Text`
-  font-size: 25px;
+  font-size: 35px;
   font-weight: bold;
   margin: 10px;
 `;
@@ -45,12 +46,12 @@ export const Input = styled.TextInput`
   border-radius: 10px;
   padding: 10px;
   margin: 20px 10px;
-  width: 150px;
+  width: 250px;
 `;
 export const StyledButton = styled.TouchableOpacity`
   background: green;
   padding: 10px;
-  margin: 5px;
+  margin: 10px;
   width: 150px;
   border: none;
   border-radius: 10px;
@@ -58,4 +59,74 @@ export const StyledButton = styled.TouchableOpacity`
 
 export const StyledButtonText = styled.Text`
   color: white;
+  font-size: 20px;
+  text-align: center;
 `;
+
+/* --------- SIGN UP ---------------*/
+export const SignUpContainer = styled.KeyboardAvoidingView`
+  background-color: #eee;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SignupText = styled.Text`
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+  color: #581845;
+`;
+export const Signup = styled.View`
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  width: 350px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  /* background-color: ${COLORS.purple}; */
+`;
+export const SignUpInput = styled.TextInput`
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px 10px;
+  width: 250px;
+  background-color: ${COLORS.white};
+`;
+
+export const RumbleSignUpButton = styled.TouchableOpacity`
+  background-color: ${COLORS.white};
+  border-radius: 10px;
+  border: 1px solid #581845;
+  padding: 10px;
+  margin: auto;
+  width: 130px;
+`;
+
+export const RumbleSignUpTxt = styled.Text`
+  color: ${COLORS.purple};
+  font-weight: bold;
+  text-align: center;
+  font-size: 30px;
+  flex-wrap: wrap;
+`;
+
+export const BioInput = styled.TextInput`
+  width: 280px;
+  height: 200px;
+  border: 1px solid #581845;
+  border-radius: 10px;
+  background-color: ${COLORS.white};
+`;
+
+export const images = {  // DEFAULT IMAGES FOR DISPLAY
+  angryGirl:
+    "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg",
+  angryBaby:
+    "https://i.pinimg.com/474x/d6/c3/fe/d6c3fef25a327db1b138dbca81d4771b.jpg",
+  angryBird:
+    "https://d21tktytfo9riy.cloudfront.net/wp-content/uploads/2019/01/23140919/dream_blast_icon.jpg",
+};
+/* --------- END SIGN UP ---------------*/

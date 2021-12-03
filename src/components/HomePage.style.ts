@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 // color scheme variables (lightest to darkest)
-const COLORS = {
+export const COLORS = {
   lightRed: "#EE4540",
   red: "#C72C41",
   crimson: "#801336",

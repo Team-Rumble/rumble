@@ -1,7 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
-import { View, Text, Alert, Platform } from "react-native";
-import db, { auth, userRef } from "../../config/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { View, Alert, Platform } from "react-native";
+import { auth } from "../../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
@@ -13,10 +12,7 @@ import {
   StyledButton,
   StyledButtonText,
 } from "../components/Stylesheet";
-import SignUpScreen from "./SignUpScreen";
-// useContext
 
-interface Props {}
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
