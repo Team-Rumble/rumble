@@ -11,7 +11,7 @@ const COLORS = {
 
 export const Header = styled.Text`
   text-align: center;
-  color: ${COLORS.plum};
+  color: white;
   font-weight: bold;
   font-size: 30px;
   margin: 20px;
@@ -20,8 +20,9 @@ export const Header = styled.Text`
 export const HeaderBox = styled.View`
   flex-direction: row;
   justify-content: center;
-  border-bottom-color: ${COLORS.plum};
-  border-bottom-width: 5px;
+  margin-top: auto;
+  padding-bottom: 10px;
+  background-color: ${COLORS.plum};
 `;
 
 export const FilterArrow = styled.TouchableOpacity`
@@ -49,7 +50,7 @@ export const FilterX = styled.TouchableOpacity`
 
 export const MenuView = styled.View`
   margin: 20px;
-  margin-top: 200px;
+  margin-top: 300px;
   background-color: white;
   border-radius: 20px;
   padding: 20px;
@@ -62,6 +63,7 @@ export const RumbleBtn = styled.TouchableOpacity`
   border-radius: 10px;
   padding: 10px;
   margin: auto;
+  margin-right: 30px;
 `;
 
 export const RumbleTxt = styled.Text`
@@ -72,7 +74,9 @@ export const RumbleTxt = styled.Text`
 
 export const SingleRivalBox = styled.View`
   flex-direction: row;
-  margin: 10px;
+  margin: 5px 10px 5px 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 `;
 
 export const RivalPFP = styled.Image`
@@ -108,4 +112,24 @@ export const InterestText = styled.Text`
   margin-right: 10px;
   margin-left: 2px;
   color: ${COLORS.crimson};
+`;
+
+export const RivalBio = styled.Text`
+  color: ${COLORS.crimson};
+`;
+
+export const RivalBioPFP = styled.Image`
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  border-color: ${COLORS.plum};
+  border-width: 5px;
+`;
+
+export const RivalBioName = styled.Text`
+  font-weight: bold;
+  font-size: 24px;
+  align-self: center;
+  padding: 10px;
+  color: ${COLORS.purple};
 `;
