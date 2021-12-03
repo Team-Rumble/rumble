@@ -44,7 +44,8 @@ function HomeIcon(){
 
 function ChatIcon(){
   return (
-    <Ionicons name="chatbubble-ellipses-outline" size={24} color="black" />
+    <Ionicons style={{paddingLeft:125}} name="chatbubble-ellipses-outline" size={24} color="black" />
+    
   )
 };
 
