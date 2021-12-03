@@ -6,6 +6,11 @@ import SignUpScreen from '../screens/SignUpScreen';
 import HomePageScreen from '../screens/HomePageScreen';
 import ChatScreen from '../screens/ChatScreen'
 import UserProfileScreen from '../screens/UserProfileScreen';
+import RivalsListScreen from '../screens/RivalsListScreen';
+import { FontAwesome } from '@expo/vector-icons'; //user icon
+import { Ionicons } from '@expo/vector-icons'; //chat icon and home icon
+
+
 
 
 /**
@@ -20,7 +25,8 @@ import UserProfileScreen from '../screens/UserProfileScreen';
   SignUp: undefined;
   HomePage: undefined;
   Chat: undefined;
-  UserProfile: undefined
+  UserProfile: undefined;
+  RivalsList: undefined
 }
 
 /**
@@ -30,6 +36,25 @@ import UserProfileScreen from '../screens/UserProfileScreen';
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+function HomeIcon(){
+  return (
+    <Ionicons name="home-outline" size={24} color="black" />
+  )
+};
+
+function ChatIcon(){
+  return (
+    <Ionicons name="chatbubble-ellipses-outline" size={24} color="black" />
+  )
+};
+
+//we can potentially replace this with the user icon they've selected once they're signed in
+function UserIcon(){
+  return(
+    <FontAwesome name="user-circle-o" size={24} color="black" />
+  )
+}
+
  
  export const NavigationScreens: FC = () => {
    return (
@@ -38,12 +63,17 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
       * @param Stack.Screen - Links 
       */
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{
+        headerLeft: () => <HomeIcon />,
+        headerTitle: () => <ChatIcon />,
+        headerRight: () => <UserIcon />
+      }}>
         <Stack.Screen name="LogIn" component={LogIn} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="HomePage" component={HomePageScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
         <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+        <Stack.Screen name="RivalsList" component={RivalsListScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

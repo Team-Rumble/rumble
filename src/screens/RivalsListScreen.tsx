@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import { Text, View, Image, ScrollView } from "react-native";
 
-const RivalsList: FC = () => {
+const RivalsListScreen: FC = () => {
   return (
     <ScrollView>
       <SingleRival />
@@ -26,4 +26,4 @@ const SingleRival: FC = () => {
   );
 };
 
-export default RivalsList;
+export default RivalsListScreen;
