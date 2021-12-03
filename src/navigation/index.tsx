@@ -66,20 +66,20 @@ const navigation = useNavigation<RootStackParamList>()
       */
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName='HomePage'
+        tabBarOptions={{
+          showLabel: false,
+          style: {
+            height: 80,
+            backgroundColor: '#30444E',
+            borderTopColor: 'rgba(0,0,0,0)',
+          },
+        }}
         screenOptions={({ route }) => ({
-        navBarIcon: (focused:boolean, color:string, size:number) => {
-          let iconName:string;
-          let routeName = route.name;
-
-          if(routeName === "HomePage"){
-            iconName = 'home';
-          } else if (routeName === 'RivalsList'){
-            iconName = 'chatbubble-ellipses'
-          } else if(routeName === 'UserProfile'){
-            iconName = 'person-circle'
-          }
-          return <Ionicons name={iconName} size={24} color="black"/>
-        },
+        tabBarIcon: ({focused}) => {
+          let label
+        }
+          
       })}
       >
       
@@ -105,3 +105,16 @@ const navigation = useNavigation<RootStackParamList>()
       //   headerTitle: () => <ChatIcon />,
       //   headerRight: () => <UserIcon />
        //}}
+
+      //  let iconName:string;
+      //     let routeName = route.name;
+
+      //     if(routeName === "HomePage"){
+      //       iconName = 'home';
+      //     } else if (routeName === 'RivalsList'){
+      //       iconName = 'chatbubble-ellipses'
+      //     } else if(routeName === 'UserProfile'){
+      //       iconName = 'person-circle'
+      //     }
+      //     return <Ionicons name={iconName} size={24} color="black"/>
+      //   },
