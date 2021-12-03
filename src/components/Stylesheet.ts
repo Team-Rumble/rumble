@@ -13,39 +13,6 @@ const COLORS = {
 // input resuable styling?
 // maybe multipe navbar stylings depending on what screen you're on
 
-// Home Page (rival filtering)
-export const RumbleBtn = styled.TouchableOpacity`
-  background-color: ${COLORS.purple};
-  border-radius: 10px;
-  padding: 10px;
-  margin: auto;
-`;
-export const RumbleTxt = styled.Text`
-  color: white;
-  font-weight: bold;
-  text-align: center;
-`;
-export const SingleRivalBox = styled.View`
-  flex-direction: row;
-  margin: 10px;
-`;
-export const RivalPFP = styled.Image`
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
-`;
-export const RivalName = styled.Text`
-  font-weight: bold;
-  font-size: 18px;
-  align-self: center;
-  padding: 10px;
-`;
-export const ClickableRival = styled.TouchableOpacity`
-  flex-direction: row;
-`;
-
-// filtering options drop-down menu
-
 // navbar
 
 // users profile picture and name

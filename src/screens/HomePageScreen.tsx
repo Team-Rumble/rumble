@@ -1,22 +1,29 @@
 import React, { FC, useState, useEffect } from "react";
-import { Text, Alert, ScrollView, Modal, Button, View } from "react-native";
 import {
+  Text,
+  Alert,
+  ScrollView,
+  Modal,
+  Button,
+  View,
+  TouchableOpacity,
+} from "react-native";
+import {
+  MenuView,
   RumbleBtn,
   RumbleTxt,
   SingleRivalBox,
   RivalPFP,
   RivalName,
   ClickableRival,
-} from "../components/Stylesheet";
-
-/*
-NavBar
-Filtering options dropdown menu
-Scrollable view of potentials rivals
-- Profile picture (clickable to show profile)
-- Username
-- Rumble button
-*/
+  Header,
+  HeaderBox,
+  FilterArrow,
+  FilterHeader,
+  FilterBody,
+  FilterX,
+} from "../components/HomePage.style";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const dummyUser = {
   username: "classroom24",
@@ -27,46 +34,63 @@ const dummyUser = {
 
 const HomePageScreen: FC = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
+
   return (
-    <ScrollView>
-      <Text>HOME</Text>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={filtersVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setFiltersVisible(!filtersVisible);
-        }}
-      >
-        <View>
-          <View
-            style={{
-              margin: 20,
-              marginTop: 200,
-              backgroundColor: "white",
-              borderRadius: 20,
-              padding: 35,
-              alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-          >
-            <Text>Find rivals by:</Text>
-            <Button title="Hide" onPress={() => setFiltersVisible(false)} />
+    <View>
+      <HeaderBox>
+        <Header>Filter for Rivals</Header>
+        <FilterArrow onPress={() => setFiltersVisible(true)}>
+          <MaterialCommunityIcons
+            name="menu-down-outline"
+            size={40}
+            color="#510A32"
+          />
+        </FilterArrow>
+      </HeaderBox>
+      <ScrollView>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={filtersVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setFiltersVisible(!filtersVisible);
+          }}
+        >
+          <View>
+            <MenuView>
+              <FilterHeader>Find rivals by:</FilterHeader>
+              <FilterBody>
+                <View>
+                  <Text>Art</Text>
+                  <Text>Cooking</Text>
+                  <Text>Gaming</Text>
+                  <Text>Math</Text>
+                  <Text>Sports</Text>
+                </View>
+                <FilterX onPress={() => setFiltersVisible(false)}>
+                  <MaterialCommunityIcons
+                    name="close-box"
+                    size={40}
+                    color="#510A32"
+                  />
+                </FilterX>
+              </FilterBody>
+            </MenuView>
           </View>
-        </View>
-      </Modal>
-      <Button title="Filters" onPress={() => setFiltersVisible(true)} />
-      <SingleUser />
-      <SingleUser />
-    </ScrollView>
+        </Modal>
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+        <SingleUser />
+      </ScrollView>
+    </View>
   );
 };
 
