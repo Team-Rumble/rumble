@@ -76,7 +76,8 @@ export const RivalPFP = styled.Image`
   width: 60px;
   height: 60px;
   border-radius: 50px;
-  border: ${COLORS.plum} 3px solid;
+  border-color: ${COLORS.plum};
+  border-width: 3px;
 `;
 
 export const RivalName = styled.Text`
@@ -89,5 +90,9 @@ export const RivalName = styled.Text`
 
 // wraps rival's profile picture and username
 export const ClickableRival = styled.TouchableOpacity`
+  flex-direction: row;
+`;
+
+export const Interest = styled.View`
   flex-direction: row;
 `;

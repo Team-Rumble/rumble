@@ -1,13 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import {
-  Text,
-  Alert,
-  ScrollView,
-  Modal,
-  Button,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { Text, Alert, ScrollView, Modal, View, Pressable } from "react-native";
 import {
   MenuView,
   RumbleBtn,
@@ -22,6 +14,7 @@ import {
   FilterHeader,
   FilterBody,
   FilterX,
+  Interest,
 } from "../components/HomePage.style";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -62,11 +55,11 @@ const HomePageScreen: FC = () => {
               <FilterHeader>Find rivals by:</FilterHeader>
               <FilterBody>
                 <View>
-                  <Text>Art</Text>
-                  <Text>Cooking</Text>
-                  <Text>Gaming</Text>
-                  <Text>Math</Text>
-                  <Text>Sports</Text>
+                  <CheckBox name="Art" checked={false} />
+                  <CheckBox name="Cooking" checked={false} />
+                  <CheckBox name="Gaming" checked={false} />
+                  <CheckBox name="Math" checked={false} />
+                  <CheckBox name="Sports" checked={false} />
                 </View>
                 <FilterX onPress={() => setFiltersVisible(false)}>
                   <MaterialCommunityIcons
@@ -116,3 +109,33 @@ const SingleUser: FC = () => {
 };
 
 export default HomePageScreen;
+
+interface CheckboxProps {
+  name: string;
+  checked: boolean;
+}
+
+const CheckBox: FC<CheckboxProps> = (props) => {
+  const [checked, onChange] = useState(props.checked);
+
+  return (
+    <Interest>
+      <Pressable onPress={() => onChange(!checked)}>
+        {checked ? (
+          <MaterialCommunityIcons
+            name="checkbox-marked"
+            size={24}
+            color="#801336"
+          />
+        ) : (
+          <MaterialCommunityIcons
+            name="checkbox-blank-outline"
+            size={24}
+            color="#801336"
+          />
+        )}
+      </Pressable>
+      <Text>{props.name}</Text>
+    </Interest>
+  );
+};
