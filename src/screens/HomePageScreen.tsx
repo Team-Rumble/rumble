@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Text, Alert, ScrollView, Modal, View } from "react-native";
+import { Text, Alert, ScrollView, Modal, View, FlatList } from "react-native";
 import {
   MenuView,
   RumbleBtn,
@@ -54,6 +54,20 @@ const dummyUserShort = {
   age: 25,
 };
 
+const rivals = [
+  dummyUser24,
+  dummyUserShort,
+  dummyUser24,
+  dummyUser24,
+  dummyUser24,
+  dummyUser24,
+  dummyUserShort,
+  dummyUserShort,
+  dummyUser24,
+  dummyUser24,
+  dummyUserShort,
+];
+
 const HomePageScreen: FC = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [art, filterArt] = useState(false);
@@ -61,21 +75,15 @@ const HomePageScreen: FC = () => {
   const [gaming, filterGaming] = useState(false);
   const [math, filterMath] = useState(false);
   const [sports, filterSports] = useState(false);
-
-  const rivals = [
-    dummyUser24,
-    dummyUserShort,
-    dummyUser24,
-    dummyUser24,
-    dummyUser24,
-    dummyUser24,
-    dummyUserShort,
-    dummyUserShort,
-    dummyUser24,
-    dummyUser24,
-  ];
+  const [users, setUsers] = useState(rivals);
 
   // filter list of rivals by state filter settings
+
+  useEffect(() => {
+    if (art) {
+      setUsers(users.filter((user) => user.interests.art));
+    }
+  }, [users]);
 
   return (
     <View>
@@ -89,54 +97,49 @@ const HomePageScreen: FC = () => {
           />
         </FilterArrow>
       </HeaderBox>
-      <ScrollView>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={filtersVisible}
-        >
-          <View>
-            <MenuView>
-              <FilterHeader>Find rivals in:</FilterHeader>
-              <FilterBody>
-                <View>
-                  <Checkbox name="Art" checked={art} onChange={filterArt} />
-                  <Checkbox
-                    name="Cooking"
-                    checked={cooking}
-                    onChange={filterCooking}
-                  />
-                </View>
-                <View>
-                  <Checkbox
-                    name="Gaming"
-                    checked={gaming}
-                    onChange={filterGaming}
-                  />
-                  <Checkbox name="Math" checked={math} onChange={filterMath} />
-                </View>
-                <View>
-                  <Checkbox
-                    name="Sports"
-                    checked={sports}
-                    onChange={filterSports}
-                  />
-                </View>
-              </FilterBody>
-              <FilterX onPress={() => setFiltersVisible(false)}>
-                <MaterialCommunityIcons
-                  name="close-box"
-                  size={30}
-                  color="#510A32"
+      <Modal animationType="slide" transparent={true} visible={filtersVisible}>
+        <View>
+          <MenuView>
+            <FilterHeader>Find rivals in:</FilterHeader>
+            <FilterBody>
+              <View>
+                <Checkbox name="Art" checked={art} onChange={filterArt} />
+                <Checkbox
+                  name="Cooking"
+                  checked={cooking}
+                  onChange={filterCooking}
                 />
-              </FilterX>
-            </MenuView>
-          </View>
-        </Modal>
-        {rivals.map((rival, idx) => (
-          <SingleUser key={idx} user={rival} />
-        ))}
-      </ScrollView>
+              </View>
+              <View>
+                <Checkbox
+                  name="Gaming"
+                  checked={gaming}
+                  onChange={filterGaming}
+                />
+                <Checkbox name="Math" checked={math} onChange={filterMath} />
+              </View>
+              <View>
+                <Checkbox
+                  name="Sports"
+                  checked={sports}
+                  onChange={filterSports}
+                />
+              </View>
+            </FilterBody>
+            <FilterX onPress={() => setFiltersVisible(false)}>
+              <MaterialCommunityIcons
+                name="close-box"
+                size={30}
+                color="#510A32"
+              />
+            </FilterX>
+          </MenuView>
+        </View>
+      </Modal>
+      <FlatList
+        data={users}
+        renderItem={({ item, index }) => <SingleUser key={index} user={item} />}
+      />
     </View>
   );
 };

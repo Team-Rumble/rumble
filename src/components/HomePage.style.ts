@@ -62,6 +62,7 @@ export const RumbleBtn = styled.TouchableOpacity`
   border-radius: 10px;
   padding: 10px;
   margin: auto;
+  margin-right: 30px;
 `;
 
 export const RumbleTxt = styled.Text`
