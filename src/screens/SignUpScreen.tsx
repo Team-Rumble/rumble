@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import styled from "styled-components/native";
 import db, { auth, userRef } from "../../config/firebase";
@@ -16,6 +17,12 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
 import {RumbleBtn, RumbleTxt} from '../components/Stylesheet'
 
+
+const images = {
+  angryGirl: "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg",
+  angryMsn: "http://1.bp.blogspot.com/-1-yZXyA3oY8/VoK8n89SVOI/AAAAAAAAR2Q/tz5kFjjkQDU/s1600/brewing-anger.png",
+  angryBird: "https://d21tktytfo9riy.cloudfront.net/wp-content/uploads/2019/01/23140919/dream_blast_icon.jpg"
+}
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
@@ -29,13 +36,11 @@ interface UserProps{
 const SignUpScreen: FC<UserProps> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // space replace& capital first letter
-  const [age, setAge] = useState(""); // handleNumber()
+  const [age, setAge] = useState(""); 
   const [bio, setBio] = useState("");
   const [profileUrl, setProfileUrl] = useState(
-    "" ||
-      "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg"
+    "" || "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg"
   );
-  
 
   const navigation = useNavigation<signUpStack>();
 
@@ -50,18 +55,21 @@ const SignUpScreen: FC<UserProps> = () => {
 
   async function handleSignUp() {
     try {
+      // Replacing spaces in typescript like in JS by using string.replace().
+      email.replace(/\s/g,"");
+      password.replace(/\s/g,"");
       if (handleAge()) {
         const userCredential = await auth.createUserWithEmailAndPassword(
           email,
           password
         );
-  
+       
         const user = userCredential.user;
         console.log("Registered with: ", user);
         await setDoc(doc(db, "users", user.uid), {
           email: email,
-          password: password, // Try to sent user without password
-          age: age,
+          // password: password, // Try to sent user without password
+          age: Number(age), //Sending age as a number type
           bio: bio,
           profileUrl: profileUrl
         });
@@ -71,6 +79,7 @@ const SignUpScreen: FC<UserProps> = () => {
     }
   }
 
+  // handleNumber() will validate if the user is 18 or older to then be able to sign up. 
   function handleAge() {
    return Number(age) >= 18 ?  true : Alert.alert('You still Crawling....Get out of here')
   }
@@ -83,6 +92,7 @@ const SignUpScreen: FC<UserProps> = () => {
           <ScrollView>
             <SignupText>Get Ready!</SignupText>
             <Input
+            clearButtonMode="while-editing"
              autoCapitalize="none"
              keyboardType="email-address"
               placeholder="Email"
@@ -90,6 +100,7 @@ const SignUpScreen: FC<UserProps> = () => {
               onChangeText={(text) => setEmail(text)}
             ></Input>
             <Input
+            clearButtonMode="while-editing"
              autoCapitalize="none"
               placeholder="Password"
               value={password}
@@ -98,6 +109,7 @@ const SignUpScreen: FC<UserProps> = () => {
             ></Input>
             <View>
               <Input
+              clearButtonMode="while-editing"
               keyboardType="number-pad"
               maxLength={2}
               // textContentType="oneTimeCode"
@@ -106,9 +118,11 @@ const SignUpScreen: FC<UserProps> = () => {
                 onChangeText={(age) => setAge(age)}
               />
               <View style={{paddingVertical: 20, flex: 3, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                <Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg"}} />
-                <Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: "http://1.bp.blogspot.com/-1-yZXyA3oY8/VoK8n89SVOI/AAAAAAAAR2Q/tz5kFjjkQDU/s1600/brewing-anger.png"}} />
-                  <Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: "https://d21tktytfo9riy.cloudfront.net/wp-content/uploads/2019/01/23140919/dream_blast_icon.jpg"}} />
+                <TouchableOpacity onPress={() => setProfileUrl(images.angryGirl) } >
+                  <Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: images.angryGirl}} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setProfileUrl(images.angryMsn)} ><Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: images.angryMsn}} /></TouchableOpacity>
+                <TouchableOpacity onPress={() => setProfileUrl(images.angryBird) }><Image style={{width: 80, height: 80, borderRadius: 20}} source={{uri: images.angryBird}} /></TouchableOpacity>
               </View>
               {/* <Input
                 placeholder="Enter Image Url"

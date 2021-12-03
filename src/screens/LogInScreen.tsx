@@ -30,7 +30,7 @@ const LogIn: FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.navigate("HomePage");
+        navigation.replace("HomePage");
       }
     });
     return unsubscribe;
@@ -38,6 +38,8 @@ const LogIn: FC = () => {
 
   async function handleLogin() {
     try {
+      email.replace(/\s/g,"");
+      password.replace(/\s/g,"");
       const userCredential = await auth.signInWithEmailAndPassword(
         email,
         password
@@ -57,11 +59,13 @@ const LogIn: FC = () => {
           <Input
             autoCapitalize="none"
             keyboardType="email-address"
+            clearButtonMode="while-editing"
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)}
           ></Input>
           <Input
+            clearButtonMode="while-editing"
             placeholder="Password"
             value={password}
             onChangeText={(text) => setPassword(text)}
