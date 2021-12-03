@@ -7,7 +7,6 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import styled from "styled-components/native";
 import db, { auth } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
@@ -17,14 +16,14 @@ import {SignUpContainer, SignUpInput, Signup, SignupText, RumbleSignUpButton, Ru
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
-interface UserProps {
-  email: string;
-  password: string;
-  user: undefined;
-  age?: string;
-}
+// interface UserProps {
+//   email: string;
+//   password: string;
+//   // user: undefined;
+//   age?: string;
+// }
 
-const SignUpScreen: FC<UserProps> = () => {
+const SignUpScreen: FC = () => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // space replace & capital first letter
@@ -99,7 +98,7 @@ const SignUpScreen: FC<UserProps> = () => {
   return (
     <SignUpContainer {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
       <View>
-        <Signup>
+        {/* <Signup> */}
           <ScrollView>
             <SignupText>Get Ready!</SignupText>
             <SignUpInput
@@ -190,7 +189,7 @@ const SignUpScreen: FC<UserProps> = () => {
               <RumbleSignUpTxt>Let's Rumble</RumbleSignUpTxt>
             </RumbleSignUpButton>
           </ScrollView>
-        </Signup>
+        {/* </Signup> */}
       </View>
     </SignUpContainer>
   );

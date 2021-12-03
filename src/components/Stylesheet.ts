@@ -8,6 +8,7 @@ const COLORS = {
   crimson: "#801336",
   plum: "#510A32", // header navbar, log-in BG, sign-up btn
   purple: "#2D142C", // log-in btn, rumble btn
+  white: "#FFFFFF"
 };
 
 // input resuable styling?
@@ -64,7 +65,7 @@ export const StyledButtonText = styled.Text`
 
 /* --------- SIGN UP ---------------*/
 export const SignUpContainer = styled.KeyboardAvoidingView`
-  background-color: #581845;
+  background-color: #eee;
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -75,6 +76,7 @@ export const SignupText = styled.Text`
   font-weight: bold;
   margin-top: 10px;
   text-align: center;
+  color: #581845;
 `;
 export const Signup = styled.View`
   display: flex;
@@ -83,7 +85,7 @@ export const Signup = styled.View`
   width: 350px;
   border: 2px solid #000;
   border-radius: 20px;
-  background: #eee;
+  /* background-color: ${COLORS.purple}; */
 `;
 export const SignUpInput = styled.TextInput`
   border: 1px solid #000;
@@ -91,17 +93,20 @@ export const SignUpInput = styled.TextInput`
   padding: 10px;
   margin: 20px 10px;
   width: 250px;
+  background-color: ${COLORS.white};
 `;
+
 export const RumbleSignUpButton = styled.TouchableOpacity`
-  background-color: ${COLORS.purple};
+  background-color: ${COLORS.white};
   border-radius: 10px;
+  border: 1px solid #581845;
   padding: 10px;
   margin: auto;
   width: 130px;
 `;
 
 export const RumbleSignUpTxt = styled.Text`
-  color: white;
+  color: ${COLORS.purple};
   font-weight: bold;
   text-align: center;
   font-size: 30px;
@@ -111,8 +116,9 @@ export const RumbleSignUpTxt = styled.Text`
 export const BioInput = styled.TextInput`
   width: 280px;
   height: 200px;
-  border: 1px solid #000;
+  border: 1px solid #581845;
   border-radius: 10px;
+  background-color: ${COLORS.white};
 `;
 
 export const images = {  // DEFAULT IMAGES FOR DISPLAY
