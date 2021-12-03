@@ -7,8 +7,9 @@ import HomePageScreen from '../screens/HomePageScreen';
 import ChatScreen from '../screens/ChatScreen'
 import UserProfileScreen from '../screens/UserProfileScreen';
 import RivalsListScreen from '../screens/RivalsListScreen';
-import { FontAwesome } from '@expo/vector-icons'; //user icon
 import { Ionicons } from '@expo/vector-icons'; //chat icon and home icon
+import { TouchableOpacity } from 'react-native';
+
 
 
 
@@ -20,7 +21,7 @@ import { Ionicons } from '@expo/vector-icons'; //chat icon and home icon
  * Must be passed to createStackNavigator<...> to use. In: src/navigation/index.tsx
  */
  export type RootStackParamList = {
- // Navigation: undefined;
+  Navigation: undefined;
   LogIn: undefined;
   SignUp: undefined;
   HomePage: undefined;
@@ -35,26 +36,26 @@ import { Ionicons } from '@expo/vector-icons'; //chat icon and home icon
  * 
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const navigation = useNavigation<RootStackParamList>()
 
-function HomeIcon(){
-  return (
-    <Ionicons name="home-outline" size={24} color="black" />
-  )
-};
+// const HomeIcon: FC = () => {
+//   return (
+//     <Ionicons name="home-outline" size={24} color="black" />
+//   )
+// };
 
-function ChatIcon(){
-  return (
-    <Ionicons style={{paddingLeft:125}} name="chatbubble-ellipses-outline" size={24} color="black" />
-    
-  )
-};
+// function ChatIcon():any{
+//   return (
+//     <Ionicons style={{paddingLeft:125}} name="chatbubble-ellipses-outline" size={24} color="black" onPress={() = alert("I pressed the button!")}/> 
+//   )
+// };
 
-//we can potentially replace this with the user icon they've selected once they're signed in
-function UserIcon(){
-  return(
-    <FontAwesome name="user-circle-o" size={24} color="black" />
-  )
-}
+// //we can potentially replace this with the user icon they've selected once they're signed in
+// function UserIcon(){
+//   return(
+//     <Ionicons name="person-circle-outline" size={24} color="black" />
+//   )
+// }
 
  
  export const NavigationScreens: FC = () => {
@@ -64,13 +65,27 @@ function UserIcon(){
       * @param Stack.Screen - Links 
       */
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{
-        headerLeft: () => <HomeIcon />,
-        headerTitle: () => <ChatIcon />,
-        headerRight: () => <UserIcon />
-      }}>
-        <Stack.Screen name="LogIn" component={LogIn} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Navigator
+        screenOptions={({ route }) => ({
+        navBarIcon: (focused:boolean, color:string, size:number) => {
+          let iconName:string;
+          let routeName = route.name;
+
+          if(routeName === "HomePage"){
+            iconName = 'home';
+          } else if (routeName === 'RivalsList'){
+            iconName = 'chatbubble-ellipses'
+          } else if(routeName === 'UserProfile'){
+            iconName = 'person-circle'
+          }
+          return <Ionicons name={iconName} size={24} color="black"/>
+        },
+      })}
+      >
+      
+     
+        <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
         <Stack.Screen name="HomePage" component={HomePageScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
         <Stack.Screen name="UserProfile" component={UserProfileScreen} />
@@ -79,3 +94,14 @@ function UserIcon(){
     </NavigationContainer>
   );
 };
+
+ // screenOptions={{
+      //   headerLeft: () => (
+      //   <TouchableOpacity onPress{() => navigation.navigate("Homepage")}>
+         
+          
+      //     </TouchableOpacity>
+      //     ,
+      //   headerTitle: () => <ChatIcon />,
+      //   headerRight: () => <UserIcon />
+       //}}
