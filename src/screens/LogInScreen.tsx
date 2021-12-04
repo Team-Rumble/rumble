@@ -20,7 +20,7 @@ interface Props {}
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
-const LogIn: FC = () => {
+const LogIn: FC = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,7 +30,7 @@ const LogIn: FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("HomePage");
+        navigation.navigate("HomePage");
       }
     });
     return unsubscribe;

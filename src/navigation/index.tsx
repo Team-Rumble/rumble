@@ -9,6 +9,8 @@ import UserProfileScreen from '../screens/UserProfileScreen';
 import RivalsListScreen from '../screens/RivalsListScreen';
 import { Ionicons } from '@expo/vector-icons'; //chat icon and home icon
 import { TouchableOpacity } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { AppTabs } from './AppTabs';
 
 
 
@@ -28,6 +30,7 @@ import { TouchableOpacity } from 'react-native';
   Chat: undefined;
   UserProfile: undefined;
   RivalsList: undefined
+  AppTabs: undefined
 }
 
 /**
@@ -36,7 +39,6 @@ import { TouchableOpacity } from 'react-native';
  * 
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const navigation = useNavigation<RootStackParamList>()
 
 // const HomeIcon: FC = () => {
 //   return (
@@ -57,64 +59,37 @@ const navigation = useNavigation<RootStackParamList>()
 //   )
 // }
 
- 
- export const NavigationScreens: FC = () => {
-   return (
-     /**
-      * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
-      * @param Stack.Screen - Links 
-      */
+const Tab = createMaterialTopTabNavigator<RootStackParamList>();
+
+export const NavigationScreens: FC = () => {
+  return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName='HomePage'
-        tabBarOptions={{
-          showLabel: false,
-          style: {
-            height: 80,
-            backgroundColor: '#30444E',
-            borderTopColor: 'rgba(0,0,0,0)',
-          },
-        }}
-        screenOptions={({ route }) => ({
-        tabBarIcon: ({focused}) => {
-          let label
-        }
-          
-      })}
-      >
-      
-     
-        <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
-        <Stack.Screen name="HomePage" component={HomePageScreen} />
-        <Stack.Screen name="Chat" component={ChatScreen} />
-        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
-        <Stack.Screen name="RivalsList" component={RivalsListScreen} />
-      </Stack.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen name="AppTabs" component={AppTabs}/>
+        </Stack.Navigator>
     </NavigationContainer>
+    
   );
 };
+ 
+//  export const NavigationScreens: FC = () => {
+//    return (
+//      /**
+//       * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
+//       * @param Stack.Screen - Links 
+//       */
+//     //NavigationContainer functions like Provider in React
+//     <NavigationContainer> 
+//       <Stack.Navigator>
+//         <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
+//         <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
+//         <Stack.Screen name="HomePage" component={HomePageScreen} />
+//         <Stack.Screen name="Chat" component={ChatScreen} />
+//         <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+//         <Stack.Screen name="RivalsList" component={RivalsListScreen} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
 
- // screenOptions={{
-      //   headerLeft: () => (
-      //   <TouchableOpacity onPress{() => navigation.navigate("Homepage")}>
-         
-          
-      //     </TouchableOpacity>
-      //     ,
-      //   headerTitle: () => <ChatIcon />,
-      //   headerRight: () => <UserIcon />
-       //}}
-
-      //  let iconName:string;
-      //     let routeName = route.name;
-
-      //     if(routeName === "HomePage"){
-      //       iconName = 'home';
-      //     } else if (routeName === 'RivalsList'){
-      //       iconName = 'chatbubble-ellipses'
-      //     } else if(routeName === 'UserProfile'){
-      //       iconName = 'person-circle'
-      //     }
-      //     return <Ionicons name={iconName} size={24} color="black"/>
-      //   },
+ 
