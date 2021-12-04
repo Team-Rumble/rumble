@@ -8,9 +8,10 @@ import ChatScreen from '../screens/ChatScreen'
 import UserProfileScreen from '../screens/UserProfileScreen';
 import RivalsListScreen from '../screens/RivalsListScreen';
 import { Ionicons } from '@expo/vector-icons'; //chat icon and home icon
-import { TouchableOpacity } from 'react-native';
+import { BackHandler, Button, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { AppTabs } from './AppTabs';
+import App from '../../App';
 
 
 
@@ -60,13 +61,32 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 // }
 
 const Tab = createMaterialTopTabNavigator<RootStackParamList>();
+const user = true
 
 export const NavigationScreens: FC = () => {
   return (
     <NavigationContainer>
+      {/* If a user is logged in, we'll see our homepage and other views, else we'll just see the log in or sign up views */}
+      {user ? (
+        <Stack.Navigator screenOptions={({route}) => ({
+          headerTitle:"Rumble",
+          title:"Rumble",
+          headerTitleAlign: 'center',
+          // headerLeft: (navigation) => (
+          //   <Button title="Back" onPress={() => {navigation.goBack();
+          //   }} />
+          // )
+        })}>
+          <Stack.Screen name="AppTabs" component={AppTabs} options={({route}) => ({
+            headerTitle: "Rumble"
+          })} />
+        </Stack.Navigator>) : (
         <Stack.Navigator>
-          <Stack.Screen name="AppTabs" component={AppTabs}/>
+          <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
         </Stack.Navigator>
+      )}
+        
     </NavigationContainer>
     
   );

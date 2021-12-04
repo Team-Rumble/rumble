@@ -16,18 +16,17 @@ const Tab = createMaterialTopTabNavigator<RootStackParamList>();
 
 export const AppTabs: FC = () => {
   return (
-    <NavigationContainer>
-        <Tab.Navigator screenOptions={({ route }) => ({
+    //Because we're going to nest this inside another navigation compenent, we do not need the navigation container
+        <Tab.Navigator initialRouteName='HomePage' screenOptions={({ route }) => ({
           swipeEnabled:false
         })}>
-        <Tab.Screen name="LogIn" component={LogIn} />
-        <Tab.Screen name="SignUp" component={SignUpScreen} />
+        {/* <Tab.Screen name="LogIn" component={LogIn} />
+        <Tab.Screen name="SignUp" component={SignUpScreen} /> */}
         <Tab.Screen name="HomePage" component={HomePageScreen} />
         {/* This will become a nested screen <Tab.Screen name="Chat" component={ChatScreen} /> */}
         <Tab.Screen name="UserProfile" component={UserProfileScreen} />
         <Tab.Screen name="RivalsList" component={RivalsListScreen} />
       </Tab.Navigator>
-    </NavigationContainer>
     
   );
 };
