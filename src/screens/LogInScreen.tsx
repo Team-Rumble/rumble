@@ -26,7 +26,7 @@ const LogIn: FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("UserProfile");
+        navigation.replace("Profile");
       }
     });
     return unsubscribe;

@@ -130,3 +130,46 @@ export const images = {  // DEFAULT IMAGES FOR DISPLAY
     "https://d21tktytfo9riy.cloudfront.net/wp-content/uploads/2019/01/23140919/dream_blast_icon.jpg",
 };
 /* --------- END SIGN UP ---------------*/
+
+/* --------- PROFILE SCREEN ---------------*/
+
+export const ProfileImage = styled.View`
+  align-items: center;
+  margin-top: 20px;
+`;
+
+export const ProfileMenu = styled.View`
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: ${COLORS.purple};
+  /* padding-top: 10px; */
+  /* padding-bottom: 10px; */
+  margin-top: 20px;
+`;
+
+export const ProfileMenuText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  color: ${COLORS.white};
+  border: 2px solid ${COLORS.white};
+  padding: 8px 45px;
+`;
+
+export const LogOutBtn = styled.TouchableOpacity`  
+  background-color: ${COLORS.purple};
+  border-radius: 10px;
+  padding: 10px;
+  margin: auto;
+  margin-top: 20px;
+`;
+
+export const LogOutText = styled.Text`
+  color: white;
+  font-weight: bold;
+  text-align: center;
+`;
+
+/* --------- END PROFILE ---------------*/
+
+

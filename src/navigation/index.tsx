@@ -20,7 +20,7 @@ import UserProfileScreen from '../screens/UserProfileScreen';
   SignUp: undefined;
   HomePage: undefined;
   Chat: undefined;
-  UserProfile: undefined
+  Profile: undefined
 }
 
 /**
@@ -43,7 +43,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="HomePage" component={HomePageScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
-        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+        <Stack.Screen name="Profile" component={UserProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

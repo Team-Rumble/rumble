@@ -1,19 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { FC, useState, useEffect } from "react";
-import { Text, Alert, ScrollView, Modal, Button, View, TouchableOpacity} from "react-native";
+import { Text, Alert, ScrollView, Modal, Button, View, TouchableOpacity, Image} from "react-native";
 import { auth } from "../../config/firebase";
-import {
-  RumbleBtn,
-  RumbleTxt,
-  SingleRivalBox,
-  RivalPFP,
-  RivalName,
-  ClickableRival,
-} from "../components/HomePage.style";
 import { RootStackParamList } from "../navigation";
+import {ProfileImage, ProfileMenu, ProfileMenuText, LogOutBtn, LogOutText} from "../components/Stylesheet"
 
-type profileStack = NativeStackNavigationProp<RootStackParamList, "UserProfile">
+type profileStack = NativeStackNavigationProp<RootStackParamList, "Profile">
 
 
 const dummyUser = {
@@ -51,12 +44,21 @@ const UserProfileScreen: FC = () => {
 
     return(
         <View>
-        <View></View>
-        <RumbleBtn onPress={handleSignOut}>
-          <RumbleTxt>Log Out</RumbleTxt>
-        </RumbleBtn>
+        <ProfileImage>
+          <Image style={{ width: 150, height: 150, borderRadius: 20}} source={{uri: dummyUser.imageUrl}} />
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10}} >{dummyUser.username}</Text>
+        </ProfileImage>
+        <ProfileMenu>
+          <ProfileMenuText >Rivals</ProfileMenuText>
+          <ProfileMenuText>Rivals</ProfileMenuText>
+          <ProfileMenuText>Rivals</ProfileMenuText>
+          </ProfileMenu>
+        <LogOutBtn onPress={handleSignOut}>
+          <LogOutText>Log Out</LogOutText>
+        </LogOutBtn>
     </View>
     )
 }
 
 export default UserProfileScreen
+
