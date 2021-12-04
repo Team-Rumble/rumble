@@ -20,18 +20,18 @@ interface Props {}
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
+export const user= auth.currentUser;
+
 const LogIn: FC = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(Boolean)
-
   const navigation = useNavigation<signInStack>();
   // console.log(auth);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setLoggedIn(true)
+        //here we would want to set user to our global state?
         navigation.navigate("HomePage");
       }
     });
@@ -48,7 +48,6 @@ const LogIn: FC = ({}) => {
       );
       const user = userCredential.user;
       console.log("Logged in with: ", user);
-      console.log("Is the user logged in? : ", loggedIn, )
     } catch (error: any) {
       Alert.alert(error.message);
     }

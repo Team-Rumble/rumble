@@ -12,6 +12,8 @@ import { BackHandler, Button, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { AppTabs } from './AppTabs';
 import App from '../../App';
+import db, { auth, userRef } from "../../config/firebase";
+import { user } from '../screens/LogInScreen';
 
 
 
@@ -61,55 +63,84 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 // }
 
 const Tab = createMaterialTopTabNavigator<RootStackParamList>();
-const user = true
 
-export const NavigationScreens: FC = () => {
-  return (
-    <NavigationContainer>
-      {/* If a user is logged in, we'll see our homepage and other views, else we'll just see the log in or sign up views */}
-      {user ? (
-        <Stack.Navigator screenOptions={({route}) => ({
-          headerTitle:"Rumble",
-          title:"Rumble",
-          headerTitleAlign: 'center',
-          // headerLeft: (navigation) => (
-          //   <Button title="Back" onPress={() => {navigation.goBack();
-          //   }} />
-          // )
-        })}>
-          <Stack.Screen name="AppTabs" component={AppTabs} options={({route}) => ({
-            headerTitle: "Rumble"
-          })} />
-        </Stack.Navigator>) : (
-        <Stack.Navigator>
-          <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
-        </Stack.Navigator>
-      )}
+
+
+// export const NavigationScreens: FC = () => {
+//   console.log(user, "This is our user?maybe?");
+//   return (
+//     <NavigationContainer>
+//       {/* If a user is logged in, we'll see our homepage and other views, else we'll just see the log in or sign up views */}
+//       {user ? (
+//         <Stack.Navigator screenOptions={({route}) => ({
+//           headerTitle:"Rumble",
+//           title:"Rumble",
+//           headerTitleAlign: 'center',
+//           // headerLeft: (navigation) => (
+//           //   <Button title="Back" onPress={() => {navigation.goBack();
+//           //   }} />
+//           // )
+//         })}>
+//           <Stack.Screen name="AppTabs" component={AppTabs} options={({route}) => ({
+//             headerTitle: "Rumble"
+//           })} />
+//         </Stack.Navigator>) : (
+//         <Stack.Navigator>
+//           <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
+//           <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
+//         </Stack.Navigator>
+//       )}
         
-    </NavigationContainer>
-    
-  );
-};
- 
-//  export const NavigationScreens: FC = () => {
-//    return (
-//      /**
-//       * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
-//       * @param Stack.Screen - Links 
-//       */
-//     //NavigationContainer functions like Provider in React
-//     <NavigationContainer> 
-//       <Stack.Navigator>
-//         <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
-//         <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
-//         <Stack.Screen name="HomePage" component={HomePageScreen} />
-//         <Stack.Screen name="Chat" component={ChatScreen} />
-//         <Stack.Screen name="UserProfile" component={UserProfileScreen} />
-//         <Stack.Screen name="RivalsList" component={RivalsListScreen} />
-//       </Stack.Navigator>
 //     </NavigationContainer>
+    
 //   );
 // };
+
+ type navigationStack = NativeStackNavigationProp<RootStackParamList>
+
+ export const NavigationScreens: FC = ({}) => {
+  // const navigation = useNavigation<navigationStack>()
+   return (
+     /**
+      * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
+      * @param Stack.Screen - Links 
+      */
+    //NavigationContainer functions like Provider in React
+    <NavigationContainer> 
+      <Stack.Navigator
+      screenOptions={({navigation}) => ({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("UserProfile")}>
+          <Ionicons name="person-circle-outline" size={35} color="white" />
+      </TouchableOpacity>
+
+    ),
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("RivalsList")}>
+          <Ionicons name="chatbubble-ellipses-outline" size={35} color="white"/>
+        </TouchableOpacity>
+    ),
+    headerTitle: () => (
+      <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
+          <Ionicons name="home-outline" size={35} color="white" />
+        </TouchableOpacity>
+    ),
+    headerTitleAlign: "center",
+    headerStyle:{
+      backgroundColor:"#2D142C"
+    },
+    headerTintColor:"white"
+    })} 
+      >
+        <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
+        <Stack.Screen name="HomePage" component={HomePageScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
+        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+        <Stack.Screen name="RivalsList" component={RivalsListScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
  
