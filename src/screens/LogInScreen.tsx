@@ -1,7 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import { View, Alert, Platform } from "react-native";
-import { auth } from "../../config/firebase";
+import db, { auth } from "../../config/firebase";
 import { useNavigation } from "@react-navigation/native";
+import {doc, getDoc } from "firebase/firestore"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
 import {
@@ -15,18 +16,26 @@ import {
 
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
+// export const userSnap: any= {}
 
 const LogIn: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
 
   const navigation = useNavigation<signInStack>();
   // console.log(auth);
+  // async function getUserInfo(user) {
+  //   const userRef = doc(db, "users", user.uid)
+  //   const docSnap = await getDoc(userRef)
+  //   userSnap["user"] =  docSnap;
+  // }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("Profile");
+        // getUserInfo(user)
+        navigation.navigate("Profile");
       }
     });
     return unsubscribe;
@@ -41,7 +50,10 @@ const LogIn: FC = () => {
         password
       );
       const user = userCredential.user;
-      console.log("Logged in with: ", user);
+      console.log("Logged in with: ", user.uid);
+      
+      // console.log("DOCSNAP =>>", docSnap);
+      
     } catch (error: any) {
       Alert.alert(error.message);
     }

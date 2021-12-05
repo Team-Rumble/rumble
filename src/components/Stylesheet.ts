@@ -133,9 +133,17 @@ export const images = {  // DEFAULT IMAGES FOR DISPLAY
 
 /* --------- PROFILE SCREEN ---------------*/
 
-export const ProfileImage = styled.View`
+export const ProfileImageContainer = styled.View`
   align-items: center;
   margin-top: 20px;
+
+`;
+
+export const ProfileImage = styled.Image`
+  width: 150px;
+  height: 150px;
+  border-radius: 20px;
+  border: 3px solid ${COLORS.purple};
 `;
 
 export const ProfileMenu = styled.View`
@@ -143,17 +151,18 @@ export const ProfileMenu = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
   background-color: ${COLORS.purple};
-  /* padding-top: 10px; */
-  /* padding-bottom: 10px; */
   margin-top: 20px;
 `;
 
-export const ProfileMenuText = styled.Text`
+export const ProfileMenuText = styled.TouchableOpacity`
+  border: 2px solid ${COLORS.white};
+  padding: 8px 25px;
+`;
+
+export const MenuText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   color: ${COLORS.white};
-  border: 2px solid ${COLORS.white};
-  padding: 8px 45px;
 `;
 
 export const LogOutBtn = styled.TouchableOpacity`  
