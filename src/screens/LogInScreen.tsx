@@ -41,9 +41,6 @@ const LogIn: FC = ({}) => {
         password
       );
       const user = userCredential.user;
-      console.log("Logged in with: ", user.uid);
-
-      // console.log("DOCSNAP =>>", docSnap);
     } catch (error: any) {
       Alert.alert(error.message);
     }
@@ -74,7 +71,6 @@ const LogIn: FC = ({}) => {
           </StyledButton>
           <StyledButton
             onPress={() => {
-              console.log("Am I pressing the button?");
               navigation.navigate("SignUp");
             }}
           >

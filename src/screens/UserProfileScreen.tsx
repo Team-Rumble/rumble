@@ -59,7 +59,6 @@ const UserProfileScreen: FC = () => {
   async function handleSignOut() {
     try {
       const user = await auth.signOut();
-      console.log("User logged out info", user);
       if (!user) {
         navigation.navigate("LogIn");
       }

@@ -59,6 +59,8 @@ const HomePageScreen: FC = () => {
     loadUsers();
     // initial render doesn't load DB users, only rivals placeholder
     // but once you start filtering, it shows the real DB
+    // this is because useEffect doesn't inherently rerender the view
+    // rerenders only happen when state changes - i.e. the setUsers(allUsers) in applyFilters function
   }, []); // if I pass allUsers as the dependecy array, I lose filtering ability
 
   // hides filter modal and applies the selected filters to displayed rivals
