@@ -66,34 +66,29 @@ const HomePageScreen: FC = () => {
   const [gaming, filterGaming] = useState(false);
   const [math, filterMath] = useState(false);
   const [sports, filterSports] = useState(false);
-  const [users, setUsers] = useState([]);
-  // let allUsers: Array<{
-  //   id: string;
-  //   username: string;
-  //   profileUrl: string;
-  //   bio: string;
-  //   interests: object;
-  //   age: number;
-  //   email: string;
-  // }>;
-  const allUsers = [];
+  // currently using rivals as temp. holder, but should refactor with TS restrictions
+  const [users, setUsers] = useState(rivals);
+  const [allUsers, setAllUsers] = useState(rivals);
 
   const fetchAllUsers = async () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
+    const users = [];
     usersSnap.forEach((doc) => {
-      allUsers.push({ id: doc.id, ...doc.data() });
+      users.push({ id: doc.id, ...doc.data() });
     });
+    setAllUsers(users);
   };
-
-  // ADD INTERESTS TO ALL USERS IN DB
 
   useEffect(() => {
     const loadUsers = async () => {
       await fetchAllUsers();
+      // need to filter to not include the logged in user
       setUsers(allUsers);
     };
     loadUsers();
+    // initial render doesn't load DB users, only rivals placeholder
+    // but once you start filtering, it shows the real DB users
   }, []);
 
   // hides filter modal and applies the selected filters to displayed rivals
