@@ -49,7 +49,7 @@ export const Input = styled.TextInput`
   width: 250px;
 `;
 export const StyledButton = styled.TouchableOpacity`
-  background: green;
+  background: ${COLORS.crimson};
   padding: 10px;
   margin: 10px;
   width: 150px;
