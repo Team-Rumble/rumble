@@ -16,26 +16,19 @@ import {
 
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
-// export const userSnap: any= {}
 
-const LogIn: FC = () => {
+export const user= auth.currentUser;
+
+const LogIn: FC = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
 
   const navigation = useNavigation<signInStack>();
-  // console.log(auth);
-  // async function getUserInfo(user) {
-  //   const userRef = doc(db, "users", user.uid)
-  //   const docSnap = await getDoc(userRef)
-  //   userSnap["user"] =  docSnap;
-  // }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // getUserInfo(user)
-        navigation.navigate("Profile");
+        navigation.navigate("HomePage");
       }
     });
     return unsubscribe;
