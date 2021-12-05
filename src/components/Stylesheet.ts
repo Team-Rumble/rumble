@@ -8,7 +8,7 @@ const COLORS = {
   crimson: "#801336",
   plum: "#510A32", // header navbar, log-in BG, sign-up btn
   purple: "#2D142C", // log-in btn, rumble btn
-  white: "#FFFFFF"
+  white: "#FFFFFF",
 };
 
 // input resuable styling?
@@ -49,7 +49,7 @@ export const Input = styled.TextInput`
   width: 250px;
 `;
 export const StyledButton = styled.TouchableOpacity`
-  background: green;
+  background: ${COLORS.crimson};
   padding: 10px;
   margin: 10px;
   width: 150px;
@@ -121,7 +121,8 @@ export const BioInput = styled.TextInput`
   background-color: ${COLORS.white};
 `;
 
-export const images = {  // DEFAULT IMAGES FOR DISPLAY
+export const images = {
+  // DEFAULT IMAGES FOR DISPLAY
   angryGirl:
     "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg",
   angryBaby:
@@ -136,14 +137,14 @@ export const images = {  // DEFAULT IMAGES FOR DISPLAY
 export const ProfileImageContainer = styled.View`
   align-items: center;
   margin-top: 20px;
-
 `;
 
 export const ProfileImage = styled.Image`
   width: 150px;
   height: 150px;
   border-radius: 20px;
-  border: 3px solid ${COLORS.purple};
+  border-width: 3px;
+  border-color: ${COLORS.purple};
 `;
 
 export const ProfileMenu = styled.View`
@@ -165,7 +166,7 @@ export const MenuText = styled.Text`
   color: ${COLORS.white};
 `;
 
-export const LogOutBtn = styled.TouchableOpacity`  
+export const LogOutBtn = styled.TouchableOpacity`
   background-color: ${COLORS.purple};
   border-radius: 10px;
   padding: 10px;
@@ -180,5 +181,3 @@ export const LogOutText = styled.Text`
 `;
 
 /* --------- END PROFILE ---------------*/
-
-
