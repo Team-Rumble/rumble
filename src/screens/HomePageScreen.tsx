@@ -57,19 +57,7 @@ const dummyUserShort = {
   email: "email@site.com",
 };
 
-const rivals = [
-  dummyUser24,
-  dummyUserShort,
-  dummyUser24,
-  dummyUser24,
-  dummyUser24,
-  dummyUser24,
-  dummyUserShort,
-  dummyUserShort,
-  dummyUser24,
-  dummyUser24,
-  dummyUserShort,
-];
+const rivals = [dummyUser24, dummyUserShort];
 
 const HomePageScreen: FC = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -78,7 +66,7 @@ const HomePageScreen: FC = () => {
   const [gaming, filterGaming] = useState(false);
   const [math, filterMath] = useState(false);
   const [sports, filterSports] = useState(false);
-  const [users, setUsers] = useState(rivals);
+  const [users, setUsers] = useState([]);
   // let allUsers: Array<{
   //   id: string;
   //   username: string;
@@ -94,14 +82,18 @@ const HomePageScreen: FC = () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
     usersSnap.forEach((doc) => {
-      allUsers.push(doc.data());
+      allUsers.push({ id: doc.id, ...doc.data() });
     });
-    console.log(allUsers);
   };
 
+  // ADD INTERESTS TO ALL USERS IN DB
+
   useEffect(() => {
-    fetchAllUsers();
-    setUsers(allUsers);
+    const loadUsers = async () => {
+      await fetchAllUsers();
+      setUsers(allUsers);
+    };
+    loadUsers();
   }, []);
 
   // hides filter modal and applies the selected filters to displayed rivals
