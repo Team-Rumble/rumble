@@ -2,7 +2,6 @@ import React, { FC, useState, useEffect } from "react";
 import { View, Alert, Platform } from "react-native";
 import db, { auth } from "../../config/firebase";
 import { useNavigation } from "@react-navigation/native";
-import {doc, getDoc } from "firebase/firestore"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
 import {
@@ -14,10 +13,9 @@ import {
   StyledButtonText,
 } from "../components/Stylesheet";
 
-
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
-export const user= auth.currentUser;
+export const user = auth.currentUser;
 
 const LogIn: FC = ({}) => {
   const [email, setEmail] = useState("");
@@ -36,24 +34,23 @@ const LogIn: FC = ({}) => {
 
   async function handleLogin() {
     try {
-      email.replace(/\s/g,"");
-      password.replace(/\s/g,"");
+      email.replace(/\s/g, "");
+      password.replace(/\s/g, "");
       const userCredential = await auth.signInWithEmailAndPassword(
         email,
         password
       );
       const user = userCredential.user;
       console.log("Logged in with: ", user.uid);
-      
+
       // console.log("DOCSNAP =>>", docSnap);
-      
     } catch (error: any) {
       Alert.alert(error.message);
     }
   }
 
   return (
-    <Container {...Platform.OS === 'ios' ? {behavior: 'padding'} : null}>
+    <Container {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
       <View>
         <Login>
           <LoginText>Get Ready!</LoginText>
@@ -75,8 +72,12 @@ const LogIn: FC = ({}) => {
           <StyledButton onPress={handleLogin}>
             <StyledButtonText>Login</StyledButtonText>
           </StyledButton>
-          <StyledButton onPress={() => {console.log("Am I pressing the button?")
-           navigation.navigate("SignUp")}}>
+          <StyledButton
+            onPress={() => {
+              console.log("Am I pressing the button?");
+              navigation.navigate("SignUp");
+            }}
+          >
             <StyledButtonText>Register</StyledButtonText>
           </StyledButton>
         </Login>
