@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+import { setStatusBarNetworkActivityIndicatorVisible, StatusBar } from "expo-status-bar";
 import { registerRootComponent } from "expo";
 import React, { useState, useEffect } from "react";
 import {
@@ -13,9 +13,12 @@ import db from "./config/firebase";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { collection, getDocs, query } from "firebase/firestore";
 import { NavigationScreens } from "./src/navigation/index";
+import { user } from './src/screens/LogInScreen';
+
 
 
 export default function App() {
+  
   return (
     /**    
      * @SafeAreaProvider: Allows you to position your content appropriately around notches, status bars, home indicators

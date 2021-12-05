@@ -16,17 +16,19 @@ import {
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
-const LogIn: FC = () => {
+export const user= auth.currentUser;
+
+const LogIn: FC = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigation = useNavigation<signInStack>();
   // console.log(auth);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("HomePage");
+        //here we would want to set user to our global state?
+        navigation.navigate("HomePage");
       }
     });
     return unsubscribe;
