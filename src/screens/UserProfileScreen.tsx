@@ -23,6 +23,7 @@ import {
   LogOutBtn,
   LogOutText,
 } from "../components/Stylesheet";
+import { Interests, Settings } from "../components/ProfileTabs";
 
 type profileStack = NativeStackNavigationProp<
   RootStackParamList,
@@ -114,33 +115,7 @@ const UserProfileScreen: FC = () => {
             Rivals
           </Text>
         </View>
-      ) : currentView === "Interests" ? (
-        <View>
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 25,
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-          >
-            Interests
-          </Text>
-        </View>
-      ) : (
-        <View>
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 25,
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-          >
-            Settings
-          </Text>
-        </View>
-      )}
+      ) : currentView === "Interests" ? (<Interests/>) : (<Settings/>)}
       <LogOutBtn onPress={handleSignOut}>
         <LogOutText>Log Out</LogOutText>
       </LogOutBtn>
