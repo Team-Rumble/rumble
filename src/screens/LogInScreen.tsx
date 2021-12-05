@@ -1,7 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import { View, Alert, Platform } from "react-native";
-import { auth } from "../../config/firebase";
+import db, { auth } from "../../config/firebase";
 import { useNavigation } from "@react-navigation/native";
+import {doc, getDoc } from "firebase/firestore"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
 import {
@@ -21,13 +22,12 @@ export const user= auth.currentUser;
 const LogIn: FC = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigation = useNavigation<signInStack>();
-  // console.log(auth);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        //here we would want to set user to our global state?
         navigation.navigate("HomePage");
       }
     });
@@ -43,7 +43,10 @@ const LogIn: FC = ({}) => {
         password
       );
       const user = userCredential.user;
-      console.log("Logged in with: ", user);
+      console.log("Logged in with: ", user.uid);
+      
+      // console.log("DOCSNAP =>>", docSnap);
+      
     } catch (error: any) {
       Alert.alert(error.message);
     }

@@ -47,7 +47,7 @@ const SignUpScreen: FC = () => {
 
   async function handleSignUp() {
     try {
-      // Replacing spaces in typescript like in JS by using string.replace().
+      // Replacing spaces in typescript like in JS by using string.replace().t
       email.replace(/\s/g, "");
       password.replace(/\s/g, "");
       if (handleAge()) {
