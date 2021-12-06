@@ -40,43 +40,60 @@ const HomePageScreen: FC = () => {
   const [gaming, filterGaming] = useState(false);
   const [math, filterMath] = useState(false);
   const [sports, filterSports] = useState(false);
-  // TypeScript would prefer these [] to be something a little more
-  const [users, setUsers] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
-  const [nondisplayed, setNondisplayed] = useState([]);
+  const [users, setUsers] = useState<Array<object>>([]);
+  const [allUsers, setAllUsers] = useState<Array<object>>([]);
+  const [nondisplayed, setNondisplayed] = useState<Array<string>>([]);
+  const [fullbucket, setFullbucket] = useState<Array<object>>([]);
 
   const auth = getAuth();
   const loggedInUser = auth.currentUser;
 
-  // once we figure out exactly what all the fields in the user doc will be
-  // we should make an interface for that object to use when defining all these users arrays
-
+  // query Firestore for all users
   const fetchAllUsers = async () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
     const userRef = doc(db, "users", loggedInUser!.uid);
     const userSnap = await getDoc(userRef);
-    const nondisplays = [];
+    const nondisplays = [loggedInUser!.uid];
     userSnap
       .data()!
       .rivals.forEach((userId: string) => nondisplays.push(userId));
     userSnap
       .data()!
       .pending.forEach((userId: string) => nondisplays.push(userId));
+    setNondisplayed(nondisplays);
     const users = [];
     usersSnap.forEach((doc) => {
       // allUsers doesn't include the currently logged in user or users previously challenged
-      if (doc.id !== loggedInUser!.uid && !nondisplays.includes(doc.id)) {
+      if (!nondisplayed.includes(doc.id)) {
         users.push({ id: doc.id, ...doc.data() });
-      }
+      } // initial render showing all users, upon saving it cuts out the nondisplayed
     });
-    setAllUsers(users);
+    setFullbucket(users);
   };
 
   // fetches all users from Firestore
   useEffect(() => {
     fetchAllUsers();
   }, []);
+
+  useEffect(() => {
+    setAllUsers(fullbucket);
+  }, [fullbucket]);
+
+  // updates allUsers state whenever the user challenges someone new
+  useEffect(() => {
+    console.log(nondisplayed);
+    const visibleUsers = [];
+    allUsers.forEach((user) => {
+      if (!nondisplayed.includes(user.id)) {
+        console.log("id: ", user.id);
+        visibleUsers.push(user);
+      }
+    });
+    //console.log(visibleUsers);
+    setAllUsers(visibleUsers);
+  }, [nondisplayed]);
 
   // sets users to allUsers after Firestore fetch
   useEffect(() => {
@@ -110,7 +127,13 @@ const HomePageScreen: FC = () => {
           style={{ flexGrow: 0, marginBottom: 85 }}
           data={users}
           renderItem={({ item }) => (
-            <SingleUser key={item.id} user={item} loggedInUser={loggedInUser} />
+            <SingleUser
+              key={item.id}
+              user={item}
+              loggedInUser={loggedInUser}
+              setNons={setNondisplayed}
+              rivalsAndPending={nondisplayed}
+            />
           )}
         />
       </View>
@@ -181,7 +204,6 @@ const HomePageScreen: FC = () => {
 };
 
 // single user for scrollable list
-
 interface SingleUserProps {
   user: {
     id: string;
@@ -193,6 +215,8 @@ interface SingleUserProps {
     email: string;
   };
   loggedInUser: any;
+  setNons: (arg0: any) => void;
+  rivalsAndPending: Array<object>;
 }
 
 const SingleUser: FC<SingleUserProps> = (props) => {
@@ -211,7 +235,14 @@ const SingleUser: FC<SingleUserProps> = (props) => {
           <RivalName>{user.username}</RivalName>
         </ClickableRival>
         <RumbleBtn
-          onPress={() => requestRival(user.id, props.loggedInUser.uid)}
+          onPress={() =>
+            requestRival(
+              user.id,
+              props.loggedInUser.uid,
+              props.setNons,
+              props.rivalsAndPending
+            )
+          }
         >
           <RumbleTxt>Rumble</RumbleTxt>
         </RumbleBtn>
@@ -241,7 +272,12 @@ const SingleUser: FC<SingleUserProps> = (props) => {
 };
 
 // matching
-const requestRival = async (rivalId: string, currentId: string) => {
+const requestRival = async (
+  rivalId: string,
+  currentId: string,
+  setNons: Function,
+  rivalsAndPending: Array<object>
+) => {
   // query to rivalry collection to see if a doc between these two users already exists
   // if the other user has challenged you, the doc will be ordered with their ID first
   const rivalry = doc(db, "rivalries", `${rivalId}_${currentId}`);
@@ -276,6 +312,8 @@ const requestRival = async (rivalId: string, currentId: string) => {
       pending: arrayUnion(rivalId),
     });
   }
+  // update nondisplays state
+  setNons([...rivalsAndPending, rivalId]); //
 };
 
 export default HomePageScreen;
