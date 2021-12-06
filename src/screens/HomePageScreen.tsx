@@ -41,6 +41,7 @@ const HomePageScreen: FC = () => {
   // TypeScript would prefer these [] to be something a little more
   const [users, setUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [nondisplayed, setNondisplayed] = useState([]);
 
   const auth = getAuth();
   const loggedInUser = auth.currentUser;
@@ -51,10 +52,20 @@ const HomePageScreen: FC = () => {
   const fetchAllUsers = async () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
+    const userRef = doc(db, "users", loggedInUser!.uid);
+    const userSnap = await getDoc(userRef);
+    const nondisplays = [];
+    userSnap
+      .data()!
+      .rivals.forEach((userId: string) => nondisplays.push(userId));
+    userSnap
+      .data()!
+      .pending.forEach((userId: string) => nondisplays.push(userId));
     const users = [];
+    console.log(nondisplays);
     usersSnap.forEach((doc) => {
       // allUsers doesn't include the currently logged in user
-      if (doc.id !== loggedInUser!.uid) {
+      if (doc.id !== loggedInUser!.uid && !nondisplays.includes(doc.id)) {
         users.push({ id: doc.id, ...doc.data() });
       }
       // IMPORTANT: still need to remove current rivals or previously challenged users from list of allUsers
@@ -232,23 +243,14 @@ const SingleUser: FC<SingleUserProps> = (props) => {
 // matching
 const requestRival = async (rivalId: string, currentId: string) => {
   // query to rivalry collection to see if a doc between these two users already exists
-  // double queries because order doesn't matter
-  const rivalry1 = doc(db, "rivalries", `${rivalId}_${currentId}`);
-  const snapshot1 = await getDoc(rivalry1);
-  const rivalry2 = doc(db, "rivalries", `${currentId}_${rivalId}`);
-  const snapshot2 = await getDoc(rivalry2);
+  // if the other user has challenged you, the doc will be ordered with their ID first
+  const rivalry = doc(db, "rivalries", `${rivalId}_${currentId}`);
+  const snapshot = await getDoc(rivalry);
   // if doc exists, update to active
-  if (snapshot1.exists() || snapshot2.exists()) {
-    let rivalryId: string;
-    if (snapshot1.exists()) {
-      rivalryId = `${rivalId}_${currentId}`;
-    } else {
-      rivalryId = `${currentId}_${rivalId}`;
-    }
-    await updateDoc(doc(db, "rivalries", rivalryId!), {
+  if (snapshot.exists()) {
+    await updateDoc(doc(db, "rivalries", `${rivalId}_${currentId}`), {
       active: true,
       level: 1,
-      userOneMatch: true,
       userTwoMatch: true,
     });
     // still need to update each user doc's list of rivals to include the other
@@ -262,6 +264,7 @@ const requestRival = async (rivalId: string, currentId: string) => {
       userTwoID: rivalId,
       userTwoMatch: false,
     });
+    // update user doc to add to list of pending
   }
 };
 
