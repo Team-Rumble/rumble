@@ -24,13 +24,10 @@ import db from "../../config/firebase";
 import {
   collection,
   getDocs,
-  query,
-  where,
   setDoc,
   doc,
   updateDoc,
   getDoc,
-  limit,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
@@ -60,7 +57,7 @@ const HomePageScreen: FC = () => {
       if (doc.id !== loggedInUser!.uid) {
         users.push({ id: doc.id, ...doc.data() });
       }
-      // we might also want to not include people the user has already challenged
+      // IMPORTANT: still need to remove current rivals or previously challenged users from list of allUsers
     });
     setAllUsers(users);
   };
@@ -237,29 +234,26 @@ const SingleUser: FC<SingleUserProps> = (props) => {
 // matching
 const requestRival = async (rivalId: string, currentId: string) => {
   // query to rivalry collection to see if a doc between these two users already exists
-  const rivalriesRef = collection(db, "rivalries");
-  // const rivalry = query(
-  //   rivalriesRef,
-  //   // rivlary ID could be rivalId_currentId OR currentId_rivalId
-  //   where("id", "in", [`${rivalId}_${currentId}`, `${currentId}_${rivalId}`]),
-  //   limit(1)
-  // );
-  const rivalry = doc(db, "rivalries", `${rivalId}_${currentId}`);
-  const snapshot = await getDoc(rivalry);
-  // let rivalryId: string;
-  // snapshot.forEach((doc) => {
-  //   rivalryId = doc.id;
-  // });
-  // console.log(snapshot);
+  // double queries because order doesn't matter
+  const rivalry1 = doc(db, "rivalries", `${rivalId}_${currentId}`);
+  const snapshot1 = await getDoc(rivalry1);
+  const rivalry2 = doc(db, "rivalries", `${currentId}_${rivalId}`);
+  const snapshot2 = await getDoc(rivalry2);
   // if doc exists, update to active
-  if (snapshot.exists()) {
-    const rivalryId = `${rivalId}_${currentId}`;
+  if (snapshot1.exists() || snapshot2.exists()) {
+    let rivalryId: string;
+    if (snapshot1.exists()) {
+      rivalryId = `${rivalId}_${currentId}`;
+    } else {
+      rivalryId = `${currentId}_${rivalId}`;
+    }
     await updateDoc(doc(db, "rivalries", rivalryId!), {
       active: true,
       level: 1,
       userOneMatch: true,
       userTwoMatch: true,
     });
+    // still need to update each user doc's list of rivals to include the other
   } else {
     // if doc doesn't exist, create doc only marked active from currentId
     await setDoc(doc(db, "rivalries", `${currentId}_${rivalId}`), {
