@@ -3,6 +3,7 @@ import { Text, Alert, ScrollView, Modal, Button, View, TouchableOpacity, Image, 
 import styled from "styled-components/native";
 import Checkbox from "./Checkbox";
 import { BioInput, SignUpInput } from "./Stylesheet";
+import { useNavigation } from "@react-navigation/native";
 import {
   MenuView,
   RumbleBtn,
@@ -17,9 +18,20 @@ import {
   RivalBioPFP,
   RivalBioName,
 } from "../components/HomePage.style";
+import {
+  ProfileImageContainer,
+  ProfileImage,
+  MenuText,
+  ProfileMenu,
+  ProfileMenuText,
+  LogOutBtn,
+  LogOutText,
+} from "../components/Stylesheet";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { doc, getDoc } from "firebase/firestore";
 import db, { auth } from "../../config/firebase";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation";
 
 
 
@@ -41,14 +53,16 @@ const dummyUser = {
 
 };
 
-const interest = Object.keys(dummyUser.interests).map(function(key, index) { 
-  if(dummyUser.interests[key]) return key;
-}
-  ).filter(int => int !== undefined)
+type profileStack = NativeStackNavigationProp<
+  RootStackParamList,
+  "UserProfile"
+>;
 
-// console.log('====================================');
-// // console.log('Interests', interest);
-// console.log('====================================');
+// const interest = Object.keys(dummyUser.interests).map(function(key, index) { 
+//   if(dummyUser.interests[key]) return key;
+// }
+//   ).filter(int => int !== undefined)
+
 interface SingleUserProps {
   person: {
     id: string;
@@ -63,41 +77,54 @@ interface SingleUserProps {
 }
 const rivalsT: any = {};
 
-
 export const Rivals: FC<SingleUserProps> = (props) => {
-  const user = props.person;
-  // const rivalUid = user.rivals[0]  ///ERROR =>> MAPPING NEEDED
-  // const [rivals, setRivals] = useState({})
-  // console.log('====================================');
-  // console.log("Rivals", rivals);
-  // console.log('====================================');
+  // const [user, setUser] = useState({})
+  // const rivalArr = user;  ///ERROR =>> MAPPING NEEDEDrivals
+  // const [rivals, setRivals] = useState([])
   console.log('====================================');
-  console.log("user", user);
+  // console.log("RIvals ARR=>> ", rivals);
   console.log('====================================');
+  const arrayOfRivals = [];
+  async function getUser() {
+    const user = auth.currentUser;
+    const rivalsArr = [];
+    const userRef = doc(db, "users", user!.uid);
+    // Getting a user's rival list with rival's ID.
+    const userSnap = await getDoc(userRef)
+    userSnap.data()!.rivals.forEach(rival => {
+      rivalsArr.push(rival)
+    }
+      )
 
-  // async function getRivals(){
-  //   const userRef = doc(db, "users", rivalUid);
-  //   const docSnap = await getDoc(userRef);
-  //   return docSnap;
-  // }
+    // getting an array with all rivals information in it as an object
+    
+    rivalsArr.forEach(async(rival) => {
+      const userRival = doc(db, "users", rival);
+      const rivalSnap = await getDoc(userRival);
+      arrayOfRivals.push(rivalSnap.data())
+      console.log('====================================');
+      console.log("RivalsSNAP =>>", arrayOfRivals);
+      console.log('====================================');
+    })
+    // setRivals(arrayOfRivals);
+  }
 
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
-  //     if (user) {
-  //       rivalsT["rival"] = await getRivals();
-  //       setRivals(rivalsT.rival.data())
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    getUser();
+  }, [])
+  
 
   return(
     <View>
-      {/* {(!rivalUid) ? (<View>
+      {(!arrayOfRivals) ? (<View>
         <Text>No Rivals Yet</Text>
       </View>) : (<View>
-        <Text>{rivals.username}</Text>
-    </View>) } */}
+        {arrayOfRivals.map(rival => (
+          <View>
+            <Text>{rival.username}</Text>
+          </View>
+        ))}
+    </View>) }
     </View>
   )
 }
@@ -105,10 +132,10 @@ export const Rivals: FC<SingleUserProps> = (props) => {
 export const Interests: FC<SingleUserProps> = (props) => {
   // const [filtersVisible, setFiltersVisible] = useState(false);
   const [art, setArt] = useState(false);
-  const [cooking, filterCooking] = useState(false);
-  const [gaming, filterGaming] = useState(false);
-  const [math, filterMath] = useState(false);
-  const [sports, filterSports] = useState(false);
+  const [cooking, setCooking] = useState(false);
+  const [gaming, setGaming] = useState(false);
+  const [math, setMath] = useState(false);
+  const [sports, setSports] = useState(false);
 
   const userInterest = props.person;
 
@@ -135,24 +162,27 @@ export const Interests: FC<SingleUserProps> = (props) => {
         <Checkbox
           name="Cooking"
           checked={cooking}
-          onChange={filterCooking}
+          onChange={setCooking}
         />
         <Checkbox
           name="Gaming"
           checked={gaming}
-          onChange={filterGaming}
+          onChange={setGaming}
         />
         <Checkbox
           name="Math"
           checked={math}
-          onChange={filterMath}
+          onChange={setMath}
         />
         <Checkbox
           name="Sports"
           checked={sports}
-          onChange={filterSports}
+          onChange={setSports}
         />
       </FilterBody>
+      <LogOutBtn onPress={() => alert("Setting Interests") }>
+        <LogOutText>Set Interests</LogOutText>
+      </LogOutBtn>
   </View>
   )
 }
@@ -165,6 +195,19 @@ export const Settings: FC<SingleUserProps> = (props) => {
   // console.log('====================================');
   // console.log("Props on Settings", user);
   // console.log('====================================');
+  
+  const navigation = useNavigation<profileStack>();
+
+    async function handleSignOut() {
+    try {
+      const user = await auth.signOut();
+      if (!user) {
+        navigation.navigate("LogIn");
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  }
 
   return(
     <View>
@@ -203,19 +246,10 @@ export const Settings: FC<SingleUserProps> = (props) => {
       </TouchableOpacity>
       </View>
       <View style={{flexDirection: "row"}}>
-      {/* <EditInput 
-          clearButtonMode="while-editing"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          placeholder=""
-          placeholderTextColor="black"
-          value={profileUrl}
-          onChangeText={(text) => setProfileUrl(text)}
-       ></EditInput>
-       <TouchableOpacity style={{backgroundColor: "#2D142C", width: 40, borderRadius: 5,height: 30, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
-        <Text style={{color: "white"}} >Edit</Text>
-      </TouchableOpacity> */}
-      </View>        
+      </View>
+      <LogOutBtn onPress={handleSignOut}>
+        <LogOutText>Log Out</LogOutText>
+      </LogOutBtn>
       </ScrollView>
     </View>
   )

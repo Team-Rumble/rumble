@@ -23,6 +23,8 @@ type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 //   age?: string;
 // }
 
+
+
 const SignUpScreen: FC = () => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
@@ -78,6 +80,9 @@ const SignUpScreen: FC = () => {
                 age: Number(age), //Sending age as a number type
                 bio: bio,
                 profileUrl: profileUrl,
+                interests: {art: true, cooking: true, gaming: true, math: true, sports: true },
+                rivals: [],
+                pending: [],
               });
             }},
           ]
