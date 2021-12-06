@@ -21,7 +21,14 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Checkbox from "../components/Checkbox";
 import db from "../../config/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const HomePageScreen: FC = () => {
@@ -36,17 +43,21 @@ const HomePageScreen: FC = () => {
   const [allUsers, setAllUsers] = useState([]);
 
   const auth = getAuth();
+  const loggedInUser = auth.currentUser;
+
+  // once we figure out exactly what all the fields in the user doc will be
+  // we should make an interface for that object to use when defining all these users arrays
 
   const fetchAllUsers = async () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
     const users = [];
-    const loggedInUser = auth.currentUser;
     usersSnap.forEach((doc) => {
       // allUsers doesn't include the currently logged in user
-      if (doc.id !== loggedInUser.uid) {
+      if (doc.id !== loggedInUser!.uid) {
         users.push({ id: doc.id, ...doc.data() });
       }
+      // IMPORTANT: still need to remove current rivals or previously challenged users from list of allUsers
     });
     setAllUsers(users);
   };
@@ -89,7 +100,9 @@ const HomePageScreen: FC = () => {
         <FlatList
           style={{ flexGrow: 0, marginBottom: 85 }}
           data={users}
-          renderItem={({ item }) => <SingleUser key={item.id} user={item} />}
+          renderItem={({ item }) => (
+            <SingleUser key={item.id} user={item} loggedInUser={loggedInUser} />
+          )}
         />
       </View>
       <HeaderBox>
@@ -170,6 +183,7 @@ interface SingleUserProps {
     age: number;
     email: string;
   };
+  loggedInUser: any;
 }
 
 const SingleUser: FC<SingleUserProps> = (props) => {
@@ -187,7 +201,9 @@ const SingleUser: FC<SingleUserProps> = (props) => {
           />
           <RivalName>{user.username}</RivalName>
         </ClickableRival>
-        <RumbleBtn onPress={() => Alert.alert(`Rumbled ${user.username}!`)}>
+        <RumbleBtn
+          onPress={() => requestRival(user.id, props.loggedInUser.uid)}
+        >
           <RumbleTxt>Rumble</RumbleTxt>
         </RumbleBtn>
       </SingleRivalBox>
@@ -213,6 +229,42 @@ const SingleUser: FC<SingleUserProps> = (props) => {
       </Modal>
     </View>
   );
+};
+
+// matching
+const requestRival = async (rivalId: string, currentId: string) => {
+  // query to rivalry collection to see if a doc between these two users already exists
+  // double queries because order doesn't matter
+  const rivalry1 = doc(db, "rivalries", `${rivalId}_${currentId}`);
+  const snapshot1 = await getDoc(rivalry1);
+  const rivalry2 = doc(db, "rivalries", `${currentId}_${rivalId}`);
+  const snapshot2 = await getDoc(rivalry2);
+  // if doc exists, update to active
+  if (snapshot1.exists() || snapshot2.exists()) {
+    let rivalryId: string;
+    if (snapshot1.exists()) {
+      rivalryId = `${rivalId}_${currentId}`;
+    } else {
+      rivalryId = `${currentId}_${rivalId}`;
+    }
+    await updateDoc(doc(db, "rivalries", rivalryId!), {
+      active: true,
+      level: 1,
+      userOneMatch: true,
+      userTwoMatch: true,
+    });
+    // still need to update each user doc's list of rivals to include the other
+  } else {
+    // if doc doesn't exist, create doc only marked active from currentId
+    await setDoc(doc(db, "rivalries", `${currentId}_${rivalId}`), {
+      active: false,
+      level: 0,
+      userOneID: currentId,
+      userOneMatch: true,
+      userTwoID: rivalId,
+      userTwoMatch: false,
+    });
+  }
 };
 
 export default HomePageScreen;
