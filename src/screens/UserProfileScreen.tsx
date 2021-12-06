@@ -23,6 +23,7 @@ import {
   LogOutBtn,
   LogOutText,
 } from "../components/Stylesheet";
+import { Interests, Rivals, Settings } from "../components/ProfileTabs";
 
 type profileStack = NativeStackNavigationProp<
   RootStackParamList,
@@ -34,7 +35,9 @@ const userSnap: any = {};
 const UserProfileScreen: FC = () => {
   const [person, setPerson] = useState({});
   const [currentView, setCurrentView] = useState("Rivals");
-
+  // console.log('====================================');
+  // console.log(person);
+  // console.log('====================================');
   async function getUserInfo(user) {
     const userRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(userRef);
@@ -102,45 +105,8 @@ const UserProfileScreen: FC = () => {
         {person.bio}
       </Text>
       {currentView === "Rivals" ? (
-        <View>
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 25,
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-          >
-            Rivals
-          </Text>
-        </View>
-      ) : currentView === "Interests" ? (
-        <View>
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 25,
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-          >
-            Interests
-          </Text>
-        </View>
-      ) : (
-        <View>
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 25,
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-          >
-            Settings
-          </Text>
-        </View>
-      )}
+        <Rivals person={person} />
+      ) : currentView === "Interests" ? (<Interests person={person}/>) : (<Settings person={person}/>)}
       <LogOutBtn onPress={handleSignOut}>
         <LogOutText>Log Out</LogOutText>
       </LogOutBtn>
