@@ -35,9 +35,9 @@ const userSnap: any = {};
 const UserProfileScreen: FC = () => {
   const [person, setPerson] = useState({});
   const [currentView, setCurrentView] = useState("Rivals");
-  console.log('====================================');
-  console.log(person);
-  console.log('====================================');
+  // console.log('====================================');
+  // console.log(person);
+  // console.log('====================================');
   async function getUserInfo(user) {
     const userRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(userRef);

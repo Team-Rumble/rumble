@@ -7,13 +7,13 @@ interface CheckboxProps {
   name: string;
   checked: boolean;
   onChange: (arg0: boolean) => void;
-  reset: () => void;
+  reset?: () => void;
 }
 
 const Checkbox: FC<CheckboxProps> = (props) => {
   const toggle = () => {
     props.onChange(!props.checked);
-    props.reset();
+    if (props.reset) props.reset();
   };
 
   return (
