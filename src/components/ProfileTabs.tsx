@@ -28,7 +28,7 @@ import {
   LogOutText,
 } from "../components/Stylesheet";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import db, { auth } from "../../config/firebase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
@@ -77,59 +77,71 @@ interface SingleUserProps {
 }
 const rivalsT: any = {};
 
-export const Rivals: FC<SingleUserProps> = (props) => {
-  // const [user, setUser] = useState({})
-  // const rivalArr = user;  ///ERROR =>> MAPPING NEEDEDrivals
-  // const [rivals, setRivals] = useState([])
-  console.log('====================================');
-  // console.log("RIvals ARR=>> ", rivals);
-  console.log('====================================');
-  const arrayOfRivals = [];
-  async function getUser() {
-    const user = auth.currentUser;
-    const rivalsArr = [];
-    const userRef = doc(db, "users", user!.uid);
-    // Getting a user's rival list with rival's ID.
-    const userSnap = await getDoc(userRef)
-    userSnap.data()!.rivals.forEach(rival => {
-      rivalsArr.push(rival)
-    }
-      )
+/**
+ * 
+ * @param Rivals - Renders a list of rivals from current User.
+ * @param getUser - Fetches the current user list of rival's Id and then fetches the information of each rival from that list, adding them to @param arrayOfRivals.
+ * 
+ */
 
-    // getting an array with all rivals information in it as an object
-    
-    rivalsArr.forEach(async(rival) => {
-      const userRival = doc(db, "users", rival);
-      const rivalSnap = await getDoc(userRival);
-      arrayOfRivals.push(rivalSnap.data())
-      console.log('====================================');
-      console.log("RivalsSNAP =>>", arrayOfRivals);
-      console.log('====================================');
-    })
-    // setRivals(arrayOfRivals);
+export const Rivals: FC<SingleUserProps> = (props) => {
+  const [rivalsID, setRivalsID] = useState([])
+  // const rivalArr = user;  ///ERROR =>> MAPPING NEEDEDrivals
+  const [rivals, setRivals] = useState<Array<object>>([])
+
+  console.log('====================================');
+  console.log("List of rivals ID=>> ", rivalsID);
+  console.log('====================================');
+  console.log("Rivals List =>>>", rivals);
+
+  async function getUser() {
+    try {
+      const user = auth.currentUser; // getting current user = petra
+      const rivalsArr = [];
+      const userRef = doc(db, "users", user!.uid); // getting userReference
+      // Getting a user's rival list with rival's ID.
+      const userSnap = await getDoc(userRef) // use the userReference to get the document 
+      userSnap.data()!.rivals.forEach(rival => { 
+        rivalsArr.push(rival)
+      });
+      setRivalsID(rivalsArr)
+
+      const arr = []
+      // const collectionRef = collection(db, "users");
+      rivalsArr.forEach(async(rival) => {
+        const userRiv = doc(db, "users", rival)
+        const userRivDoc = await getDoc(userRiv);
+        // console.log("UserRivDoc", userRivDoc.data());
+        arr.push(userRivDoc.data())
+      })
+
+      setRivals(arr)
+
+    } catch(e) {console.log(e);}
   }
 
   useEffect(() => {
-    getUser();
+    getUser()
+    // console.log("Rivals =>>>", rivals );
+    
   }, [])
-  
 
   return(
     <View>
-      {(!arrayOfRivals) ? (<View>
+      {(!rivals) ? (<View>
         <Text>No Rivals Yet</Text>
-      </View>) : (<View>
-        {arrayOfRivals.map(rival => (
+      </View>) : 
+        rivals.map((rival) => (
           <View>
             <Text>{rival.username}</Text>
           </View>
         ))}
-    </View>) }
+        <Text>RIVAL HERE!!</Text>
     </View>
   )
 }
 
-export const Interests: FC<SingleUserProps> = (props) => {
+export const Interests: FC = () => {
   // const [filtersVisible, setFiltersVisible] = useState(false);
   const [art, setArt] = useState(false);
   const [cooking, setCooking] = useState(false);
@@ -137,13 +149,13 @@ export const Interests: FC<SingleUserProps> = (props) => {
   const [math, setMath] = useState(false);
   const [sports, setSports] = useState(false);
 
-  const userInterest = props.person;
+  // const userInterest = props.person;
 
-  useEffect(() => {
-    // fetch for firestore interests
-    // Set the state according to the interests in firestore.
+  // useEffect(() => {
+  //   // fetch for firestore interests
+  //   // Set the state according to the interests in firestore.
 
-  }, [])
+  // }, [])
   
   // Add a button that will "Set Interests" to set them all at once instead of one by one.
    
