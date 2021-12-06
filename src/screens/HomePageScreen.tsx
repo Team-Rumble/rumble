@@ -28,6 +28,8 @@ import {
   doc,
   updateDoc,
   getDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
@@ -62,13 +64,11 @@ const HomePageScreen: FC = () => {
       .data()!
       .pending.forEach((userId: string) => nondisplays.push(userId));
     const users = [];
-    console.log(nondisplays);
     usersSnap.forEach((doc) => {
-      // allUsers doesn't include the currently logged in user
+      // allUsers doesn't include the currently logged in user or users previously challenged
       if (doc.id !== loggedInUser!.uid && !nondisplays.includes(doc.id)) {
         users.push({ id: doc.id, ...doc.data() });
       }
-      // IMPORTANT: still need to remove current rivals or previously challenged users from list of allUsers
     });
     setAllUsers(users);
   };
@@ -253,7 +253,14 @@ const requestRival = async (rivalId: string, currentId: string) => {
       level: 1,
       userTwoMatch: true,
     });
-    // still need to update each user doc's list of rivals to include the other
+    // update each user doc's rival list
+    await updateDoc(doc(db, "users", rivalId), {
+      rivals: arrayUnion(currentId),
+      pending: arrayRemove(currentId),
+    });
+    await updateDoc(doc(db, "users", currentId), {
+      rivals: arrayUnion(rivalId),
+    });
   } else {
     // if doc doesn't exist, create doc only marked active from currentId
     await setDoc(doc(db, "rivalries", `${currentId}_${rivalId}`), {
@@ -265,6 +272,9 @@ const requestRival = async (rivalId: string, currentId: string) => {
       userTwoMatch: false,
     });
     // update user doc to add to list of pending
+    await updateDoc(doc(db, "users", currentId), {
+      pending: arrayUnion(rivalId),
+    });
   }
 };
 
