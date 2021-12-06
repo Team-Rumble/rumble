@@ -78,7 +78,13 @@ const HomePageScreen: FC = () => {
   }, []);
 
   useEffect(() => {
-    setAllUsers(fullbucket);
+    const users = [];
+    fullbucket.forEach((user) => {
+      if (!nondisplayed.includes(user.id)) {
+        users.push(user);
+      }
+    });
+    setAllUsers(users);
   }, [fullbucket]);
 
   // updates allUsers state whenever the user challenges someone new
@@ -87,11 +93,9 @@ const HomePageScreen: FC = () => {
     const visibleUsers = [];
     allUsers.forEach((user) => {
       if (!nondisplayed.includes(user.id)) {
-        console.log("id: ", user.id);
         visibleUsers.push(user);
       }
     });
-    //console.log(visibleUsers);
     setAllUsers(visibleUsers);
   }, [nondisplayed]);
 
