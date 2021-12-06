@@ -21,7 +21,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Checkbox from "../components/Checkbox";
 import db from "../../config/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const HomePageScreen: FC = () => {
@@ -37,6 +37,9 @@ const HomePageScreen: FC = () => {
 
   const auth = getAuth();
 
+  // once we figure out exactly what all the fields in the user doc will be
+  // we should make an interface for that object to use when defining all these users arrays
+
   const fetchAllUsers = async () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
@@ -44,7 +47,7 @@ const HomePageScreen: FC = () => {
     const loggedInUser = auth.currentUser;
     usersSnap.forEach((doc) => {
       // allUsers doesn't include the currently logged in user
-      if (doc.id !== loggedInUser.uid) {
+      if (doc.id !== loggedInUser!.uid) {
         users.push({ id: doc.id, ...doc.data() });
       }
     });
@@ -213,6 +216,29 @@ const SingleUser: FC<SingleUserProps> = (props) => {
       </Modal>
     </View>
   );
+};
+
+// matching
+
+const requestRival = async (rivalId: string, currentId: string) => {
+  // query to rivalry collection to see if a doc between these two users already exists
+  const rivalriesRef = collection(db, "rivalries");
+  let relationship = {};
+  const rivalry = query(
+    rivalriesRef,
+    // rivlary ID could be rivalId_currentId OR currentId_rivalId
+    where("id", "in", [`${rivalId}_${currentId}`, `${currentId}_${rivalId}`])
+  );
+  // if doc exists, update to active
+  if (rivalry) {
+    const snapshot = await getDocs(rivalry);
+    snapshot.forEach((doc) => {
+      relationship = doc.data();
+    });
+    // update goes here
+  } else {
+    // if doc doesn't exist, create doc only marked active from currentId
+  }
 };
 
 export default HomePageScreen;
