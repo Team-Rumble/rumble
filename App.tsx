@@ -15,7 +15,10 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { NavigationScreens } from "./src/navigation/index";
 import { user } from './src/screens/LogInScreen';
 
-
+// This is to disable a warning that will repeat many times while developing. Current research says 
+// it's best to ignore the warning as there is no work-around
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Setting a timer']);
 
 export default function App() {
   
