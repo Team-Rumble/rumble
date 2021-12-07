@@ -1,4 +1,4 @@
-import { addDoc, collection, collectionGroup, onSnapshot, query, QuerySnapshot, where } from "firebase/firestore";
+import { addDoc, collection, collectionGroup, onSnapshot, query, QuerySnapshot, where, doc } from "firebase/firestore";
 import React, { FC, useState, useLayoutEffect, useCallback, useEffect } from "react";
 import { Text, View, Image, ScrollView } from "react-native";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
@@ -22,6 +22,7 @@ import { RivalChatPreview,
   RivalBioPFP,
   RivalBioName,
          } from "../components/HomePage.style";
+
 const RivalsListScreen: FC = () => {
   // Lets store a list of the users rivals in state for printout
   const [rivals, setRivals] = useState<Array<object>>([]);
@@ -30,22 +31,34 @@ const RivalsListScreen: FC = () => {
   useEffect(() => {
     // Define the specific collection
     const collectionReference = collection(db, 'rivalries');
-    // Form a specific query on that collection - if active - then two rivals have matched
+    // Form a specific query on that collection - if active - then two rivals have matchedgit 
     // note: modify this query to only return the current user's active rivals
-    // Const user = auth.currentUser
-    const q = query(collectionReference, where("active", "==", true));
+    // const user = auth.currentUser
+    // const q = query(collectionReference, where() ,where("active", "==", true));
+    const user = auth.currentUser;
+    const q = query(collectionReference, where("userOneID", "==", user!.uid), where("active", "==", true));
 
     // form an snapshot listener in the form of a function to return so that the useEffect
     // is properly closed
-    const unsubscribe = onSnapshot(q, QuerySnapshot => {
-      // set the results to our local state
-      setRivals(
-        QuerySnapshot.docs.map(doc => ({
-          userOneID: doc.data().userOneID,
-          userTwoID: doc.data().userTwoID
-        }))
-      );
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      querySnapshot.forEach(doc => {
+        // Each doc is where userOneID is auth.currentUser and they have a rivalry with someone
+        // Extract the userTwoID
+        const rivalID = doc.data().userTwoID;
+        //const rivalDoc = doc(db, "users", rivalID);
+        
+      })
+     
     });
+    // const unsubscribe = onSnapshot(q, QuerySnapshot => {
+    //   // set the results to our local state
+    //   setRivals(
+    //     QuerySnapshot.docs.map(doc => ({
+    //       userOneID: doc.data().userOneID,
+    //       userTwoID: doc.data().userTwoID
+    //     }))
+    //   );
+    // });
     // return the function to close out this current useEffect.
     return unsubscribe;
   }, []); // pass an empty array to prevent uncontrolled queries to firestore
