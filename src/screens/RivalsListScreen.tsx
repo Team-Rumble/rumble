@@ -38,13 +38,20 @@ const RivalsListScreen: FC = () => {
     /** Print out a touchable list of the rival chats available. Pass the id's as props to create the chat. */
     <ScrollView>
       {rivals.map( rival => {
-        return <Text>{rival.userOneID}</Text>
+        return <SingleRivalPreview key={rival.userOneID} userTwo={rival.userTwoID} />
       })}
       
     </ScrollView>
   );
 };
 
+// Display a preview of each rival chat. When clicked - will load SingleRival Chat
+interface SingleRivalPreview {key: string, userTwo: string}
+const SingleRivalPreview: FC<SingleRivalPreview> = (props) => {
+  // could query and display last message here
+
+  // 
+}
 // props, share a styled component for pfp with homepage?
 // nav to ChatScreen
 const SingleRival: FC = () => {
