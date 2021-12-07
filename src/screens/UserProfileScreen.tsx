@@ -30,22 +30,22 @@ type profileStack = NativeStackNavigationProp<
   "UserProfile"
 >;
 
-// interface SingleUserProps {
-//   person: {
-//     id: string;
-//     username: string;
-//     profileUrl: string;
-//     bio: string;
-//     interests: object;
-//     age: number;
-//     email: string;
-//     rivals: string[];
-//   };
-// }
+interface SingleUserProps {
+  person: {
+    id: string;
+    username: string;
+    profileUrl: string;
+    bio: string;
+    interests: object;
+    age: number;
+    email: string;
+    rivals: string[];
+  };
+}
 
 const userSnap: any = {};
 
-const UserProfileScreen: FC = () => {
+const UserProfileScreen: FC<SingleUserProps> = () => {
   const [person, setPerson] = useState({});
   const [currentView, setCurrentView] = useState("Rivals");
   // console.log('====================================');
