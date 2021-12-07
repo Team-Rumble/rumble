@@ -3,6 +3,7 @@ import { Text, Alert, ScrollView, Modal, Button, View, TouchableOpacity, Image, 
 import styled from "styled-components/native";
 import Checkbox from "./Checkbox";
 import { BioInput, SignUpInput } from "./Stylesheet";
+import { useNavigation } from "@react-navigation/native";
 import {
   MenuView,
   RumbleBtn,
@@ -17,38 +18,26 @@ import {
   RivalBioPFP,
   RivalBioName,
 } from "../components/HomePage.style";
+import {
+  ProfileImageContainer,
+  ProfileImage,
+  MenuText,
+  ProfileMenu,
+  ProfileMenuText,
+  LogOutBtn,
+  LogOutText,
+} from "../components/Stylesheet";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import db, { auth } from "../../config/firebase";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation";
 
+type profileStack = NativeStackNavigationProp<
+  RootStackParamList,
+  "UserProfile"
+>;
 
-
-const dummyUser = {
-  username: "classroom24",
-  age: 27,
-  email: 'test@gmail.com',
-  profileUrl:
-    "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg",
-  bio: "I hate zoom, I hate providing information and I especially hate answering questions. I love being vague and mysterious.",
-  interests: {
-    art: false,
-    cooking: true,
-    gaming: true,
-    math: true,
-    sports: true
-  },
-  rivals: []
-
-};
-
-const interest = Object.keys(dummyUser.interests).map(function(key, index) { 
-  if(dummyUser.interests[key]) return key;
-}
-  ).filter(int => int !== undefined)
-
-// console.log('====================================');
-// // console.log('Interests', interest);
-// console.log('====================================');
 interface SingleUserProps {
   person: {
     id: string;
@@ -61,62 +50,84 @@ interface SingleUserProps {
     rivals: string[];
   };
 }
-const rivalsT: any = {};
+/**
+ * 
+ * @param Rivals - Renders a list of rivals from current User.
+ * @param rivalsList - Fetches the current user list of rival's Id;
+ * @param getRivals - Fetches the rival's information by its rival's uid.
+ * 
+ */
 
 
+// ----------------- RIVALS ------------------------------//
 export const Rivals: FC<SingleUserProps> = (props) => {
-  const user = props.person;
-  // const rivalUid = user.rivals[0]  ///ERROR =>> MAPPING NEEDED
-  // const [rivals, setRivals] = useState({})
+  const [rivalsID, setRivalsID] = useState([])
+  const [rivals, setRivals] = useState<Array<object>>([]);
+  const user = auth.currentUser;
   // console.log('====================================');
-  // console.log("Rivals", rivals);
+  // console.log("List of rivals ID=>> ", rivalsID);
   // console.log('====================================');
-  console.log('====================================');
-  console.log("user", user);
-  console.log('====================================');
+  // console.log("Rivals List =>>>", rivals);
 
-  // async function getRivals(){
-  //   const userRef = doc(db, "users", rivalUid);
-  //   const docSnap = await getDoc(userRef);
-  //   return docSnap;
-  // }
+  // GET RIVAL LIST OF IDs ----- //
+  async function rivalsList(){
+    const userRef = doc(db, "users", user!.uid);
+    const userSnap = await getDoc(userRef);
+    setRivalsID(userSnap.data()!.rivals)
+  }
+  
+  // GET RIVALS INFORMATION ->>> //
+  async function getRivals() {
+      const arr = []
+      rivalsID.forEach(async(rival) => {
+        const userRiv = doc(db, "users", rival)
+        const userRivDoc = await getDoc(userRiv);
+        arr.push(userRivDoc.data())
+      })
+      setRivals(arr)
+  }
 
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
-  //     if (user) {
-  //       rivalsT["rival"] = await getRivals();
-  //       setRivals(rivalsT.rival.data())
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {  // UseEffect to get rivals list of IDs
+    if(!rivalsID.length) rivalsList()
+  }, [rivalsID])
+
+  useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
+    if(rivalsID && !rivals.length) getRivals()
+  }, [])
 
   return(
-    <View>
-      {/* {(!rivalUid) ? (<View>
+    <View >
+      {(!rivals) ? (<View>
         <Text>No Rivals Yet</Text>
-      </View>) : (<View>
-        <Text>{rivals.username}</Text>
-    </View>) } */}
+      </View>) : 
+        rivals.map((rival) => (
+          <SingleRivalBox key={rival.id} >
+            <RivalPFP source={{uri: rival.profileUrl}}/>
+            <RivalName>{rival.username}</RivalName>
+          </SingleRivalBox>
+        ))}
     </View>
   )
 }
+// ----------------- END OF RIVALS -----------------------//
 
-export const Interests: FC<SingleUserProps> = (props) => {
+// ----------------- INTERESTS ------------------------------//
+
+export const Interests: FC = () => {
   // const [filtersVisible, setFiltersVisible] = useState(false);
   const [art, setArt] = useState(false);
-  const [cooking, filterCooking] = useState(false);
-  const [gaming, filterGaming] = useState(false);
-  const [math, filterMath] = useState(false);
-  const [sports, filterSports] = useState(false);
+  const [cooking, setCooking] = useState(false);
+  const [gaming, setGaming] = useState(false);
+  const [math, setMath] = useState(false);
+  const [sports, setSports] = useState(false);
 
-  const userInterest = props.person;
+  // const userInterest = props.person;
 
-  useEffect(() => {
-    // fetch for firestore interests
-    // Set the state according to the interests in firestore.
+  // useEffect(() => {
+  //   // fetch for firestore interests
+  //   // Set the state according to the interests in firestore.
 
-  }, [])
+  // }, [])
   
   // Add a button that will "Set Interests" to set them all at once instead of one by one.
    
@@ -135,91 +146,108 @@ export const Interests: FC<SingleUserProps> = (props) => {
         <Checkbox
           name="Cooking"
           checked={cooking}
-          onChange={filterCooking}
+          onChange={setCooking}
         />
         <Checkbox
           name="Gaming"
           checked={gaming}
-          onChange={filterGaming}
+          onChange={setGaming}
         />
         <Checkbox
           name="Math"
           checked={math}
-          onChange={filterMath}
+          onChange={setMath}
         />
         <Checkbox
           name="Sports"
           checked={sports}
-          onChange={filterSports}
+          onChange={setSports}
         />
       </FilterBody>
+      <LogOutBtn onPress={() => alert("Setting Interests") }>
+        <LogOutText>Set Interests</LogOutText>
+      </LogOutBtn>
   </View>
   )
 }
+// ----------------- END OF INTERESTS ------------------------------//
 
+// ----------------- SETTINGS ------------------------------//
 export const Settings: FC<SingleUserProps> = (props) => {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
-  const [profileUrl, setProfileUrl] = useState("")
   const user = props.person;
   // console.log('====================================');
   // console.log("Props on Settings", user);
   // console.log('====================================');
+  
+  const navigation = useNavigation<profileStack>();
+
+  function settingInfo() {
+    setBio(user.bio);
+    setUsername(user.username)
+  }
+
+  async function handleSignOut() {
+    try {
+      const user = await auth.signOut();
+      if (!user) {
+        navigation.navigate("LogIn");
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    settingInfo();
+  }, [])
 
   return(
-    <View>
+    <View style={{justifyContent:"center", alignItems: "center"}} >
       <ScrollView>
-      <Text style={{fontWeight: "bold", fontSize: 25, textAlign: "center", marginTop: 10, marginLeft: 10}} >Settings</Text>
-      <View style={{flexDirection: "row", marginTop: 30}} >
-      <EditInput
-      clearButtonMode="while-editing"
-      autoCapitalize="none"
-      keyboardType="email-address"
-      placeholder={user.username}
-      placeholderTextColor="black"
-      value={username}
-      onChangeText={(text) => setUsername(text)}
-      >
-      </EditInput>
-      <TouchableOpacity style={{backgroundColor: "#2D142C", width: 40, borderRadius: 5,height: 30, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
-        <Text style={{color: "white"}} >Edit</Text>
-      </TouchableOpacity>
-      </View>
-      <View style={{flexDirection: "row"}}>
-      <EditInput
-      keyboardType="twitter"
-      multiline={true}
-      maxLength={280}
-      style={{ marginLeft: 10 ,textAlignVertical: "top", height: 100}}
-      clearButtonMode="while-editing"
-      autoCapitalize="none"
-      placeholder="Edit the bio"
-      placeholderTextColor="black"
-      value={bio}
-      onChangeText={(text) => setBio(text)}
-      ></EditInput>
-      <TouchableOpacity style={{backgroundColor: "#2D142C", width: 40, borderRadius: 5,height: 30, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
-        <Text style={{color: "white"}} >Edit</Text>
-      </TouchableOpacity>
-      </View>
-      <View style={{flexDirection: "row"}}>
-      {/* <EditInput 
+        <Text style={{fontWeight: "bold", fontSize: 25, textAlign: "center", marginTop: 10, marginLeft: 10}} >Settings</Text>
+        <View style={{marginTop: 30, alignItems: "center"}} >
+          <Text style={{textAlign: "center", fontWeight: "bold"}} >Edit Username:</Text>
+          <EditInput
           clearButtonMode="while-editing"
           autoCapitalize="none"
           keyboardType="email-address"
-          placeholder=""
+          placeholder={username}
           placeholderTextColor="black"
-          value={profileUrl}
-          onChangeText={(text) => setProfileUrl(text)}
-       ></EditInput>
-       <TouchableOpacity style={{backgroundColor: "#2D142C", width: 40, borderRadius: 5,height: 30, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
-        <Text style={{color: "white"}} >Edit</Text>
-      </TouchableOpacity> */}
-      </View>        
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          >
+          </EditInput>
+        </View>
+        <View style={{alignItems: "center"}}>
+          <Text style={{textAlign: "center", fontWeight: "bold"}} >Edit Bio:</Text>
+          <EditInput
+          keyboardType="twitter"
+          multiline={true}
+          maxLength={280}
+          style={{ marginLeft: 10 ,textAlignVertical: "top", height: 100}}
+          clearButtonMode="while-editing"
+          autoCapitalize="none"
+          placeholder="Edit the bio"
+          placeholderTextColor="black"
+          value={bio}
+          onChangeText={(text) => setBio(text)}
+          ></EditInput>
+        </View>
+        <View style={{flexDirection: "row", justifyContent: "center"}}>
+          <TouchableOpacity style={{backgroundColor: "#2D142C", width: 50, borderRadius: 5, height: 35, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
+            <Text style={{color: "white", fontSize: 20}} >Edit</Text>
+          </TouchableOpacity>
+        </View>
+        <LogOutBtn onPress={handleSignOut}>
+          <LogOutText>Log Out</LogOutText>
+        </LogOutBtn>
       </ScrollView>
     </View>
   )
 }
+// ----------------- END OF SETTINGS ------------------------------//
 
 
 // ---- PROFILE TABS COMPONENTS ------
@@ -237,4 +265,30 @@ const FilterBody = styled.View`
   margin: 20px;
 `;
 
-// ---------END OF PROFILE TABs---------
+// ---------END OF PROFILE TABs---------//
+
+// async function getUser() {
+  //   try {
+  //     const user = auth.currentUser; // getting current user = petra
+  //     const rivalsArr = [];
+  //     const userRef = doc(db, "users", user!.uid); // getting userReference
+  //     // Getting a user's rival list with rival's ID.
+  //     const userSnap = await getDoc(userRef) // use the userReference to get the document 
+  //     userSnap.data()!.rivals.forEach(rival => { 
+  //       rivalsArr.push(rival)
+  //     });
+  //     setRivalsID(rivalsArr)
+
+  //     const arr = []
+  //     // const collectionRef = collection(db, "users");
+  //     rivalsArr.forEach(async(rival) => {
+  //       const userRiv = doc(db, "users", rival)
+  //       const userRivDoc = await getDoc(userRiv);
+  //       // console.log("UserRivDoc", userRivDoc.data());
+  //       arr.push(userRivDoc.data())
+  //     })
+
+  //     setRivals(arr)
+
+  //   } catch(e) {console.log(e);}
+  // }

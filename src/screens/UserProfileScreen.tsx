@@ -30,13 +30,26 @@ type profileStack = NativeStackNavigationProp<
   "UserProfile"
 >;
 
+interface SingleUserProps {
+  person: {
+    id: string;
+    username: string;
+    profileUrl: string;
+    bio: string;
+    interests: object;
+    age: number;
+    email: string;
+    rivals: string[];
+  };
+}
+
 const userSnap: any = {};
 
-const UserProfileScreen: FC = () => {
+const UserProfileScreen: FC<SingleUserProps> = () => {
   const [person, setPerson] = useState({});
   const [currentView, setCurrentView] = useState("Rivals");
   // console.log('====================================');
-  // console.log(person);
+  // console.log("User Profile", person);
   // console.log('====================================');
   async function getUserInfo(user) {
     const userRef = doc(db, "users", user.uid);
@@ -49,9 +62,6 @@ const UserProfileScreen: FC = () => {
       if (user) {
         userSnap["user"] = await getUserInfo(user);
         setPerson(userSnap.user.data());
-        // console.log('====================================');
-        // console.log(userSnap.user.data());
-        // console.log('====================================');
       }
     });
     return unsubscribe;
@@ -59,16 +69,6 @@ const UserProfileScreen: FC = () => {
 
   const navigation = useNavigation<profileStack>();
 
-  async function handleSignOut() {
-    try {
-      const user = await auth.signOut();
-      if (!user) {
-        navigation.navigate("LogIn");
-      }
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
-  }
   return (
     <View>
       <ProfileImageContainer>
@@ -105,11 +105,8 @@ const UserProfileScreen: FC = () => {
         {person.bio}
       </Text>
       {currentView === "Rivals" ? (
-        <Rivals person={person} />
+        <Rivals />
       ) : currentView === "Interests" ? (<Interests person={person}/>) : (<Settings person={person}/>)}
-      <LogOutBtn onPress={handleSignOut}>
-        <LogOutText>Log Out</LogOutText>
-      </LogOutBtn>
     </View>
   );
 };
