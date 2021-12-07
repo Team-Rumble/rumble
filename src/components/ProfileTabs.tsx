@@ -33,35 +33,10 @@ import db, { auth } from "../../config/firebase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
 
-
-
-const dummyUser = {
-  username: "classroom24",
-  age: 27,
-  email: 'test@gmail.com',
-  profileUrl:
-    "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg",
-  bio: "I hate zoom, I hate providing information and I especially hate answering questions. I love being vague and mysterious.",
-  interests: {
-    art: false,
-    cooking: true,
-    gaming: true,
-    math: true,
-    sports: true
-  },
-  rivals: []
-
-};
-
 type profileStack = NativeStackNavigationProp<
   RootStackParamList,
   "UserProfile"
 >;
-
-// const interest = Object.keys(dummyUser.interests).map(function(key, index) { 
-//   if(dummyUser.interests[key]) return key;
-// }
-//   ).filter(int => int !== undefined)
 
 interface SingleUserProps {
   person: {
@@ -75,12 +50,11 @@ interface SingleUserProps {
     rivals: string[];
   };
 }
-const rivalsT: any = {};
-
 /**
  * 
  * @param Rivals - Renders a list of rivals from current User.
- * @param getUser - Fetches the current user list of rival's Id and then fetches the information of each rival from that list, adding them to @param arrayOfRivals.
+ * @param rivalsList - Fetches the current user list of rival's Id;
+ * @param getRivals - Fetches the rival's information by its rival's uid.
  * 
  */
 
@@ -232,43 +206,43 @@ export const Settings: FC<SingleUserProps> = (props) => {
   return(
     <View style={{justifyContent:"center", alignItems: "center"}} >
       <ScrollView>
-      <Text style={{fontWeight: "bold", fontSize: 25, textAlign: "center", marginTop: 10, marginLeft: 10}} >Settings</Text>
-      <View style={{marginTop: 30, alignItems: "center"}} >
-      <Text style={{textAlign: "center", fontWeight: "bold"}} >Edit Username:</Text>
-      <EditInput
-      clearButtonMode="while-editing"
-      autoCapitalize="none"
-      keyboardType="email-address"
-      placeholder={username}
-      placeholderTextColor="black"
-      value={username}
-      onChangeText={(text) => setUsername(text)}
-      >
-      </EditInput>
-      </View>
-      <View style={{alignItems: "center"}}>
-      <Text style={{textAlign: "center", fontWeight: "bold"}} >Edit Bio:</Text>
-      <EditInput
-      keyboardType="twitter"
-      multiline={true}
-      maxLength={280}
-      style={{ marginLeft: 10 ,textAlignVertical: "top", height: 100}}
-      clearButtonMode="while-editing"
-      autoCapitalize="none"
-      placeholder="Edit the bio"
-      placeholderTextColor="black"
-      value={bio}
-      onChangeText={(text) => setBio(text)}
-      ></EditInput>
-      </View>
-      <View style={{flexDirection: "row", justifyContent: "center"}}>
-      <TouchableOpacity style={{backgroundColor: "#2D142C", width: 50, borderRadius: 5, height: 35, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
-        <Text style={{color: "white", fontSize: 20}} >Edit</Text>
-      </TouchableOpacity>
-      </View>
-      <LogOutBtn onPress={handleSignOut}>
-        <LogOutText>Log Out</LogOutText>
-      </LogOutBtn>
+        <Text style={{fontWeight: "bold", fontSize: 25, textAlign: "center", marginTop: 10, marginLeft: 10}} >Settings</Text>
+        <View style={{marginTop: 30, alignItems: "center"}} >
+          <Text style={{textAlign: "center", fontWeight: "bold"}} >Edit Username:</Text>
+          <EditInput
+          clearButtonMode="while-editing"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          placeholder={username}
+          placeholderTextColor="black"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          >
+          </EditInput>
+        </View>
+        <View style={{alignItems: "center"}}>
+          <Text style={{textAlign: "center", fontWeight: "bold"}} >Edit Bio:</Text>
+          <EditInput
+          keyboardType="twitter"
+          multiline={true}
+          maxLength={280}
+          style={{ marginLeft: 10 ,textAlignVertical: "top", height: 100}}
+          clearButtonMode="while-editing"
+          autoCapitalize="none"
+          placeholder="Edit the bio"
+          placeholderTextColor="black"
+          value={bio}
+          onChangeText={(text) => setBio(text)}
+          ></EditInput>
+        </View>
+        <View style={{flexDirection: "row", justifyContent: "center"}}>
+          <TouchableOpacity style={{backgroundColor: "#2D142C", width: 50, borderRadius: 5, height: 35, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
+            <Text style={{color: "white", fontSize: 20}} >Edit</Text>
+          </TouchableOpacity>
+        </View>
+        <LogOutBtn onPress={handleSignOut}>
+          <LogOutText>Log Out</LogOutText>
+        </LogOutBtn>
       </ScrollView>
     </View>
   )
