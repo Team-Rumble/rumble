@@ -2,9 +2,26 @@ import { addDoc, collection, collectionGroup, onSnapshot, query, QuerySnapshot, 
 import React, { FC, useState, useLayoutEffect, useCallback, useEffect } from "react";
 import { Text, View, Image, ScrollView } from "react-native";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
-import db from '../../config/firebase';
+import db, {auth} from '../../config/firebase';
 
-
+import { RivalChatPreview,
+  MenuView,
+  RumbleBtn,
+  RumbleTxt,
+  SingleRivalBox,
+  RivalPFP,
+  RivalName,
+  ClickableRival,
+  Header,
+  HeaderBox,
+  FilterArrow,
+  FilterHeader,
+  FilterBody,
+  FilterX,
+  RivalBio,
+  RivalBioPFP,
+  RivalBioName,
+         } from "../components/HomePage.style";
 const RivalsListScreen: FC = () => {
   // Lets store a list of the users rivals in state for printout
   const [rivals, setRivals] = useState<Array<object>>([]);
@@ -15,6 +32,7 @@ const RivalsListScreen: FC = () => {
     const collectionReference = collection(db, 'rivalries');
     // Form a specific query on that collection - if active - then two rivals have matched
     // note: modify this query to only return the current user's active rivals
+    // Const user = auth.currentUser
     const q = query(collectionReference, where("active", "==", true));
 
     // form an snapshot listener in the form of a function to return so that the useEffect
@@ -28,10 +46,8 @@ const RivalsListScreen: FC = () => {
         }))
       );
     });
-
     // return the function to close out this current useEffect.
     return unsubscribe;
-
   }, []); // pass an empty array to prevent uncontrolled queries to firestore
 
   return (
@@ -45,55 +61,22 @@ const RivalsListScreen: FC = () => {
   );
 };
 
-// Display a preview of each rival chat. When clicked - will load SingleRival Chat
-interface SingleRivalPreview {key: string, userTwo: string}
-const SingleRivalPreview: FC<SingleRivalPreview> = (props) => {
+/**
+ * Display a preview of each rival chat. When clicked - will load SingleRival Chat
+ * @param props contains userOneID and userTwoID
+ * @returns a chat preview that when tapped will load a chat between user and specific rival
+ */
+const SingleRivalPreview: FC<RivalChatPreview> = (props) => {
   // could query and display last message here
 
   // 
-}
-// props, share a styled component for pfp with homepage?
-// nav to ChatScreen
-const SingleRival: FC = () => {
-  //const [messages, setMessages] = useState<Array<object>>([]);
-  const [messages, setMessages] = useState<IMessage[]>([]);
-  // can we return two rivals?
-  useLayoutEffect(() => {
-    const collectionRef = collection(db, 'rivalries');
-    const q = query(collectionGroup(db, 'chatlog'));
-
-    const unsubscribe = onSnapshot(q, QuerySnapshot => {
-      setMessages(
-        QuerySnapshot.docs.map(doc => ({
-          _id: doc.data()._id,
-          text: doc.data().text,
-          createdAt: doc.data().createdAt.toDate(),
-          user: doc.data().user
-        }))
-      );
-    });
-    return unsubscribe;
-  }, []);
-
-  const onSend = useCallback((messages: IMessage[] = []) => {
-    setMessages((previousMessages: any) =>
-        GiftedChat.append(previousMessages, messages)
-        );
-        const { _id, createdAt, text, user } = messages[0];
-        addDoc(collection(db, 'chatlog'), {
-            _id,
-            createdAt,
-            text,
-            user
-        });
-}, []);
-
-  console.log(messages);
   return (
-    <GiftedChat
-      messages={messages}
-    />
-  );
-};
+    <View>
+      <Text>{props.userTwo}</Text>
+      <Text>{}</Text>
+    </View>
+    
+  )
+}
 
 export default RivalsListScreen;

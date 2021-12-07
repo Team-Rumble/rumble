@@ -1,5 +1,27 @@
 import styled from "styled-components/native";
 
+export interface SingleUserProps {
+  user: {
+    id: string;
+    username: string;
+    profileUrl: string;
+    bio: string;
+    interests: object;
+    age: number;
+    email: string;
+  };
+  loggedInUser: any;
+}
+
+// To be used in RivalsListScreen to display chat previews
+export interface SingleRivalPreview {
+  user: {
+    key: string; 
+    userTwo: string;
+  }
+}
+export type RivalChatPreview = SingleUserProps & SingleRivalPreview;
+
 // color scheme variables (lightest to darkest)
 export const COLORS = {
   lightRed: "#EE4540",
