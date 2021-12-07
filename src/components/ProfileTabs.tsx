@@ -44,7 +44,13 @@ interface SingleUserProps {
     username: string;
     profileUrl: string;
     bio: string;
-    interests: object;
+    interests: {
+      art: boolean,
+      cooking: boolean,
+      gaming: boolean,
+      math: boolean,
+      sports: boolean
+    };
     age: number;
     email: string;
     rivals: string[];
@@ -113,7 +119,7 @@ export const Rivals: FC<SingleUserProps> = (props) => {
 
 // ----------------- INTERESTS ------------------------------//
 
-export const Interests: FC = () => {
+export const Interests: FC<SingleUserProps> = (props) => {
   // const [filtersVisible, setFiltersVisible] = useState(false);
   const [art, setArt] = useState(false);
   const [cooking, setCooking] = useState(false);
@@ -121,13 +127,23 @@ export const Interests: FC = () => {
   const [math, setMath] = useState(false);
   const [sports, setSports] = useState(false);
 
-  // const userInterest = props.person;
+  const userInterest = props.person;
+  console.log("This is user interest: ", art, cooking, gaming, math, sports)
 
-  // useEffect(() => {
-  //   // fetch for firestore interests
-  //   // Set the state according to the interests in firestore.
+  //Steps:
+  //Get user interests from firestore and set it to user
+  //render user interests
+  //when user changes interests, update firestore to match (use a function and a button that says done or set interets etc)
 
-  // }, [])
+  useEffect(() => {
+    // Set the state according to the interests in firestore.
+    setArt(userInterest.interests.art);
+    setCooking(userInterest.interests.cooking);
+    setGaming(userInterest.interests.gaming);
+    setMath(userInterest.interests.math);
+    setSports(userInterest.interests.sports);
+
+  }, [])
   
   // Add a button that will "Set Interests" to set them all at once instead of one by one.
    
