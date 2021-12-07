@@ -89,7 +89,6 @@ const HomePageScreen: FC = () => {
 
   // updates allUsers state whenever the user challenges someone new
   useEffect(() => {
-    console.log(nondisplayed);
     const visibleUsers = [];
     allUsers.forEach((user) => {
       if (!nondisplayed.includes(user.id)) {
