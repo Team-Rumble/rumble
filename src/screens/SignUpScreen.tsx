@@ -6,13 +6,15 @@ import {
   ScrollView,
   Platform,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import db, { auth } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
-import {SignUpContainer, SignUpInput, Signup, SignupText, RumbleSignUpButton, RumbleSignUpTxt, BioInput, images} from "../components/Stylesheet"
+import {SignUpContainer, SignUpInput, SignupText, RumbleSignUpButton, RumbleSignUpTxt, BioInput, images, COLORS} from "../components/Stylesheet"
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
@@ -102,9 +104,8 @@ const SignUpScreen: FC = () => {
 
   return (
     <SignUpContainer {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
+      <ScrollView>
       <View>
-        {/* <Signup> */}
-          <ScrollView>
             <SignupText>Get Ready!</SignupText>
             <SignUpInput
               clearButtonMode="while-editing"
@@ -141,8 +142,16 @@ const SignUpScreen: FC = () => {
               />
   
               {/* Displaying (3) default profile images */}
+              <View style={{paddingVertical: 20,
+                  justifyContent: "space-between",
+                  alignItems: "center",}} >
+                <View style={{width: 160, height: 160, borderRadius: 20, backgroundColor: COLORS.purple, justifyContent: "center", alignItems: "center"}} >
+                <Image style={{ width: 150, height: 150, borderRadius: 20 }} source={{uri: profileUrl}} />
+                </View>
+              </View>
               <View
                 style={{
+                  marginTop: -30,
                   paddingVertical: 20,
                   flex: 3,
                   flexDirection: "row",
@@ -154,7 +163,7 @@ const SignUpScreen: FC = () => {
                   onPress={() => setProfileUrl(images.angryGirl)}
                 >
                   <Image
-                    style={{ width: 80, height: 80, borderRadius: 20 }}
+                    style={{ width: 70, height: 70, borderRadius: 20 }}
                     source={{ uri: images.angryGirl }}
                   />
                 </TouchableOpacity>
@@ -162,7 +171,7 @@ const SignUpScreen: FC = () => {
                   onPress={() => setProfileUrl(images.angryBaby)}
                 >
                   <Image
-                    style={{ width: 80, height: 80, borderRadius: 20 }}
+                    style={{ width: 70, height: 70, borderRadius: 20 }}
                     source={{ uri: images.angryBaby }}
                   />
                 </TouchableOpacity>
@@ -193,9 +202,8 @@ const SignUpScreen: FC = () => {
             >
               <RumbleSignUpTxt>Let's Rumble</RumbleSignUpTxt>
             </RumbleSignUpButton>
-          </ScrollView>
-        {/* </Signup> */}
       </View>
+      </ScrollView>
     </SignUpContainer>
   );
 };
@@ -203,3 +211,11 @@ const SignUpScreen: FC = () => {
 export default SignUpScreen;
 
 
+// A NEW PRESSABLE COMPONENT FROM REACT NATIVE
+/**
+<Pressable style={({ pressed }) => [{ backgroundColor: pressed ? COLORS.purple : '#eee', width:85, height: 85, borderRadius: 5, justifyContent: "center", alignItems: "center" }]}> 
+{({ pressed }) => (<Image
+    style={{ opacity: pressed ? 0.3 : 1, width: 70, height: 70, borderRadius: 20 }}
+    source={{ uri: images.angryBird }}
+  />)}</Pressable> 
+ */

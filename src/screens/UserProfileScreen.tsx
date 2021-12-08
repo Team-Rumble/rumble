@@ -3,13 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { FC, useState, useEffect } from "react";
 import {
   Text,
-  Alert,
-  ScrollView,
-  Modal,
-  Button,
   View,
-  TouchableOpacity,
-  Image,
 } from "react-native";
 import db, { auth } from "../../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -20,8 +14,7 @@ import {
   MenuText,
   ProfileMenu,
   ProfileMenuText,
-  LogOutBtn,
-  LogOutText,
+  COLORS,
 } from "../components/Stylesheet";
 import { Interests, Rivals, Settings } from "../components/ProfileTabs";
 
@@ -54,6 +47,7 @@ const userSnap: any = {};
 const UserProfileScreen: FC<SingleUserProps> = () => {
   const [person, setPerson] = useState({});
   const [currentView, setCurrentView] = useState("Rivals");
+  const [rivalsLength, setRivalsLength] = useState(0)
   // console.log('====================================');
   // console.log("User Profile", person);
   // console.log('====================================');
@@ -68,6 +62,7 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
       if (user) {
         userSnap["user"] = await getUserInfo(user);
         setPerson(userSnap.user.data());
+        setRivalsLength(userSnap.user.data().rivals.length)
       }
     });
     return unsubscribe;
@@ -86,6 +81,9 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
       <ProfileMenu>
         <ProfileMenuText onPress={() => setCurrentView("Rivals")}>
           <MenuText>RIVALS</MenuText>
+          <View style={{width: 30, position: "absolute", right: 5, marginTop:-10, borderColor: COLORS.purple, borderStyle: "solid", borderWidth: 1 , backgroundColor: "white", borderRadius: 10}} >
+            <Text style={{color: COLORS.purple, textAlign: "center" }}>{rivalsLength}</Text>
+          </View>
         </ProfileMenuText>
         <ProfileMenuText onPress={() => setCurrentView("Interests")}>
           <MenuText>INTERESTS</MenuText>
@@ -111,10 +109,11 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
         {person.bio}
       </Text>
       {currentView === "Rivals" ? (
-        <Rivals />
+        <Rivals person={person}/>
       ) : currentView === "Interests" ? (<Interests person={person}/>) : (<Settings person={person}/>)}
     </View>
   );
 };
 
 export default UserProfileScreen;
+

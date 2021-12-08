@@ -89,7 +89,6 @@ const HomePageScreen: FC = () => {
 
   // updates allUsers state whenever the user challenges someone new
   useEffect(() => {
-    console.log(nondisplayed);
     const visibleUsers = [];
     allUsers.forEach((user) => {
       if (!nondisplayed.includes(user.id)) {
@@ -242,6 +241,7 @@ const SingleUser: FC<SingleUserProps> = (props) => {
           onPress={() =>
             requestRival(
               user.id,
+              user.username,
               props.loggedInUser.uid,
               props.setNons,
               props.rivalsAndPending
@@ -278,6 +278,7 @@ const SingleUser: FC<SingleUserProps> = (props) => {
 // matching
 const requestRival = async (
   rivalId: string,
+  rivalName: string,
   currentId: string,
   setNons: Function,
   rivalsAndPending: Array<object>
@@ -301,6 +302,7 @@ const requestRival = async (
     await updateDoc(doc(db, "users", currentId), {
       rivals: arrayUnion(rivalId),
     });
+    Alert.alert("It's a match. Let's rumble!");
   } else {
     // if doc doesn't exist, create doc only marked active from currentId
     await setDoc(doc(db, "rivalries", `${currentId}_${rivalId}`), {
@@ -315,6 +317,7 @@ const requestRival = async (
     await updateDoc(doc(db, "users", currentId), {
       pending: arrayUnion(rivalId),
     });
+    Alert.alert(`You've challenged ${rivalName}`);
   }
   // update nondisplays state
   setNons([...rivalsAndPending, rivalId]); //
