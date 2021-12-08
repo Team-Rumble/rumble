@@ -104,8 +104,8 @@ const SignUpScreen: FC = () => {
 
   return (
     <SignUpContainer {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
-      <ScrollView>
-      <View>
+      <ScrollView >
+      <View style={{paddingHorizontal: 50}}>
             <SignupText>Get Ready!</SignupText>
             <SignUpInput
               clearButtonMode="while-editing"
@@ -149,6 +149,7 @@ const SignUpScreen: FC = () => {
                 <Image style={{ width: 150, height: 150, borderRadius: 20 }} source={{uri: profileUrl}} />
                 </View>
               </View>
+              {/* -------- Start of Images ---------- */}
               <View
                 style={{
                   marginTop: -30,
@@ -209,13 +210,3 @@ const SignUpScreen: FC = () => {
 };
 
 export default SignUpScreen;
-
-
-// A NEW PRESSABLE COMPONENT FROM REACT NATIVE
-/**
-<Pressable style={({ pressed }) => [{ backgroundColor: pressed ? COLORS.purple : '#eee', width:85, height: 85, borderRadius: 5, justifyContent: "center", alignItems: "center" }]}> 
-{({ pressed }) => (<Image
-    style={{ opacity: pressed ? 0.3 : 1, width: 70, height: 70, borderRadius: 20 }}
-    source={{ uri: images.angryBird }}
-  />)}</Pressable> 
- */

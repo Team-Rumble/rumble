@@ -25,7 +25,6 @@ type profileStack = NativeStackNavigationProp<
 
 interface SingleUserProps {
   person: {
-    id: string;
     username: string;
     profileUrl: string;
     bio: string;
@@ -42,19 +41,35 @@ interface SingleUserProps {
   };
 }
 
+  /**
+   * @param getRivals - will fetch every rivals information and sets the rivals state to them in an array/object type.
+   * @param getUserInfo - Will fetch for the users data and will set the person in the state with the information return.
+   * */
+
 const userSnap: any = {};
 
 const UserProfileScreen: FC<SingleUserProps> = () => {
   const [person, setPerson] = useState({});
   const [currentView, setCurrentView] = useState("Rivals");
-  const [rivalsLength, setRivalsLength] = useState(0)
-  // console.log('====================================');
-  // console.log("User Profile", person);
-  // console.log('====================================');
+  const [rivalsLength, setRivalsLength] = useState(0);
+  const [rivalsID, setRivalsID] = useState([]);
+  const [rivals, setRivals] = useState<Array<object>>([]);
+
+
   async function getUserInfo(user) {
     const userRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(userRef);
     return docSnap;
+  }
+
+  async function getRivals() {
+    const arr = []
+    rivalsID.forEach(async(rival) => {
+      const userRiv = doc(db, "users", rival)
+      const userRivDoc = await getDoc(userRiv);
+      arr.push(userRivDoc.data())
+    })
+    setRivals(arr)
   }
 
   useEffect(() => {
@@ -63,10 +78,16 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
         userSnap["user"] = await getUserInfo(user);
         setPerson(userSnap.user.data());
         setRivalsLength(userSnap.user.data().rivals.length)
+        setRivalsID(userSnap.user.data().rivals)
       }
     });
     return unsubscribe;
   }, []);
+
+  useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
+    // setRivalsID(userProps.rivals)
+    if(rivalsID && !rivals.length) getRivals()
+  }, [rivalsID])
 
   const navigation = useNavigation<profileStack>();
 
@@ -109,7 +130,7 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
         {person.bio}
       </Text>
       {currentView === "Rivals" ? (
-        <Rivals person={person}/>
+        <Rivals rivals={rivals}/>
       ) : currentView === "Interests" ? (<Interests person={person}/>) : (<Settings person={person}/>)}
     </View>
   );

@@ -32,6 +32,7 @@ import { collection, doc, getDoc, getDocs, query, where, updateDoc } from "fireb
 import db, { auth } from "../../config/firebase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
+import { StatusBar } from "expo-status-bar";
 
 type profileStack = NativeStackNavigationProp<
   RootStackParamList,
@@ -67,58 +68,30 @@ interface SingleUserProps {
 
 // ----------------- RIVALS ------------------------------//
 export const Rivals: FC<SingleUserProps> = (props) => {
-  const [rivalsID, setRivalsID] = useState([])
+  // const [rivalsID, setRivalsID] = useState([])
   const [rivals, setRivals] = useState<Array<object>>([]);
-  const userProps = props.person;
-  // const user = auth.currentUser;
-  console.log("User Props from Profile =>> ", userProps);
-  
-  console.log('====================================');
-  // console.log("User from Auth => ", user);
-  
-  console.log("List of rivals ID=>> ", rivalsID);
-  // console.log('====================================');
-  console.log("Rivals List =>>>", rivals);
+  // const userProps = props.person;
 
-  // GET RIVAL LIST OF IDs ----- //
-  // async function rivalsList(){
-  //   const userRef = doc(db, "users", user!.uid);
-  //   const userSnap = await getDoc(userRef);
-  //   setRivalsID(userSnap.data()!.rivals)
-  // }
-  
-  // GET RIVALS INFORMATION ->>> //
-  async function getRivals() {
-      const arr = []
-      rivalsID.forEach(async(rival) => {
-        const userRiv = doc(db, "users", rival)
-        const userRivDoc = await getDoc(userRiv);
-        arr.push(userRivDoc.data())
-      })
-      setRivals(arr)
-  }
-
-  useEffect(() => {  // UseEffect to get rivals list of IDs
-    // if(!rivalsID.length) rivalsList()
-    if(!rivalsID.length) setRivalsID(userProps.rivals)
-  }, [])
-
-  useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
-    if(rivalsID && !rivals.length) getRivals()
-  }, [rivalsID])
+  // console.log("User Props from Profile =>> ", props.rivals);
+   
+  useEffect(() => {
+    setRivals(props.rivals)
+  }, [rivals])
 
   return(
-    <View >
+    <ScrollView>
+      <View style={{height: 1000}} >
       {(!rivals) ? (<View>
         <Text>No Rivals Yet</Text>
-      </View>) : 
+        </View>) : 
         rivals.map((rival, i) => (
           <SingleRivalBox key={i} >
             <RivalPFP source={{uri: rival.profileUrl}}/>
             <RivalName>{rival.username}</RivalName>
           </SingleRivalBox>
         ))}
-    </View>
+      </View>
+    </ScrollView>
   )
 }
 // ----------------- END OF RIVALS -----------------------//
@@ -322,3 +295,43 @@ const FilterBody = styled.View`
 
   //   } catch(e) {console.log(e);}
   // }
+
+
+
+  /// RIVALS =>>>>>>>>>>
+   // const rivals = props.rivals
+  // const user = auth.currentUser;
+  // console.log('====================================');
+  // // console.log("User from Auth => ", user);
+  
+  // console.log("List of rivals ID=>> ", rivalsID);
+  // // console.log('====================================');
+  // console.log("Rivals List =>>>", rivals);
+
+  // GET RIVAL LIST OF IDs ----- //
+  // async function rivalsList(){
+  //   const userRef = doc(db, "users", user!.uid);
+  //   const userSnap = await getDoc(userRef);
+  //   setRivalsID(userSnap.data()!.rivals)
+  // }
+  
+  // GET RIVALS INFORMATION ->>> //
+  // async function getRivals() {
+  //     const arr = []
+  //     rivalsID.forEach(async(rival) => {
+  //       const userRiv = doc(db, "users", rival)
+  //       const userRivDoc = await getDoc(userRiv);
+  //       arr.push(userRivDoc.data())
+  //     })
+  //     setRivals(arr)
+  // }
+
+  // useEffect(() => {  // UseEffect to get rivals list of IDs
+  //   // if(!rivalsID.length) rivalsList()
+  //   if(!rivalsID.length) setRivalsID(userProps.rivals)
+  // }, [])
+  
+  // useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
+  //   setRivalsID(userProps.rivals)
+  //   if(rivalsID && !rivals.length) getRivals()
+  // }, [rivalsID])
