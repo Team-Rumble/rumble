@@ -28,7 +28,7 @@ import {
   LogOutText,
 } from "../components/Stylesheet";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where, updateDoc } from "firebase/firestore";
 import db, { auth } from "../../config/firebase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
@@ -44,7 +44,13 @@ interface SingleUserProps {
     username: string;
     profileUrl: string;
     bio: string;
-    interests: object;
+    interests: {
+      art: boolean,
+      cooking: boolean,
+      gaming: boolean,
+      math: boolean,
+      sports: boolean
+    };
     age: number;
     email: string;
     rivals: string[];
@@ -119,31 +125,49 @@ export const Rivals: FC<SingleUserProps> = (props) => {
 
 // ----------------- INTERESTS ------------------------------//
 
-export const Interests: FC = () => {
-  // const [filtersVisible, setFiltersVisible] = useState(false);
+export const Interests: FC<SingleUserProps> = (props) => {
   const [art, setArt] = useState(false);
   const [cooking, setCooking] = useState(false);
   const [gaming, setGaming] = useState(false);
   const [math, setMath] = useState(false);
   const [sports, setSports] = useState(false);
 
-  // const userInterest = props.person;
+  const userInterest = props.person;
+  const userAuth = auth.currentUser;
 
-  // useEffect(() => {
-  //   // fetch for firestore interests
-  //   // Set the state according to the interests in firestore.
+  useEffect(() => {
 
-  // }, [])
+
+    setArt(userInterest.interests.art);
+    setCooking(userInterest.interests.cooking);
+    setGaming(userInterest.interests.gaming);
+    setMath(userInterest.interests.math);
+    setSports(userInterest.interests.sports);
+
+  }, [])
+
+  async function handleInterestUpdate(){
+    try{
+      const interestsRef = await doc(db, "users", userAuth.uid)
+      await updateDoc(interestsRef, {
+          "interests.art": art,
+          "interests.cooking": cooking,
+          "interests.gaming": gaming,
+          "interests.math": math,
+          "interests.sports": sports
+        }
+      );
+    } catch(error: any){
+      console.log(error.message, "This is the error from handleInterestUpdate")
+    }
+  }
   
-  // Add a button that will "Set Interests" to set them all at once instead of one by one.
    
   return(
   <View>
       <Text style={{fontWeight: "bold", fontSize: 25, marginTop: 10, marginLeft: 10}} >Interests</Text>
       <FilterBody style={{flexWrap: "wrap"}} >
-        {/* {interest.map(int => (
-          <Text style={{margin: 20, fontSize: 15, fontWeight: 'bold'}} >{int?.toUpperCase()}</Text>
-        ))} */}
+        
         <Checkbox
           name="Art"
           checked={art}
@@ -170,7 +194,7 @@ export const Interests: FC = () => {
           onChange={setSports}
         />
       </FilterBody>
-      <LogOutBtn onPress={() => alert("Setting Interests") }>
+      <LogOutBtn onPress={handleInterestUpdate}>
         <LogOutText>Set Interests</LogOutText>
       </LogOutBtn>
   </View>

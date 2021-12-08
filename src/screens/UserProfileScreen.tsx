@@ -29,7 +29,13 @@ interface SingleUserProps {
     username: string;
     profileUrl: string;
     bio: string;
-    interests: object;
+    interests: {
+      art: boolean,
+      cooking: boolean,
+      gaming: boolean,
+      math: boolean,
+      sports: boolean
+    };
     age: number;
     email: string;
     rivals: string[];

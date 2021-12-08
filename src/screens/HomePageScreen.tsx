@@ -41,9 +41,9 @@ const HomePageScreen: FC = () => {
   const [math, filterMath] = useState(false);
   const [sports, filterSports] = useState(false);
   const [users, setUsers] = useState<Array<object>>([]);
-  const [allUsers, setAllUsers] = useState<Array<object>>([]);
+  const [allUsers, setAllUsers] = useState<Array<object>>([]); //all users minus current user and users you've challenged
   const [nondisplayed, setNondisplayed] = useState<Array<string>>([]);
-  const [fullbucket, setFullbucket] = useState<Array<object>>([]);
+  const [fullbucket, setFullbucket] = useState<Array<object>>([]);// lit all the users in the dictionary
 
   const auth = getAuth();
   const loggedInUser = auth.currentUser;

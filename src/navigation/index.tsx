@@ -1,9 +1,8 @@
-import React, { FC } from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-} from "@react-navigation/native-stack";
+
+import React, {FC} from 'react'
+import { NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import LogIn from "../screens/LogInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import HomePageScreen from "../screens/HomePageScreen";
@@ -44,66 +43,14 @@ export type RootStackParamList = {
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// const HomeIcon: FC = () => {
-//   return (
-//     <Ionicons name="home-outline" size={24} color="black" />
-//   )
-// };
+ export const NavigationScreens: FC = ({}) => {
 
-// function ChatIcon():any{
-//   return (
-//     <Ionicons style={{paddingLeft:125}} name="chatbubble-ellipses-outline" size={24} color="black" onPress={() = alert("I pressed the button!")}/>
-//   )
-// };
+   return (
+     /**
+      * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
+      * @param Stack.Screen - Links 
+      */
 
-// //we can potentially replace this with the user icon they've selected once they're signed in
-// function UserIcon(){
-//   return(
-//     <Ionicons name="person-circle-outline" size={24} color="black" />
-//   )
-// }
-
-const Tab = createMaterialTopTabNavigator<RootStackParamList>();
-
-// export const NavigationScreens: FC = () => {
-//   console.log(user, "This is our user?maybe?");
-//   return (
-//     <NavigationContainer>
-//       {/* If a user is logged in, we'll see our homepage and other views, else we'll just see the log in or sign up views */}
-//       {user ? (
-//         <Stack.Navigator screenOptions={({route}) => ({
-//           headerTitle:"Rumble",
-//           title:"Rumble",
-//           headerTitleAlign: 'center',
-//           // headerLeft: (navigation) => (
-//           //   <Button title="Back" onPress={() => {navigation.goBack();
-//           //   }} />
-//           // )
-//         })}>
-//           <Stack.Screen name="AppTabs" component={AppTabs} options={({route}) => ({
-//             headerTitle: "Rumble"
-//           })} />
-//         </Stack.Navigator>) : (
-//         <Stack.Navigator>
-//           <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
-//           <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
-//         </Stack.Navigator>
-//       )}
-
-//     </NavigationContainer>
-
-//   );
-// };
-
-type navigationStack = NativeStackNavigationProp<RootStackParamList>;
-
-export const NavigationScreens: FC = ({}) => {
-  // const navigation = useNavigation<navigationStack>()
-  return (
-    /**
-     * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
-     * @param Stack.Screen - Links
-     */
     //NavigationContainer functions like Provider in React
     <NavigationContainer>
       <Stack.Navigator
