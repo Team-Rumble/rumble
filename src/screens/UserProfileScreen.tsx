@@ -87,7 +87,7 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
   useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
     // setRivalsID(userProps.rivals)
     if(rivalsID && !rivals.length) getRivals()
-  }, [rivalsID])
+  }, [rivalsID]);
 
   const navigation = useNavigation<profileStack>();
 
