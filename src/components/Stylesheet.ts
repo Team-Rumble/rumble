@@ -65,7 +65,7 @@ export const StyledButtonText = styled.Text`
 
 /* --------- SIGN UP ---------------*/
 export const SignUpContainer = styled.KeyboardAvoidingView`
-margin-top: 50px;
+  margin-top: 50px;
   background-color: #eee;
   flex: 1;
   align-items: center;
