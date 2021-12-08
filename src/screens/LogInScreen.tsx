@@ -24,6 +24,12 @@ const LogIn: FC = ({}) => {
   const navigation = useNavigation<signInStack>();
 
   useEffect(() => {
+    if (user !== null) {
+      navigation.navigate("HomePage");
+    }
+  });
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         navigation.navigate("HomePage");
