@@ -17,7 +17,7 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { Text, View, Image, ScrollView } from "react-native";
+import { Text, View, Image, ScrollView, Pressable } from "react-native";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
 import db, { auth } from "../../config/firebase";
 
@@ -44,7 +44,6 @@ import {
 const RivalsListScreen: FC = () => {
   // Lets store a list of the users rivals in state for printout
   const [rivals, setRivals] = useState<Array<object>>([]);
-  const [loading, setLoading] = useState(true);
 
   // Lets utilize useEffect and onSnapshot to continuously listen for new matches.
   useEffect(() => {
@@ -87,7 +86,6 @@ const RivalsListScreen: FC = () => {
         const rivalRef = doc(db, "users", rivalry.rivalID);
         const rivalSnap = await getDoc(rivalRef);
         rivalry.rivalInfo = rivalSnap.data();
-        console.log(rivalry.rivalInfo.username);
       });
       setRivals(rivalriesArr);
     };
@@ -107,22 +105,17 @@ const RivalsListScreen: FC = () => {
     //return unsubscribe;
   }, []); // pass an empty array to prevent uncontrolled queries to firestore
 
-  useEffect(() => {
-    setLoading(false);
-    // rivals.forEach((rivalry) => {
-    //   console.log(rivalry.rivalInfo.username);
-    // });
-  }, [rivals]);
-
   return (
     /** Print out a touchable list of the rival chats available. Pass the id's as props to create the chat. */
-    <ScrollView>
+    <View>
+      {rivals.map((rival) => (
+        <Text key={rival.rivalID}>{rival.rivalInfo.username}</Text>
+      ))}
       {/* {rivals.map((rivalry) => {
-        <Text key={rivalry.rivalID}>{rivalry.rivalID}</Text>;
+        <Text>TEST</Text>;
         // <SingleRivalPreview key={rival.rivalID} rivalry={rival} />;
       })} */}
-      <Text>Test</Text>
-    </ScrollView>
+    </View>
   );
 };
 
