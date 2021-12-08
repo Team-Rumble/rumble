@@ -35,7 +35,7 @@ const SignUpScreen: FC = () => {
   const [bio, setBio] = useState("");
   const [profileUrl, setProfileUrl] = useState(
     "" ||
-      "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg"
+      images.gloves
   );
 
   const navigation = useNavigation<signUpStack>();
@@ -179,7 +179,7 @@ const SignUpScreen: FC = () => {
                   onPress={() => setProfileUrl(images.cat)}
                 >
                   <Image
-                    style={{ width: 80, height: 80, borderRadius: 20 }}
+                    style={{ width: 70, height: 70, borderRadius: 20 }}
                     source={{ uri: images.cat }}
                   />
                 </TouchableOpacity>
