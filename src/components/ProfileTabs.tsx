@@ -28,7 +28,7 @@ import {
   LogOutText,
 } from "../components/Stylesheet";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where, updateDoc } from "firebase/firestore";
 import db, { auth } from "../../config/firebase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
@@ -128,7 +128,10 @@ export const Interests: FC<SingleUserProps> = (props) => {
   const [sports, setSports] = useState(false);
 
   const userInterest = props.person;
+  const userAuth = auth.currentUser;
   console.log("This is user interest: ", art, cooking, gaming, math, sports)
+  // console.log("this is userInterest from props: ", userInterest)
+  // console.log("This is userAuth: ", userAuth)
 
   //Steps:
   //Get user interests from firestore and set it to user
@@ -137,6 +140,7 @@ export const Interests: FC<SingleUserProps> = (props) => {
 
   useEffect(() => {
     // Set the state according to the interests in firestore.
+
     setArt(userInterest.interests.art);
     setCooking(userInterest.interests.cooking);
     setGaming(userInterest.interests.gaming);
@@ -144,6 +148,23 @@ export const Interests: FC<SingleUserProps> = (props) => {
     setSports(userInterest.interests.sports);
 
   }, [])
+
+  async function handleInterestUpdate(){
+    try{
+      const interestsRef = await doc(db, "users", userAuth.uid)
+      console.log("This is our interests ref: ", interestsRef)
+      await updateDoc(interestsRef, {
+          "interests.art": art,
+          "interests.cooking": cooking,
+          "interests.gaming": gaming,
+          "interests.math": math,
+          "interests.sports": sports
+        }
+      );
+    } catch(error: any){
+      console.log(error.message, "This is the error from handleInterestUpdate")
+    }
+  }
   
   // Add a button that will "Set Interests" to set them all at once instead of one by one.
    
@@ -180,7 +201,7 @@ export const Interests: FC<SingleUserProps> = (props) => {
           onChange={setSports}
         />
       </FilterBody>
-      <LogOutBtn onPress={() => alert("Setting Interests") }>
+      <LogOutBtn onPress={handleInterestUpdate}>
         <LogOutText>Set Interests</LogOutText>
       </LogOutBtn>
   </View>
