@@ -122,14 +122,20 @@ export const BioInput = styled.TextInput`
   background-color: ${COLORS.white};
 `;
 
+// export const images = {
+//   duck: '../../assets/ducky.jpeg',
+//   gloves: '../../assets/boxingheart.jpeg',
+//   cat: '../../assets/cat.jpeg'
+// } 
+
 export const images = {
   // DEFAULT IMAGES FOR DISPLAY
-  angryGirl:
-    "https://www.news.ucsb.edu/sites/default/files/images/2014/angry%20face.jpg",
-  angryBaby:
-    "https://i.pinimg.com/474x/d6/c3/fe/d6c3fef25a327db1b138dbca81d4771b.jpg",
-  angryBird:
-    "https://d21tktytfo9riy.cloudfront.net/wp-content/uploads/2019/01/23140919/dream_blast_icon.jpg",
+  duck:
+    "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/ducky.jpg?alt=media&token=84fe9eb6-8352-418e-b838-c49fbdced0aa",
+  gloves:
+    "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/boxingheart.jpg?alt=media&token=5c16a386-0c29-4ae6-93e0-2865aa5278e6",
+  cat:
+    "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/cat.jpg?alt=media&token=44840fb9-ff81-4f3c-9e2b-f09b82c1e2b3",
 };
 /* --------- END SIGN UP ---------------*/
 
