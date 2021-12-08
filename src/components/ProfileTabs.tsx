@@ -60,14 +60,14 @@ interface SingleUserProps {
 
 
 // ----------------- RIVALS ------------------------------//
-export const Rivals: FC<SingleUserProps> = (props) => {
+export const Rivals: FC<SingleUserProps> = () => {
   const [rivalsID, setRivalsID] = useState([])
   const [rivals, setRivals] = useState<Array<object>>([]);
   const user = auth.currentUser;
-  // console.log('====================================');
-  // console.log("List of rivals ID=>> ", rivalsID);
-  // console.log('====================================');
-  // console.log("Rivals List =>>>", rivals);
+  console.log('====================================');
+  console.log("List of rivals ID=>> ", rivalsID);
+  console.log('====================================');
+  console.log("Rivals List =>>>", rivals);
 
   // GET RIVAL LIST OF IDs ----- //
   async function rivalsList(){
@@ -93,7 +93,7 @@ export const Rivals: FC<SingleUserProps> = (props) => {
 
   useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
     if(rivalsID && !rivals.length) getRivals()
-  }, [])
+  }, [rivalsID])
 
   return(
     <View >

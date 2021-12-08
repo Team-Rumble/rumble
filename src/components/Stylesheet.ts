@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 // color scheme variables (lightest to darkest)
 
-const COLORS = {
+export const COLORS = {
   lightRed: "#EE4540",
   red: "#C72C41", // loading screen BG, sign-up BG
   crimson: "#801336",
@@ -65,6 +65,7 @@ export const StyledButtonText = styled.Text`
 
 /* --------- SIGN UP ---------------*/
 export const SignUpContainer = styled.KeyboardAvoidingView`
+margin-top: 50px;
   background-color: #eee;
   flex: 1;
   align-items: center;
@@ -181,3 +182,31 @@ export const LogOutText = styled.Text`
 `;
 
 /* --------- END PROFILE ---------------*/
+
+export const ReadyButton = styled.TouchableOpacity`
+  background: ${COLORS.crimson};
+  padding: 10px;
+  width: 170px;
+  border: none;
+  border-radius: 30px;
+  margin-top: 20px
+`;
+
+export const ReadyButtonText = styled.Text`
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  font-weight: bold;
+`;
+
+export const AreYouText = styled.Text`
+  color: white;
+  font-size: 40px;
+
+`;
+
+export const RumBleText = styled.Text`
+  color: white;
+  font-size: 85px;
+  font-weight: bold;
+`;
