@@ -14,6 +14,7 @@ import { AppTabs } from './AppTabs';
 import App from '../../App';
 import db, { auth, userRef } from "../../config/firebase";
 import { user } from '../screens/LogInScreen';
+import LoadingScreen from '../screens/LoadingScreen';
 
 
 
@@ -32,8 +33,9 @@ import { user } from '../screens/LogInScreen';
   HomePage: undefined;
   Chat: undefined;
   UserProfile: undefined;
-  RivalsList: undefined
-  AppTabs: undefined
+  RivalsList: undefined;
+  AppTabs: undefined;
+  Loading: undefined;
 }
 
 /**
@@ -132,6 +134,7 @@ const Tab = createMaterialTopTabNavigator<RootStackParamList>();
     headerTintColor:"white"
     })} 
       >
+        <Stack.Screen name="Loading" component={LoadingScreen} options={{headerShown: false}}/>
         <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
         <Stack.Screen name="HomePage" component={HomePageScreen} />

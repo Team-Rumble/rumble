@@ -182,3 +182,31 @@ export const LogOutText = styled.Text`
 `;
 
 /* --------- END PROFILE ---------------*/
+
+export const ReadyButton = styled.TouchableOpacity`
+  background: ${COLORS.crimson};
+  padding: 10px;
+  width: 170px;
+  border: none;
+  border-radius: 30px;
+  margin-top: 20px
+`;
+
+export const ReadyButtonText = styled.Text`
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  font-weight: bold;
+`;
+
+export const AreYouText = styled.Text`
+  color: white;
+  font-size: 40px;
+
+`;
+
+export const RumBleText = styled.Text`
+  color: white;
+  font-size: 85px;
+  font-weight: bold;
+`;
