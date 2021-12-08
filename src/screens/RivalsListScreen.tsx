@@ -63,7 +63,7 @@ interface SingleUserProps {
     age: number;
     email: string;
     rivals: string[];
-    uid: string;
+    rivalUID: string;
   };
 }
 
@@ -93,7 +93,7 @@ const RivalsListScreen: FC<SingleUserProps> = () => {
       const userRiv = doc(db, "users", rival)
       const userRivDoc = await getDoc(userRiv);
       const RivalUser = userRivDoc.data();
-      RivalUser["uid"] = rival; 
+      RivalUser["rivalUID"] = rival; 
       // console.log("RIVAL USER ", RivalUser);
       
       arr.push(RivalUser)
@@ -127,7 +127,7 @@ const RivalsListScreen: FC<SingleUserProps> = () => {
           <SingleRivalBox key={i} >
             <RivalPFP source={{uri: rival.profileUrl}}/>
             <RivalName>{rival.username}</RivalName>
-            <RumbleBtn onPress={() => navigation.navigate("Chat", rival.uid)}>
+            <RumbleBtn onPress={() => navigation.navigate("Chat", rival.rivalUID)}>
           <RumbleTxt>Chat</RumbleTxt>
         </RumbleBtn>
           </SingleRivalBox>
