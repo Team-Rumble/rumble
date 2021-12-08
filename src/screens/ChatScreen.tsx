@@ -35,7 +35,7 @@ const ChatScreen: FC = () => {
   }, []);
 
   const onSend = useCallback((messages: IMessage[] = []) => {
-    setMessages((previousMessages: any) =>
+    setMessages((previousMessages: IMessage[]) => // changed from any
         GiftedChat.append(previousMessages, messages)
         );
         const { _id, createdAt, text, user } = messages[0];

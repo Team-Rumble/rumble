@@ -1,10 +1,8 @@
-# RUMBLE
+# Rumble
 
-# Overview
+## Overview
 
-Self-improvement can be difficult, especially if you lack motivation. Luckily, there’s Rival Finder, find a Rival who challenges you to be a better version of yourself.
-
-# Introduction
+Self-improvement can be difficult, especially if you lack motivation. Luckily, there’s Rumble to help you find a rival who challenges you to be a better version of yourself.
 
 ## Tech Stack
 
@@ -14,26 +12,20 @@ Self-improvement can be difficult, especially if you lack motivation. Luckily, t
 - Styled-Components
 - Expo Go
 
-# Features
-
 ## App Features
 
 - Account
 - Chat
-- Games
-- Intellectual Stimulation
-- Love
+- Intellectual stimulation
+- Possibly even love?
 
-# Next Steps
+## Next Steps
 
-# Creators:
+Our future goals include implementing an game API to allow users to challenge their rivals to minigames such as chess, giving users more criteria to filter for potential rivals with, and allowing users to create rival interest groups for those vital group discussions of: Cats or dogs? Was there room for Jack on the door? Does pineapple belong on pizza? (It does.)
+
+### Creators
 
 - Indigo R.
 - Emily R.
 - Kayla K.
 - Gissel D.
-
-# Attributions:
-- <div>Icons made by <a href="https://www.flaticon.com/authors/verians" title="Verian's">Verian's</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-- <div>Icons made by <a href="https://www.flaticon.com/authors/vectorsmarket15" title="vectorsmarket15">vectorsmarket15</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
--
