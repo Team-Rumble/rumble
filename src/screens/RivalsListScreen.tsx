@@ -40,10 +40,17 @@ import {
   RivalBioPFP,
   RivalBioName,
 } from "../components/HomePage.style";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/index";
+
+type ChatStack = NativeStackNavigationProp<RootStackParamList, "RivalsList">;
 
 const RivalsListScreen: FC = () => {
   // Lets store a list of the users rivals in state for printout
   const [rivals, setRivals] = useState<Array<object>>([]);
+
+  const navigation = useNavigation<ChatStack>();
 
   useEffect(() => {
     const fetchRivalries = async () => {
@@ -112,7 +119,12 @@ const RivalsListScreen: FC = () => {
       {rivals.map((rival) => (
         <SingleRivalBox key={rival.rivalID}>
           <ClickableRival
-            onPress={() => Alert.alert(`Chat with ${rival.rivalInfo.username}`)}
+            onPress={
+              () =>
+                navigation.navigate("Chat", {
+                  rivalID: rival.rivalID,
+                }) /* route.params.rivalID in ChatScreen*/
+            }
           >
             <RivalPFP source={{ uri: rival.rivalInfo.profileUrl }} />
             <RivalName>{rival.rivalInfo.username}</RivalName>
