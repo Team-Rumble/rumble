@@ -60,21 +60,26 @@ interface SingleUserProps {
 
 
 // ----------------- RIVALS ------------------------------//
-export const Rivals: FC<SingleUserProps> = () => {
+export const Rivals: FC<SingleUserProps> = (props) => {
   const [rivalsID, setRivalsID] = useState([])
   const [rivals, setRivals] = useState<Array<object>>([]);
-  const user = auth.currentUser;
+  const userProps = props.person;
+  // const user = auth.currentUser;
+  console.log("User Props from Profile =>> ", userProps);
+  
   console.log('====================================');
+  // console.log("User from Auth => ", user);
+  
   console.log("List of rivals ID=>> ", rivalsID);
-  console.log('====================================');
+  // console.log('====================================');
   console.log("Rivals List =>>>", rivals);
 
   // GET RIVAL LIST OF IDs ----- //
-  async function rivalsList(){
-    const userRef = doc(db, "users", user!.uid);
-    const userSnap = await getDoc(userRef);
-    setRivalsID(userSnap.data()!.rivals)
-  }
+  // async function rivalsList(){
+  //   const userRef = doc(db, "users", user!.uid);
+  //   const userSnap = await getDoc(userRef);
+  //   setRivalsID(userSnap.data()!.rivals)
+  // }
   
   // GET RIVALS INFORMATION ->>> //
   async function getRivals() {
@@ -88,8 +93,9 @@ export const Rivals: FC<SingleUserProps> = () => {
   }
 
   useEffect(() => {  // UseEffect to get rivals list of IDs
-    if(!rivalsID.length) rivalsList()
-  }, [rivalsID])
+    // if(!rivalsID.length) rivalsList()
+    if(!rivalsID.length) setRivalsID(userProps.rivals)
+  }, [])
 
   useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
     if(rivalsID && !rivals.length) getRivals()
@@ -100,8 +106,8 @@ export const Rivals: FC<SingleUserProps> = () => {
       {(!rivals) ? (<View>
         <Text>No Rivals Yet</Text>
       </View>) : 
-        rivals.map((rival) => (
-          <SingleRivalBox key={rival.id} >
+        rivals.map((rival, i) => (
+          <SingleRivalBox key={i} >
             <RivalPFP source={{uri: rival.profileUrl}}/>
             <RivalName>{rival.username}</RivalName>
           </SingleRivalBox>
@@ -204,8 +210,8 @@ export const Settings: FC<SingleUserProps> = (props) => {
   }, [])
 
   return(
-    <View style={{justifyContent:"center", alignItems: "center"}} >
-      <ScrollView>
+    <ScrollView>
+    <View style={{justifyContent:"center", alignItems: "center", height: 800}} >
         <Text style={{fontWeight: "bold", fontSize: 25, textAlign: "center", marginTop: 10, marginLeft: 10}} >Settings</Text>
         <View style={{marginTop: 30, alignItems: "center"}} >
           <Text style={{textAlign: "center", fontWeight: "bold"}} >Edit Username:</Text>
@@ -243,8 +249,8 @@ export const Settings: FC<SingleUserProps> = (props) => {
         <LogOutBtn onPress={handleSignOut}>
           <LogOutText>Log Out</LogOutText>
         </LogOutBtn>
-      </ScrollView>
     </View>
+    </ScrollView>
   )
 }
 // ----------------- END OF SETTINGS ------------------------------//
