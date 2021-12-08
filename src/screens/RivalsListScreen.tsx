@@ -17,7 +17,7 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { Text, View, Image, ScrollView, Pressable } from "react-native";
+import { Text, View, Image, ScrollView, Pressable, Alert } from "react-native";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
 import db, { auth } from "../../config/firebase";
 
@@ -45,7 +45,6 @@ const RivalsListScreen: FC = () => {
   // Lets store a list of the users rivals in state for printout
   const [rivals, setRivals] = useState<Array<object>>([]);
 
-  // Lets utilize useEffect and onSnapshot to continuously listen for new matches.
   useEffect(() => {
     const fetchRivalries = async () => {
       // Define the specific collection
@@ -89,7 +88,9 @@ const RivalsListScreen: FC = () => {
       });
       setRivals(rivalriesArr);
     };
-    fetchRivalries();
+
+    return fetchRivalries;
+    // Lets utilize useEffect and onSnapshot to continuously listen for new matches.
     // form an snapshot listener in the form of a function to return so that the useEffect
     // is properly closed
     // const unsubscribe = onSnapshot(q, querySnapshot => {
@@ -109,12 +110,16 @@ const RivalsListScreen: FC = () => {
     /** Print out a touchable list of the rival chats available. Pass the id's as props to create the chat. */
     <View>
       {rivals.map((rival) => (
-        <Text key={rival.rivalID}>{rival.rivalInfo.username}</Text>
+        <SingleRivalBox key={rival.rivalID}>
+          <ClickableRival
+            onPress={() => Alert.alert(`Chat with ${rival.rivalInfo.username}`)}
+          >
+            <RivalPFP source={{ uri: rival.rivalInfo.profileUrl }} />
+            <RivalName>{rival.rivalInfo.username}</RivalName>
+            {/* <SingleRivalPreview key={rival.rivalID} rivalry={rival} /> */}
+          </ClickableRival>
+        </SingleRivalBox>
       ))}
-      {/* {rivals.map((rivalry) => {
-        <Text>TEST</Text>;
-        // <SingleRivalPreview key={rival.rivalID} rivalry={rival} />;
-      })} */}
     </View>
   );
 };
