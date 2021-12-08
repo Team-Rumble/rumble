@@ -92,6 +92,7 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
   const navigation = useNavigation<profileStack>();
 
   return (
+    
     <View>
       <ProfileImageContainer>
         <ProfileImage source={{ uri: person.profileUrl }} />

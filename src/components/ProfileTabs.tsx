@@ -65,6 +65,7 @@ interface SingleUserProps {
  * 
  */
 
+ 
 
 // ----------------- RIVALS ------------------------------//
 export const Rivals: FC<SingleUserProps> = (props) => {
@@ -121,7 +122,7 @@ export const Interests: FC<SingleUserProps> = (props) => {
 
   async function handleInterestUpdate(){
     try{
-      const interestsRef = await doc(db, "users", userAuth.uid)
+      const interestsRef = doc(db, "users", userAuth.uid)
       await updateDoc(interestsRef, {
           "interests.art": art,
           "interests.cooking": cooking,
@@ -180,15 +181,20 @@ export const Settings: FC<SingleUserProps> = (props) => {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const user = props.person;
-  // console.log('====================================');
-  // console.log("Props on Settings", user);
-  // console.log('====================================');
+  const userAuth = auth.currentUser;
   
   const navigation = useNavigation<profileStack>();
 
-  function settingInfo() {
-    setBio(user.bio);
-    setUsername(user.username)
+  async function handleSubmit(){
+    try{
+      const settingsRef = doc(db, "users", userAuth!.uid)
+      await updateDoc(settingsRef, {
+        username: username,
+        bio: bio,
+      })
+    }catch (error: any){
+      console.log(error.message, 'This error is coming from handleSubmit')
+    }
   }
 
   async function handleSignOut() {
@@ -203,11 +209,12 @@ export const Settings: FC<SingleUserProps> = (props) => {
   };
 
   useEffect(() => {
-    settingInfo();
+    setBio(user.bio);
+    setUsername(user.username);
   }, [])
 
   return(
-    <ScrollView>
+  <ScrollView>
     <View style={{justifyContent:"center", alignItems: "center", height: 800}} >
         <Text style={{fontWeight: "bold", fontSize: 25, textAlign: "center", marginTop: 10, marginLeft: 10}} >Settings</Text>
         <View style={{marginTop: 30, alignItems: "center"}} >
@@ -239,15 +246,16 @@ export const Settings: FC<SingleUserProps> = (props) => {
           ></EditInput>
         </View>
         <View style={{flexDirection: "row", justifyContent: "center"}}>
-          <TouchableOpacity style={{backgroundColor: "#2D142C", width: 50, borderRadius: 5, height: 35, paddingHorizontal: 5, alignItems: "center", paddingTop: 5}} onPress={() => alert("Editing")} >
-            <Text style={{color: "white", fontSize: 20}} >Edit</Text>
-          </TouchableOpacity>
+          <LogOutBtn onPress={handleSubmit} >
+            <LogOutText>Submit</LogOutText>
+          </LogOutBtn>
         </View>
         <LogOutBtn onPress={handleSignOut}>
           <LogOutText>Log Out</LogOutText>
         </LogOutBtn>
     </View>
     </ScrollView>
+
   )
 }
 // ----------------- END OF SETTINGS ------------------------------//
