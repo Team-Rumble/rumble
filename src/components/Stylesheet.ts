@@ -213,6 +213,6 @@ export const AreYouText = styled.Text`
 
 export const RumBleText = styled.Text`
   color: white;
-  font-size: 85px;
+  font-size: 75px;
   font-weight: bold;
 `;
