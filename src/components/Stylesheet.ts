@@ -130,11 +130,11 @@ export const BioInput = styled.TextInput`
 
 export const images = {
   // DEFAULT IMAGES FOR DISPLAY
-  angryGirl:
+  duck:
     "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/ducky.jpg?alt=media&token=84fe9eb6-8352-418e-b838-c49fbdced0aa",
-  angryBaby:
+  gloves:
     "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/boxingheart.jpg?alt=media&token=5c16a386-0c29-4ae6-93e0-2865aa5278e6",
-  angryBird:
+  cat:
     "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/cat.jpg?alt=media&token=44840fb9-ff81-4f3c-9e2b-f09b82c1e2b3",
 };
 /* --------- END SIGN UP ---------------*/

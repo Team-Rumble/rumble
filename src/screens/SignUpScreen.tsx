@@ -160,27 +160,27 @@ const SignUpScreen: FC = () => {
                 }}
               >
                 <TouchableOpacity
-                  onPress={() => setProfileUrl(images.angryGirl)}
+                  onPress={() => setProfileUrl(images.duck)}
                 >
                   <Image
                     style={{ width: 70, height: 70, borderRadius: 20 }}
-                    source={{ uri: images.angryGirl }}
+                    source={{ uri: images.duck }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => setProfileUrl(images.angryBaby)}
+                  onPress={() => setProfileUrl(images.gloves)}
                 >
                   <Image
                     style={{ width: 70, height: 70, borderRadius: 20 }}
-                    source={{ uri: images.angryBaby }}
+                    source={{ uri: images.gloves }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => setProfileUrl(images.angryBird)}
+                  onPress={() => setProfileUrl(images.cat)}
                 >
                   <Image
                     style={{ width: 80, height: 80, borderRadius: 20 }}
-                    source={{ uri: images.angryBird }}
+                    source={{ uri: images.cat }}
                   />
                 </TouchableOpacity>
               </View>
