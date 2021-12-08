@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect} from "react";
+import React, {FC, useState, useEffect, useLayoutEffect} from "react";
 import { Text, Alert, ScrollView, Modal, Button, View, TouchableOpacity, Image, TextInput} from "react-native";
 import styled from "styled-components/native";
 import Checkbox from "./Checkbox";
@@ -71,18 +71,23 @@ interface SingleUserProps {
 export const Rivals: FC<SingleUserProps> = (props) => {
   // const [rivalsID, setRivalsID] = useState([])
   const [rivals, setRivals] = useState<Array<object>>([]);
+  // const [test, setTest] = useState(0)
   // const userProps = props.person;
 
   // console.log("User Props from Profile =>> ", props.rivals);
    
   useEffect(() => {
     setRivals(props.rivals)
-  }, [rivals])
+  }, [])
+
+  // useEffect(() => {
+  //   setTest(1)
+  // }, [rivals])
 
   return(
     <ScrollView>
       <View style={{height: 1000}} >
-      {(!rivals) ? (<View>
+      {(rivals.length < 1) ? (<View>
         <Text>No Rivals Yet</Text>
         </View>) : 
         rivals.map((rival, i) => (
@@ -110,8 +115,6 @@ export const Interests: FC<SingleUserProps> = (props) => {
   const userAuth = auth.currentUser;
 
   useEffect(() => {
-
-
     setArt(userInterest.interests.art);
     setCooking(userInterest.interests.cooking);
     setGaming(userInterest.interests.gaming);
