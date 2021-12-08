@@ -120,7 +120,6 @@ export const Rivals: FC<SingleUserProps> = (props) => {
 // ----------------- INTERESTS ------------------------------//
 
 export const Interests: FC<SingleUserProps> = (props) => {
-  // const [filtersVisible, setFiltersVisible] = useState(false);
   const [art, setArt] = useState(false);
   const [cooking, setCooking] = useState(false);
   const [gaming, setGaming] = useState(false);
@@ -129,17 +128,9 @@ export const Interests: FC<SingleUserProps> = (props) => {
 
   const userInterest = props.person;
   const userAuth = auth.currentUser;
-  console.log("This is user interest: ", art, cooking, gaming, math, sports)
-  // console.log("this is userInterest from props: ", userInterest)
-  // console.log("This is userAuth: ", userAuth)
-
-  //Steps:
-  //Get user interests from firestore and set it to user
-  //render user interests
-  //when user changes interests, update firestore to match (use a function and a button that says done or set interets etc)
 
   useEffect(() => {
-    // Set the state according to the interests in firestore.
+
 
     setArt(userInterest.interests.art);
     setCooking(userInterest.interests.cooking);
@@ -152,7 +143,6 @@ export const Interests: FC<SingleUserProps> = (props) => {
   async function handleInterestUpdate(){
     try{
       const interestsRef = await doc(db, "users", userAuth.uid)
-      console.log("This is our interests ref: ", interestsRef)
       await updateDoc(interestsRef, {
           "interests.art": art,
           "interests.cooking": cooking,
@@ -166,15 +156,12 @@ export const Interests: FC<SingleUserProps> = (props) => {
     }
   }
   
-  // Add a button that will "Set Interests" to set them all at once instead of one by one.
    
   return(
   <View>
       <Text style={{fontWeight: "bold", fontSize: 25, marginTop: 10, marginLeft: 10}} >Interests</Text>
       <FilterBody style={{flexWrap: "wrap"}} >
-        {/* {interest.map(int => (
-          <Text style={{margin: 20, fontSize: 15, fontWeight: 'bold'}} >{int?.toUpperCase()}</Text>
-        ))} */}
+        
         <Checkbox
           name="Art"
           checked={art}
