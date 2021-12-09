@@ -95,7 +95,7 @@ const HomePageScreen: FC = () => {
       const updatedUsers: Array<object> = [];
       allUsers.forEach((doc) => {
         if (!nondisplayed.includes(doc.id)) {
-          users.push({ id: doc.id, ...doc.data() });
+          updatedUsers.push({ id: doc.id, ...doc.data() });
         }
       });
       setFullbucket(updatedUsers);
