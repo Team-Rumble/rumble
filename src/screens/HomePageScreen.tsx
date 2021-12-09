@@ -33,6 +33,13 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+/**
+ * This is the HomePage component that automatically loads when a user logs in or signs up.
+ * This is where a user can challenge and match with other users to become rivals.
+ *
+ * @returns a full render of the Home Page, including a list of other users and a modal screen that pops up
+ * options to filter interests to view other users by
+ */
 const HomePageScreen: FC = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [art, filterArt] = useState(false);
@@ -48,7 +55,10 @@ const HomePageScreen: FC = () => {
   const auth = getAuth();
   const loggedInUser = auth.currentUser;
 
-  // query Firestore for all users
+  /**
+   * Queries the Firestore for all users as well as the logged-in user's list of other users they've challenged
+   * Updates fullbucket and nondisplayed in local state in a useEffect that runs on mount
+   */
   const fetchAllUsers = async () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
@@ -67,7 +77,6 @@ const HomePageScreen: FC = () => {
       // allUsers doesn't include the currently logged in user or users previously challenged
       if (!nondisplayed.includes(doc.id)) {
         users.push({ id: doc.id, ...doc.data() });
-      } // initial render showing all users, upon saving it cuts out the nondisplayed
     });
     setFullbucket(users);
   };
@@ -77,6 +86,7 @@ const HomePageScreen: FC = () => {
     fetchAllUsers();
   }, []);
 
+  // removes the users who shouldn't be displayed and sets to allUsers (essentially all viable users)
   useEffect(() => {
     const users = [];
     fullbucket.forEach((user) => {
@@ -206,7 +216,17 @@ const HomePageScreen: FC = () => {
   );
 };
 
-// single user for scrollable list
+/**
+ * SingleUser component to display possible users to match with in a scrollable list
+ *
+ * @param props - includes the user object representing the user to display with all of their information from Firestore,
+ * and three props that are passed here only to be passed down to the requestRival function to allow for matching:
+ * a loggedInUser object with info from Firebase Authentication for the logged-in user, a local state setter function, and
+ * and the associated local state of users that shouldn't be displayed on the Home Page for the currently logged-in user
+ * @returns a React component that renders the user's username and profile picture, clickable to pull up thier bio in
+ * a modal screen and a "Rumble" button which lets the logged-in user challenge them (see below)
+ */
+
 interface SingleUserProps {
   user: {
     id: string;
@@ -275,7 +295,16 @@ const SingleUser: FC<SingleUserProps> = (props) => {
   );
 };
 
-// matching
+/**
+ * This function handles the challenging and matching capabilities between users, updating or creating rivalry documents in the Firestore as necessary
+ * and updating local state to rerender the view when a new user is challenged for the first time
+ *
+ * @param rivalId - the unique name for the other user's document in Firestore
+ * @param rivalName - the other user's username
+ * @param currentId - the uid of the logged-in user from Firebase Authentication, which doubles as the unique name for their user document in Firestore
+ * @param setNons - local state's setter function for the following param
+ * @param rivalsAndPending - local state, holding the IDs of all the users not to be displayed for the logged-in user (i.e. themselves and anyone they'ved matched with or already challenged)
+ */
 const requestRival = async (
   rivalId: string,
   rivalName: string,
