@@ -1,4 +1,4 @@
-import { addDoc, collection, collectionGroup, onSnapshot, query } from "firebase/firestore";
+import { addDoc, collection, collectionGroup, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { FC, useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { Text, Alert, ScrollView, Modal, Button, View } from "react-native";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
@@ -13,44 +13,65 @@ import {
 import db, {auth} from '../../config/firebase';
 // props, share a styled component for pfp with homepage?
 // nav to ChatScreen
-const ChatScreen: FC = () => {
-  //const [messages, setMessages] = useState<Array<object>>([]);
+
+interface ChatScreenProps {
+  rivalUID: string;
+}
+const ChatScreen: FC<ChatScreenProps> = ({navigation, route}) => {
+  
   const [messages, setMessages] = useState<IMessage[]>([]);
-  // can we return two rivals?
-  useLayoutEffect(() => {
-    const collectionRef = collection(db, 'rivalries');
-    const q = query(collectionGroup(db, 'chatlog'));
+  const  rivalUID  = route.params;
+  const currentUser = auth.currentUser;
+  console.log("Route: ", route.params);
+    /**
+     * will retrieve old messages from the firestore database.
+     */
+     useLayoutEffect(() => {
 
-    const unsubscribe = onSnapshot(q, QuerySnapshot => {
-      setMessages(
-        QuerySnapshot.docs.map(doc => ({
-          _id: doc.data()._id,
-          text: doc.data().text,
-          createdAt: doc.data().createdAt.toDate(),
-          user: doc.data().user
-        }))
-      );
-    });
-    return unsubscribe;
-  }, []);
+      const collectionRef = collection(db, "individualChats", `${roomName}`, "chatlog");
+      const q = query(collectionRef, orderBy('createdAt', 'desc'));
+  
+      const unsubscribe = onSnapshot(q, QuerySnapshot => {
+          setMessages(
+              QuerySnapshot.docs.map(doc => ({
+                  _id: doc.data()._id,
+                  createdAt: doc.data().createdAt.toDate(),
+                  text: doc.data().text,
+                  user: doc.data().user
+              }))
+          );
+      }); 
+      
+      return () => unsubscribe();
+  }, []); // empty array or an array with props that the effect requires
+  /**
+   * Will send a message to the firestore
+   */
+  const onSend = useCallback((messages = []) => {
+      setMessages(previousMessages =>
+          GiftedChat.append(previousMessages, messages)
+          );
+          const { _id, createdAt, text, user } = messages[0];
+        // addDoc(collection(database, 'individualChats'), {
+          addDoc(collection(db, "individualChats", `${roomName}`, "chatlog"), {
+              _id,
+              createdAt,
+              text,
+              user
+          }
+          );
+  }, [roomName]);
 
-  const onSend = useCallback((messages: IMessage[] = []) => {
-    setMessages((previousMessages: IMessage[]) => // changed from any
-        GiftedChat.append(previousMessages, messages)
-        );
-        const { _id, createdAt, text, user } = messages[0];
-        addDoc(collection(db, 'chatlog'), {
-            _id,
-            createdAt,
-            text,
-            user
-        });
-}, []);
-
-  // console.log(messages);
+  let roomName = 'chat_' + (currentUser!.uid < rivalUID ? currentUser!.uid +'_'+ rivalUID : rivalUID +'_'+ currentUser!.uid);
   return (
     <GiftedChat
-      messages={messages}
+    messages={messages}
+    showAvatarForEveryMessage={true}
+    onSend={messages => onSend(messages)}
+    user={{
+        _id: auth?.currentUser?.email!,
+        avatar: 'https://i.pravatar.cc/300'
+    }}
     />
   );
 };
