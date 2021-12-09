@@ -131,7 +131,7 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
         {person.bio}
       </Text>
       {currentView === "Rivals" ? (
-        <Rivals rivals={rivals}/>
+        <Rivals rivals={rivals} person={person}/>
       ) : currentView === "Interests" ? (<Interests person={person}/>) : (<Settings person={person}/>)}
     </View>
   );
