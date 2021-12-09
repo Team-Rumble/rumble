@@ -20,7 +20,8 @@ interface ChatScreenProps {
 const ChatScreen: FC<ChatScreenProps> = ({navigation, route}) => {
   
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const  rivalUID  = route.params;
+  const { rivalUID, profileUrl }  = route.params;
+  
   const currentUser = auth.currentUser;
   console.log("Route: ", route.params);
     /**
@@ -70,7 +71,7 @@ const ChatScreen: FC<ChatScreenProps> = ({navigation, route}) => {
     onSend={messages => onSend(messages)}
     user={{
         _id: auth?.currentUser?.email!,
-        avatar: 'https://i.pravatar.cc/300'
+        avatar: profileUrl
     }}
     />
   );

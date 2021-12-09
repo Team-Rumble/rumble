@@ -115,10 +115,15 @@ const RivalsListScreen: FC<SingleUserProps> = () => {
         <Text>No Rivals Yet</Text>
         </View>) : 
         rivals.map((rival, i) => (
-          <SingleRivalBox key={i} >
+          <SingleRivalBox key={i}>
             <RivalPFP source={{uri: rival.profileUrl}}/>
             <RivalName>{rival.username}</RivalName>
-            <RumbleBtn onPress={() => navigation.navigate("Chat", rival.uid)}>
+            <RumbleBtn onPress={() => navigation.navigate(
+              "Chat", {
+                rivalUID: rival.uid, 
+                profileUrl: rival.profileUrl
+                })
+                }>
           <RumbleTxt>Chat</RumbleTxt>
         </RumbleBtn>
           </SingleRivalBox>
