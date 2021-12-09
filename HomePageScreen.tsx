@@ -30,7 +30,6 @@ import {
   getDoc,
   arrayUnion,
   arrayRemove,
-  onSnapshot,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
@@ -73,12 +72,11 @@ const HomePageScreen: FC = () => {
       .data()!
       .pending.forEach((userId: string) => nondisplays.push(userId));
     setNondisplayed(nondisplays);
-    const users: Array<object> = [];
+    const users = [];
     usersSnap.forEach((doc) => {
       // allUsers doesn't include the currently logged in user or users previously challenged
       if (!nondisplayed.includes(doc.id)) {
         users.push({ id: doc.id, ...doc.data() });
-      }
     });
     setFullbucket(users);
   };
@@ -88,24 +86,9 @@ const HomePageScreen: FC = () => {
     fetchAllUsers();
   }, []);
 
-  // listens for new users being added to the user collection
-  useEffect(() => {
-    const usersCollectionRef = collection(db, "users");
-    const unsubscribe = onSnapshot(usersCollectionRef, (allUsers) => {
-      const updatedUsers: Array<object> = [];
-      allUsers.forEach((doc) => {
-        if (!nondisplayed.includes(doc.id)) {
-          users.push({ id: doc.id, ...doc.data() });
-        }
-      });
-      setFullbucket(updatedUsers);
-    });
-    return () => unsubscribe();
-  }, []);
-
   // removes the users who shouldn't be displayed and sets to allUsers (essentially all viable users)
   useEffect(() => {
-    const users: Array<object> = [];
+    const users = [];
     fullbucket.forEach((user) => {
       if (!nondisplayed.includes(user.id)) {
         users.push(user);
@@ -116,7 +99,7 @@ const HomePageScreen: FC = () => {
 
   // updates allUsers state whenever the user challenges someone new
   useEffect(() => {
-    const visibleUsers: Array<object> = [];
+    const visibleUsers = [];
     allUsers.forEach((user) => {
       if (!nondisplayed.includes(user.id)) {
         visibleUsers.push(user);
