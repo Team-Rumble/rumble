@@ -3,6 +3,7 @@ import {
   getDocs,
   getDoc,
   orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 import React, {
   FC,
@@ -52,9 +53,9 @@ const userSnap: any = {};
 
 
 const RivalsListScreen: FC<SingleUserProps> = () => {
-  const [person, setPerson] = useState({});
-  const [rivalsLength, setRivalsLength] = useState(0);
-  const [rivalsID, setRivalsID] = useState([]);
+  // const [person, setPerson] = useState({});
+  // const [rivalsLength, setRivalsLength] = useState(0);
+  // const [rivalsID, setRivalsID] = useState([]);
   const [rivals, setRivals] = useState<Array<object>>([]);
   const navigation = useNavigation<ChatStack>();
   
@@ -83,11 +84,28 @@ const RivalsListScreen: FC<SingleUserProps> = () => {
       return rivalsArrayy;
     };
     const result = getUserInfo()
-    console.log("RIVALS =>>>", rivals);
+    // console.log("RIVALS =>>>", rivals);
     
   },[])
 
-  console.log("RIVALS OUTSIDE=>>>", rivals);
+  useEffect(() => {
+    const currentUser = auth.currentUser;
+    const userRef = doc(db, "users", currentUser.uid);
+    const unsubscribe = onSnapshot(userRef, (rivalry) => {
+      const rivalsArrayy = [];
+      rivalry.data().rivals.forEach( async (rival) => {
+        const rivalRef = doc(db, "users", rival);
+       const docSnap = await getDoc(rivalRef);
+       const rivalsInfo = docSnap.data();
+       rivalsInfo["uid"] = rival;
+       rivalsArrayy.push(rivalsInfo);
+       setRivals([...rivalsArrayy])
+       // console.log("Every Rivals=>>", rivalsArrayy);
+     })
+    });
+    return () => unsubscribe();
+  }, [])
+  // console.log("RIVALS OUTSIDE=>>>", rivals);
   
 
   return (

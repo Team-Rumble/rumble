@@ -47,7 +47,7 @@ const ChatScreen: FC = () => {
         });
 }, []);
 
-  console.log(messages);
+  // console.log(messages);
   return (
     <GiftedChat
       messages={messages}
