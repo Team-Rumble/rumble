@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Text, Alert, Modal, View, FlatList } from "react-native";
+import { Alert, Modal, View, FlatList } from "react-native";
 import {
   MenuView,
   RumbleBtn,
@@ -43,7 +43,7 @@ const HomePageScreen: FC = () => {
   const [users, setUsers] = useState<Array<object>>([]);
   const [allUsers, setAllUsers] = useState<Array<object>>([]); //all users minus current user and users you've challenged
   const [nondisplayed, setNondisplayed] = useState<Array<string>>([]);
-  const [fullbucket, setFullbucket] = useState<Array<object>>([]);// lit all the users in the dictionary
+  const [fullbucket, setFullbucket] = useState<Array<object>>([]); // lit all the users in the dictionary
 
   const auth = getAuth();
   const loggedInUser = auth.currentUser;

@@ -6,37 +6,32 @@ import {
   ScrollView,
   Platform,
   TouchableOpacity,
-  Pressable,
 } from "react-native";
 import db, { auth } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
-import {SignUpContainer, SignUpInput, SignupText, RumbleSignUpButton, RumbleSignUpTxt, BioInput, images, COLORS} from "../components/Stylesheet"
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SignUpContainer,
+  SignUpInput,
+  SignupText,
+  RumbleSignUpButton,
+  RumbleSignUpTxt,
+  BioInput,
+  images,
+  COLORS,
+} from "../components/Stylesheet";
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
-// interface UserProps {
-//   email: string;
-//   password: string;
-//   // user: undefined;
-//   age?: string;
-// }
-
-
-
 const SignUpScreen: FC = () => {
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // space replace & capital first letter
   const [age, setAge] = useState("");
   const [bio, setBio] = useState("");
-  const [profileUrl, setProfileUrl] = useState(
-    "" ||
-      images.gloves
-  );
+  const [profileUrl, setProfileUrl] = useState("" || images.gloves);
 
   const navigation = useNavigation<signUpStack>();
 
@@ -62,33 +57,38 @@ const SignUpScreen: FC = () => {
             {
               text: "Cancel",
               onPress: () =>
-                Alert.alert(
-                  "If you don't agree, can't Rumble my friend!"
-                ),
+                Alert.alert("If you don't agree, can't Rumble my friend!"),
               style: "cancel",
             },
-            { text: "I Accept", onPress: async () => {
-              const userCredential = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-              );
-      
-              const user = userCredential.user;
-              console.log("Registered with: ", user);
-              await setDoc(doc(db, "users", user.uid), {
-                username: username,
-                email: email,
-                // password: password, // Try to sent user without password
-                age: Number(age), //Sending age as a number type
-                bio: bio,
-                profileUrl: profileUrl,
-                interests: {art: true, cooking: true, gaming: true, math: true, sports: true },
-                rivals: [],
-                pending: [],
-              });
-            }},
+            {
+              text: "I Accept",
+              onPress: async () => {
+                const userCredential =
+                  await auth.createUserWithEmailAndPassword(email, password);
+
+                const user = userCredential.user;
+                console.log("Registered with: ", user);
+                await setDoc(doc(db, "users", user.uid), {
+                  username: username,
+                  email: email,
+                  // password: password, // Try to sent user without password
+                  age: Number(age), //Sending age as a number type
+                  bio: bio,
+                  profileUrl: profileUrl,
+                  interests: {
+                    art: true,
+                    cooking: true,
+                    gaming: true,
+                    math: true,
+                    sports: true,
+                  },
+                  rivals: [],
+                  pending: [],
+                });
+              },
+            },
           ]
-        )
+        );
       }
     } catch (error: any) {
       Alert.alert(error.message);
@@ -99,111 +99,123 @@ const SignUpScreen: FC = () => {
   function handleAge() {
     return Number(age) >= 18
       ? true
-      : Alert.alert("You still Crawling....Get out of here");
+      : Alert.alert("You must be 18 years or older to use Rumble.");
   }
 
   return (
-    <SignUpContainer {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}>
-      <ScrollView >
-      <View style={{paddingHorizontal: 50}}>
-            <SignupText>Get Ready!</SignupText>
+    <SignUpContainer
+      {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}
+    >
+      <ScrollView>
+        <View style={{ paddingHorizontal: 50 }}>
+          <SignupText>Get Ready!</SignupText>
+          <SignUpInput
+            clearButtonMode="while-editing"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Username"
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+          ></SignUpInput>
+          <SignUpInput
+            clearButtonMode="while-editing"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Email"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          ></SignUpInput>
+          <SignUpInput
+            clearButtonMode="while-editing"
+            autoCapitalize="none"
+            placeholder="Password"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+          ></SignUpInput>
+          <View>
             <SignUpInput
               clearButtonMode="while-editing"
-              autoCapitalize="none"
-              keyboardType="email-address"
-              placeholder="Username"
-              value={username}
-              onChangeText={(text) => setUsername(text)}
-            ></SignUpInput>
-            <SignUpInput
-              clearButtonMode="while-editing"
-              autoCapitalize="none"
-              keyboardType="email-address"
-              placeholder="Email"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-            ></SignUpInput>
-            <SignUpInput
-              clearButtonMode="while-editing"
-              autoCapitalize="none"
-              placeholder="Password"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              secureTextEntry
-            ></SignUpInput>
-            <View>
-              <SignUpInput
-                clearButtonMode="while-editing"
-                keyboardType="number-pad"
-                maxLength={2}
-                placeholder="Age"
-                value={age}
-                onChangeText={(age) => setAge(age)}
-              />
-  
-              {/* Displaying (3) default profile images */}
-              <View style={{paddingVertical: 20,
-                  justifyContent: "space-between",
-                  alignItems: "center",}} >
-                <View style={{width: 160, height: 160, borderRadius: 20, backgroundColor: COLORS.purple, justifyContent: "center", alignItems: "center"}} >
-                <Image style={{ width: 150, height: 150, borderRadius: 20 }} source={{uri: profileUrl}} />
-                </View>
-              </View>
-              {/* -------- Start of Images ---------- */}
+              keyboardType="number-pad"
+              maxLength={2}
+              placeholder="Age"
+              value={age}
+              onChangeText={(age) => setAge(age)}
+            />
+
+            {/* Displaying (3) default profile images */}
+            <View
+              style={{
+                paddingVertical: 20,
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <View
                 style={{
-                  marginTop: -30,
-                  paddingVertical: 20,
-                  flex: 3,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  width: 160,
+                  height: 160,
+                  borderRadius: 20,
+                  backgroundColor: COLORS.purple,
+                  justifyContent: "center",
                   alignItems: "center",
                 }}
               >
-                <TouchableOpacity
-                  onPress={() => setProfileUrl(images.duck)}
-                >
-                  <Image
-                    style={{ width: 70, height: 70, borderRadius: 20 }}
-                    source={{ uri: images.duck }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setProfileUrl(images.gloves)}
-                >
-                  <Image
-                    style={{ width: 70, height: 70, borderRadius: 20 }}
-                    source={{ uri: images.gloves }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setProfileUrl(images.cat)}
-                >
-                  <Image
-                    style={{ width: 70, height: 70, borderRadius: 20 }}
-                    source={{ uri: images.cat }}
-                  />
-                </TouchableOpacity>
+                <Image
+                  style={{ width: 150, height: 150, borderRadius: 20 }}
+                  source={{ uri: profileUrl }}
+                />
               </View>
-              {/* --------- END profile images ------------------ */}
-
-              <BioInput
-                keyboardType="twitter"
-                multiline={true}
-                maxLength={280}
-                style={{ textAlignVertical: "top" }}
-                placeholder="Enter a brief bio"
-                value={bio}
-                onChangeText={(text) => setBio(text)}
-              />
             </View>
-            <RumbleSignUpButton
-              style={{ marginTop: 20, marginBottom: 50 }}
-              onPress={handleSignUp}
+            {/* -------- Start of Images ---------- */}
+            <View
+              style={{
+                marginTop: -30,
+                paddingVertical: 20,
+                flex: 3,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              <RumbleSignUpTxt>Let's Rumble</RumbleSignUpTxt>
-            </RumbleSignUpButton>
-      </View>
+              <TouchableOpacity onPress={() => setProfileUrl(images.duck)}>
+                <Image
+                  style={{ width: 70, height: 70, borderRadius: 20 }}
+                  source={{ uri: images.duck }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setProfileUrl(images.gloves)}>
+                <Image
+                  style={{ width: 70, height: 70, borderRadius: 20 }}
+                  source={{ uri: images.gloves }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setProfileUrl(images.cat)}>
+                <Image
+                  style={{ width: 70, height: 70, borderRadius: 20 }}
+                  source={{ uri: images.cat }}
+                />
+              </TouchableOpacity>
+            </View>
+            {/* --------- END profile images ------------------ */}
+
+            <BioInput
+              keyboardType="twitter"
+              multiline={true}
+              maxLength={280}
+              style={{ textAlignVertical: "top" }}
+              placeholder="Enter a brief bio"
+              value={bio}
+              onChangeText={(text) => setBio(text)}
+            />
+          </View>
+          <RumbleSignUpButton
+            style={{ marginTop: 20, marginBottom: 50 }}
+            onPress={handleSignUp}
+          >
+            <RumbleSignUpTxt>Let's Rumble</RumbleSignUpTxt>
+          </RumbleSignUpButton>
+        </View>
       </ScrollView>
     </SignUpContainer>
   );

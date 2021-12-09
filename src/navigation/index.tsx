@@ -1,8 +1,6 @@
-
-import React, {FC} from 'react'
-import { NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-
+import React, { FC } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LogIn from "../screens/LogInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import HomePageScreen from "../screens/HomePageScreen";
@@ -10,13 +8,8 @@ import ChatScreen from "../screens/ChatScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import RivalsListScreen from "../screens/RivalsListScreen";
 import { Ionicons } from "@expo/vector-icons"; //chat icon and home icon
-import { BackHandler, Button, TouchableOpacity } from "react-native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { AppTabs } from "./AppTabs";
-import App from "../../App";
-import db, { auth, userRef } from "../../config/firebase";
-import { user } from '../screens/LogInScreen';
-import LoadingScreen from '../screens/LoadingScreen';
+import { TouchableOpacity } from "react-native";
+import LoadingScreen from "../screens/LoadingScreen";
 
 /**
  * @param RootStackParamList - Object type that contains mappings for route names to the params of the route
@@ -43,13 +36,12 @@ export type RootStackParamList = {
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
- export const NavigationScreens: FC = ({}) => {
-
-   return (
-     /**
-      * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
-      * @param Stack.Screen - Links 
-      */
+export const NavigationScreens: FC = ({}) => {
+  return (
+    /**
+     * @param Stack.Navigator - Stack.Navigator defines the container: optional @param initialRouteName="Home/etc"
+     * @param Stack.Screen - Links
+     */
 
     //NavigationContainer functions like Provider in React
     <NavigationContainer>
@@ -83,9 +75,21 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
           headerTintColor: "white",
         })}
       >
-        <Stack.Screen name="Loading" component={LoadingScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false}} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown: false}} />
+        <Stack.Screen
+          name="Loading"
+          component={LoadingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LogIn"
+          component={LogIn}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUpScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="HomePage" component={HomePageScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
         <Stack.Screen name="UserProfile" component={UserProfileScreen} />
