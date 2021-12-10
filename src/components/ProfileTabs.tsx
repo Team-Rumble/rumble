@@ -84,23 +84,16 @@ interface SingleUserProps {
 
 // ----------------- RIVALS ------------------------------//
 export const Rivals: FC<SingleUserProps> = (props) => {
-  const [rivalsID, setRivalsID] = useState<Array<string>>([]);
-  const [rivals, setRivals] = useState<Array<object>>([]);
-
-  useEffect(() => {
-    setRivals(props.rivals);
-  }, [rivals]);
-
   //try mapping directly, instead of rivals.map, props.rivals.map/ rivals.length -> props.rivals.length
   return (
     <ScrollView>
       <View style={{ height: 1000 }}>
-        {rivals.length < 1 ? (
+        {(props.rivals.length < 1) ? (
           <View>
             <Text>No Rivals Yet</Text>
           </View>
         ) : (
-          rivals.map((rival, i) => (
+          props.rivals.map((rival, i) => (
             <SingleRivalBox key={i}>
               <RivalPFP source={{ uri: rival.profileUrl }} />
               <RivalName>{rival.username}</RivalName>
