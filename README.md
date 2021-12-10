@@ -1,5 +1,7 @@
 # Rumble
 
+![Rumble](assets/logo.png)
+
 ## Overview
 
 Self-improvement can be difficult, especially if you lack motivation. Luckily, there’s Rumble to help you find a rival who challenges you to be a better version of yourself.
