@@ -57,6 +57,8 @@ const RivalsListScreen: FC<SingleUserProps> = () => {
   // const [rivalsLength, setRivalsLength] = useState(0);
   // const [rivalsID, setRivalsID] = useState([]);
   const [rivals, setRivals] = useState<Array<object>>([]);
+  const [user, setUser] = useState({});
+
   const navigation = useNavigation<ChatStack>();
   
   useEffect(() => {
@@ -67,7 +69,11 @@ const RivalsListScreen: FC<SingleUserProps> = () => {
       // console.log("User Information", docSnap.data());
       
       const userInfo = docSnap.data();
-      
+      setUser({
+        username: userInfo.username,
+        profileUrl: userInfo.profileUrl
+      });
+
       // console.log("Users Rivals ", userInfo.rivals);
       const rivalsArrayy = [];
       const resultFor = userInfo.rivals.forEach( async (rival) => {
@@ -115,10 +121,16 @@ const RivalsListScreen: FC<SingleUserProps> = () => {
         <Text>No Rivals Yet</Text>
         </View>) : 
         rivals.map((rival, i) => (
-          <SingleRivalBox key={i} >
+          <SingleRivalBox key={i}>
             <RivalPFP source={{uri: rival.profileUrl}}/>
             <RivalName>{rival.username}</RivalName>
-            <RumbleBtn onPress={() => navigation.navigate("Chat", rival.uid)}>
+            <RumbleBtn onPress={() => navigation.navigate(
+              "Chat", {
+                rivalUID: rival.uid, 
+                profileUrl: user.profileUrl,
+                username: user.username
+                })
+                }>
           <RumbleTxt>Chat</RumbleTxt>
         </RumbleBtn>
           </SingleRivalBox>
