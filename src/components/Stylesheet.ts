@@ -63,6 +63,13 @@ export const StyledButtonText = styled.Text`
   text-align: center;
 `;
 
+export const RegisterBtn = styled.Text`
+  font-size: 16px;
+  text-align: center;
+  color: ${COLORS.crimson};
+  padding-top: 30px;
+`;
+
 /* --------- SIGN UP ---------------*/
 export const SignUpContainer = styled.KeyboardAvoidingView`
   margin-top: 50px;
@@ -122,20 +129,32 @@ export const BioInput = styled.TextInput`
   background-color: ${COLORS.white};
 `;
 
+export const BackBtn = styled.TouchableOpacity`
+  background-color: ${COLORS.crimson};
+  border-radius: 10px;
+  padding: 10px;
+  margin: auto;
+  margin-top: 10px;
+  margin-left: 30px;
+`;
+
+export const BackTxt = styled.Text`
+  color: white;
+  text-align: center;
+`;
+
 // export const images = {
 //   duck: '../../assets/ducky.jpeg',
 //   gloves: '../../assets/boxingheart.jpeg',
 //   cat: '../../assets/cat.jpeg'
-// } 
+// }
 
 export const images = {
   // DEFAULT IMAGES FOR DISPLAY
-  duck:
-    "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/ducky.jpg?alt=media&token=84fe9eb6-8352-418e-b838-c49fbdced0aa",
+  duck: "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/ducky.jpg?alt=media&token=84fe9eb6-8352-418e-b838-c49fbdced0aa",
   gloves:
     "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/boxingheart.jpg?alt=media&token=5c16a386-0c29-4ae6-93e0-2865aa5278e6",
-  cat:
-    "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/cat.jpg?alt=media&token=44840fb9-ff81-4f3c-9e2b-f09b82c1e2b3",
+  cat: "https://firebasestorage.googleapis.com/v0/b/rumble-ff538.appspot.com/o/cat.jpg?alt=media&token=44840fb9-ff81-4f3c-9e2b-f09b82c1e2b3",
 };
 /* --------- END SIGN UP ---------------*/
 
@@ -195,7 +214,7 @@ export const ReadyButton = styled.TouchableOpacity`
   width: 170px;
   border: none;
   border-radius: 30px;
-  margin-top: 20px
+  margin-top: 20px;
 `;
 
 export const ReadyButtonText = styled.Text`
@@ -208,7 +227,6 @@ export const ReadyButtonText = styled.Text`
 export const AreYouText = styled.Text`
   color: white;
   font-size: 40px;
-
 `;
 
 export const RumBleText = styled.Text`

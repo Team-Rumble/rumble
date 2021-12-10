@@ -21,6 +21,8 @@ import {
   BioInput,
   images,
   COLORS,
+  BackBtn,
+  BackTxt,
 } from "../components/Stylesheet";
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
@@ -107,6 +109,10 @@ const SignUpScreen: FC = () => {
       {...(Platform.OS === "ios" ? { behavior: "padding" } : null)}
     >
       <ScrollView>
+        <BackBtn onPress={() => navigation.navigate("LogIn")}>
+          <BackTxt>Back to Login</BackTxt>
+        </BackBtn>
+
         <View style={{ paddingHorizontal: 50 }}>
           <SignupText>Get Ready!</SignupText>
           <SignUpInput
