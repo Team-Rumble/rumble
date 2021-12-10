@@ -17,6 +17,7 @@ import {
   COLORS,
 } from "../components/Stylesheet";
 import { Interests, Rivals, Settings } from "../components/ProfileTabs";
+import { ScrollView } from "react-native-gesture-handler";
 
 type profileStack = NativeStackNavigationProp<
   RootStackParamList,
@@ -107,7 +108,7 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
   const navigation = useNavigation<profileStack>();
 
   return (
-    
+    <ScrollView>
     <View>
       <ProfileImageContainer>
         <ProfileImage source={{ uri: person.profileUrl }} />
@@ -150,40 +151,8 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
         <Rivals rivals={rivals}/>
       ) : currentView === "Interests" ? (<Interests person={person}/>) : (<Settings person={person}/>)}
     </View>
+    </ScrollView>
   );
 };
 
 export default UserProfileScreen;
-
- // async function getUserInfo(user) {
-  //   const userRef = doc(db, "users", user.uid);
-  //   const docSnap = await getDoc(userRef);
-  //   return docSnap;
-  // }
-
-  // async function getRivals() {
-  //   const arr = []
-  //   rivalsID.forEach(async(rival) => {
-  //     const userRiv = doc(db, "users", rival)
-  //     const userRivDoc = await getDoc(userRiv);
-  //     arr.push(userRivDoc.data())
-  //   })
-  //   setRivals(arr)
-  // }
-
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
-  //     if (user) {
-  //       userSnap["user"] = await getUserInfo(user);
-  //       setPerson(userSnap.user.data());
-  //       setRivalsLength(userSnap.user.data().rivals.length)
-  //       setRivalsID(userSnap.user.data().rivals)
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, []);
-
-  // useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
-  //   // setRivalsID(userProps.rivals)
-  //   if(rivalsID && !rivals.length) getRivals()
-  // }, [rivalsID]);

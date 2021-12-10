@@ -86,7 +86,6 @@ interface SingleUserProps {
 export const Rivals: FC<SingleUserProps> = (props) => {
   //try mapping directly, instead of rivals.map, props.rivals.map/ rivals.length -> props.rivals.length
   return (
-    <ScrollView>
       <View style={{ height: 1000 }}>
         {(props.rivals.length < 1) ? (
           <View>
@@ -101,7 +100,6 @@ export const Rivals: FC<SingleUserProps> = (props) => {
           ))
         )}
       </View>
-    </ScrollView>
   );
 };
 // ----------------- END OF RIVALS -----------------------//
@@ -206,7 +204,6 @@ export const Settings: FC<SingleUserProps> = (props) => {
   }, []);
 
   return (
-    <ScrollView>
       <View
         style={{ justifyContent: "center", alignItems: "center", height: 800 }}
       >
@@ -261,7 +258,6 @@ export const Settings: FC<SingleUserProps> = (props) => {
           <LogOutText>Log Out</LogOutText>
         </LogOutBtn>
       </View>
-    </ScrollView>
   );
 };
 // ----------------- END OF SETTINGS ------------------------------//

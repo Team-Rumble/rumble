@@ -40,7 +40,7 @@ const SignUpScreen: FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("HomePage");
+        navigation.replace("UserProfile");
       }
     });
     return unsubscribe;
