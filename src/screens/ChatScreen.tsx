@@ -20,10 +20,10 @@ interface ChatScreenProps {
 const ChatScreen: FC<ChatScreenProps> = ({navigation, route}) => {
   
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const { rivalUID, profileUrl }  = route.params;
+  const { rivalUID, profileUrl, username }  = route.params;
   
   const currentUser = auth.currentUser;
-  console.log("Route: ", route.params);
+  //console.log("Route: ", route.params);
     /**
      * will retrieve old messages from the firestore database.
      */
@@ -71,8 +71,11 @@ const ChatScreen: FC<ChatScreenProps> = ({navigation, route}) => {
     onSend={messages => onSend(messages)}
     user={{
         _id: auth?.currentUser?.email!,
+        name: username,
         avatar: profileUrl
     }}
+    isTyping={true}
+    showUserAvatar={true}
     />
   );
 };
