@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { View, Alert, Platform } from "react-native";
+import { View, Alert, Platform, Pressable } from "react-native";
 import { auth } from "../../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -11,6 +11,7 @@ import {
   Input,
   StyledButton,
   StyledButtonText,
+  RegisterBtn,
 } from "../components/Stylesheet";
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
@@ -75,13 +76,13 @@ const LogIn: FC = ({}) => {
           <StyledButton onPress={handleLogin}>
             <StyledButtonText>Login</StyledButtonText>
           </StyledButton>
-          <StyledButton
+          <Pressable
             onPress={() => {
               navigation.navigate("SignUp");
             }}
           >
-            <StyledButtonText>Register</StyledButtonText>
-          </StyledButton>
+            <RegisterBtn>No Account? Register here.</RegisterBtn>
+          </Pressable>
         </Login>
       </View>
     </Container>
