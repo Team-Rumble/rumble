@@ -1,6 +1,6 @@
 # Rumble
 
-![Rumble](assets/logo.png)
+(https://res.cloudinary.com/marcomontalbano/image/upload/v1643061980/video_to_markdown/images/youtube--PdIS6rGd8PQ-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/PdIS6rGd8PQ "Rumble - Challenge others to become better!")
 
 ## Overview
 
