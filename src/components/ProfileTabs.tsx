@@ -51,6 +51,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
 import { StatusBar } from "expo-status-bar";
 
+
 type profileStack = NativeStackNavigationProp<
   RootStackParamList,
   "UserProfile"

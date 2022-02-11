@@ -55,7 +55,8 @@ const HomePageScreen: FC = () => {
 
   const auth = getAuth();
   const loggedInUser = auth.currentUser;
-
+  
+  
   /**
    * Queries the Firestore for all users as well as the logged-in user's list of other users they've challenged
    * Updates fullbucket and nondisplayed in local state in a useEffect that runs on mount

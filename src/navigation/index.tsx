@@ -21,9 +21,9 @@ export type RootStackParamList = {
   Navigation: undefined;
   LogIn: undefined;
   SignUp: undefined;
-  HomePage: undefined;
+  HomePage: any;
   Chat: any; // ideally this would be string, but that's causing an error over in RivalsList
-  UserProfile: undefined;
+  UserProfile: any;
   RivalsList: undefined;
   AppTabs: undefined;
   Loading: undefined;

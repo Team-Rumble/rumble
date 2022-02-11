@@ -14,6 +14,7 @@ import {
   RegisterBtn,
 } from "../components/Stylesheet";
 
+
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
 export const user = auth.currentUser;
