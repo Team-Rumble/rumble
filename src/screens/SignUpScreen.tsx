@@ -24,11 +24,10 @@ import {
   BackBtn,
   BackTxt,
 } from "../components/Stylesheet";
-import { storage } from "../../config/storage";
 
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
-let mmkv;
+
 const SignUpScreen: FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -73,7 +72,6 @@ const SignUpScreen: FC = () => {
                 const user = userCredential.user;
                 console.log("Registered with: ", user);
 
-                mmkv = storage(user.uid);
                 await setDoc(doc(db, "users", user.uid), {
                   username: username,
                   email: email,
@@ -91,8 +89,7 @@ const SignUpScreen: FC = () => {
                   rivals: [],
                   pending: [],
                 });
-                mmkv.set("User", user);
-                mmkv.set("UserId", user.uid);
+
               },
             },
           ]

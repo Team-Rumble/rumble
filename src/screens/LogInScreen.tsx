@@ -13,6 +13,13 @@ import {
   StyledButtonText,
   RegisterBtn,
 } from "../components/Stylesheet";
+import * as SecureStore from 'expo-secure-store';
+
+
+async function save(key, value){
+  await SecureStore.setItemAsync(key, value)
+}
+
 
 
 type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
@@ -49,6 +56,11 @@ const LogIn: FC = ({}) => {
         password
       );
       const user = userCredential.user;
+      
+      // Save is setting the key with its value and saving it into SecureStore.
+      save("userId", user?.uid);
+      let result = await SecureStore.getItemAsync("userId")
+      console.log("This is getting the info from Secure =>", result)
     } catch (error: any) {
       Alert.alert(error.message);
     }

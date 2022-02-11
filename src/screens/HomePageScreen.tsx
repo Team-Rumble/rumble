@@ -33,7 +33,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-
+import * as SecureStore from "expo-secure-store";
 /**
  * This is the HomePage component that automatically loads when a user logs in or signs up.
  * This is where a user can challenge and match with other users to become rivals.
@@ -52,11 +52,16 @@ const HomePageScreen: FC = () => {
   const [allUsers, setAllUsers] = useState<Array<object>>([]); //all users minus current user and users you've challenged
   const [nondisplayed, setNondisplayed] = useState<Array<string>>([]);
   const [fullbucket, setFullbucket] = useState<Array<object>>([]); // lit all the users in the dictionary
+  const [loggedUserId, setLoggedUserId] = useState<string>("")
 
   const auth = getAuth();
-  const loggedInUser = auth.currentUser;
-  
-  
+  // const loggedInUser = auth.currentUser;
+
+
+  const getStorage = async () => {
+    let result = await SecureStore.getItemAsync("userId") || "";
+    setLoggedUserId(result);
+  }
   /**
    * Queries the Firestore for all users as well as the logged-in user's list of other users they've challenged
    * Updates fullbucket and nondisplayed in local state in a useEffect that runs on mount
@@ -64,9 +69,9 @@ const HomePageScreen: FC = () => {
   const fetchAllUsers = async () => {
     const usersCollectionRef = collection(db, "users");
     const usersSnap = await getDocs(usersCollectionRef);
-    const userRef = doc(db, "users", loggedInUser!.uid);
+    const userRef = doc(db, "users", loggedUserId);
     const userSnap = await getDoc(userRef);
-    const nondisplays = [loggedInUser!.uid];
+    const nondisplays = [loggedUserId];
     userSnap
       .data()!
       .rivals.forEach((userId: string) => nondisplays.push(userId));
@@ -82,10 +87,14 @@ const HomePageScreen: FC = () => {
       }
     });
     setFullbucket(users);
+
+    // STORAGE ==========================
+    
   };
 
   // fetches all users from Firestore
   useEffect(() => {
+    getStorage();
     fetchAllUsers();
   }, []);
 
@@ -161,7 +170,7 @@ const HomePageScreen: FC = () => {
             <SingleUser
               key={item.id}
               user={item}
-              loggedInUser={loggedInUser}
+              loggedInUser={loggedUserId}
               setNons={setNondisplayed}
               rivalsAndPending={nondisplayed}
             />
@@ -255,7 +264,7 @@ interface SingleUserProps {
     age: number;
     email: string;
   };
-  loggedInUser: any;
+  loggedInUser: string;
   setNons: (arg0: any) => void;
   rivalsAndPending: Array<object>;
 }
@@ -280,7 +289,7 @@ const SingleUser: FC<SingleUserProps> = (props) => {
             requestRival(
               user.id,
               user.username,
-              props.loggedInUser.uid,
+              props.loggedInUser,
               props.setNons,
               props.rivalsAndPending
             )
