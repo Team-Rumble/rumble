@@ -60,7 +60,6 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
       const currentUser = auth.currentUser;
       const userRef = doc(db, "users", currentUser.uid);
       const docSnap = await getDoc(userRef);
-      // console.log("User Information", docSnap.data());
       
       const userInfo = docSnap.data();
       setPerson(userInfo);
@@ -69,7 +68,6 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
         profileUrl: userInfo.profileUrl
       });
 
-      // console.log("Users Rivals ", userInfo.rivals);
       const rivalsArrayy = [];
       const resultFor = userInfo.rivals.forEach( async (rival) => {
          const rivalRef = doc(db, "users", rival);
@@ -79,9 +77,8 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
         rivalsInfo["uid"] = rival;
         rivalsArrayy.push(rivalsInfo);
         setRivals([...rivalsArrayy])
-        // console.log("Every Rivals=>>", rivalsArrayy);
       })
-      // console.log("Result =>>", rivalsArrayy);
+
       return rivalsArrayy;
     };
     const result = getUserInfo()
@@ -99,7 +96,6 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
        rivalsInfo["uid"] = rival;
        rivalsArrayy.push(rivalsInfo);
        setRivals([...rivalsArrayy])
-       // console.log("Every Rivals=>>", rivalsArrayy);
      })
     });
     return () => unsubscribe();

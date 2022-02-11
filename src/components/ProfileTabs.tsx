@@ -2,54 +2,27 @@ import React, { FC, useState, useEffect, useLayoutEffect } from "react";
 import {
   Text,
   Alert,
-  ScrollView,
-  Modal,
-  Button,
   View,
-  TouchableOpacity,
-  Image,
-  TextInput,
 } from "react-native";
 import styled from "styled-components/native";
 import Checkbox from "./Checkbox";
-import { BioInput, SignUpInput } from "./Stylesheet";
 import { useNavigation } from "@react-navigation/native";
 import {
-  MenuView,
-  RumbleBtn,
-  RumbleTxt,
   SingleRivalBox,
   RivalPFP,
   RivalName,
-  ClickableRival,
-  FilterX,
-  RivalBio,
-  RivalBioPFP,
-  RivalBioName,
 } from "../components/HomePage.style";
 import {
-  ProfileImageContainer,
-  ProfileImage,
-  MenuText,
-  ProfileMenu,
-  ProfileMenuText,
   LogOutBtn,
   LogOutText,
 } from "../components/Stylesheet";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
-  collection,
   doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
   updateDoc,
 } from "firebase/firestore";
 import db, { auth } from "../../config/firebase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
-import { StatusBar } from "expo-status-bar";
 
 
 type profileStack = NativeStackNavigationProp<
@@ -80,7 +53,9 @@ interface SingleUserProps {
  * @param Rivals - Renders a list of rivals from current User.
  * @param rivalsList - Fetches the current user list of rival's Id;
  * @param getRivals - Fetches the rival's information by its rival's uid.
- *
+ * @param Rivals - Rivals Tab: Receives user rival's list and display them on profile.
+ * @param Interests - Interests Tab: Receives user's details that includes their interests;
+ * @param Settings - Settings Tab: Receives user's details to update or log out.
  */
 
 // ----------------- RIVALS ------------------------------//
@@ -279,67 +254,3 @@ const FilterBody = styled.View`
 `;
 
 // ---------END OF PROFILE TABs---------//
-
-// async function getUser() {
-//   try {
-//     const user = auth.currentUser; // getting current user = petra
-//     const rivalsArr = [];
-//     const userRef = doc(db, "users", user!.uid); // getting userReference
-//     // Getting a user's rival list with rival's ID.
-//     const userSnap = await getDoc(userRef) // use the userReference to get the document
-//     userSnap.data()!.rivals.forEach(rival => {
-//       rivalsArr.push(rival)
-//     });
-//     setRivalsID(rivalsArr)
-
-//     const arr = []
-//     // const collectionRef = collection(db, "users");
-//     rivalsArr.forEach(async(rival) => {
-//       const userRiv = doc(db, "users", rival)
-//       const userRivDoc = await getDoc(userRiv);
-//       // console.log("UserRivDoc", userRivDoc.data());
-//       arr.push(userRivDoc.data())
-//     })
-
-//     setRivals(arr)
-
-//   } catch(e) {console.log(e);}
-// }
-
-/// RIVALS =>>>>>>>>>>
-// const rivals = props.rivals
-// const user = auth.currentUser;
-// console.log('====================================');
-// // console.log("User from Auth => ", user);
-
-// console.log("List of rivals ID=>> ", rivalsID);
-// // console.log('====================================');
-// console.log("Rivals List =>>>", rivals);
-
-// GET RIVAL LIST OF IDs ----- //
-// async function rivalsList(){
-//   const userRef = doc(db, "users", user!.uid);
-//   const userSnap = await getDoc(userRef);
-//   setRivalsID(userSnap.data()!.rivals)
-// }
-
-// GET RIVALS INFORMATION ->>> //
-// async function getRivals() {
-//     const arr = []
-//     rivalsID.forEach(async(rival) => {
-//       const userRiv = doc(db, "users", rival)
-//       const userRivDoc = await getDoc(userRiv);
-//       arr.push(userRivDoc.data())
-//     })
-//     setRivals(arr)
-// }
-
-// useEffect(() => {  // UseEffect to get rivals list of IDs
-//   // if(!rivalsID.length) rivalsList()
-//   if(!rivalsID.length) setRivalsID(userProps.rivals)
-// }, [])
-
-// useEffect(() => { // UseEffect will only work if the rivalsId array is not empty && the rivals array is empty.
-//   setRivalsID(userProps.rivals)
-//   if(rivalsID && !rivals.length) getRivals()
-// }, [rivalsID])
