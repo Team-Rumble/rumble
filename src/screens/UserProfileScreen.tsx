@@ -45,6 +45,9 @@ interface SingleUserProps {
   /**
    * @param getRivals - will fetch every rivals information and sets the rivals state to them in an array/object type.
    * @param getUserInfo - Will fetch for the users data and will set the person in the state with the information return.
+   * @param person - This is the user's information from Firestore
+   * @param rivals - This is a list of the person's rivals.
+   * @param currentView - This is either the Rivals, Interests or Settings tab.
    * */
 
 const userSnap: any = {};
@@ -55,6 +58,7 @@ const UserProfileScreen: FC<SingleUserProps> = () => {
   const [rivals, setRivals] = useState<Array<object>>([]);
   const [user, setUser] = useState({});
  
+
  useEffect(() => {
     async function getUserInfo() {
       const currentUser = auth.currentUser;
