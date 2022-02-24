@@ -23,7 +23,7 @@ Self-improvement can be difficult, especially if you lack motivation. Luckily, t
 
 ## Next Steps
 
-Our future goals include implementing an game API to allow users to challenge their rivals to minigames such as chess, giving users more criteria to filter for potential rivals with, and allowing users to create rival interest groups for those vital group discussions of: Cats or dogs? Was there room for Jack on the door? Does pineapple belong on pizza? (It does.)
+We're currently working on implementing [Expo Secure Store](https://docs.expo.dev/versions/latest/sdk/securestore/) to reduce the number of database calls by encrypting and storing user data on the user's device upon log-in, with an eye towards deploying the app. Other future goals include implementing an game API to allow users to challenge their rivals to minigames such as chess, giving users more criteria to filter for potential rivals with, and allowing users to create rival interest groups for those vital group discussions of: Cats or dogs? Was there room for Jack on the door? Does pineapple belong on pizza? (It does.)
 
 ### Creators
 
