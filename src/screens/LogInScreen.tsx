@@ -1,6 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import { View, Alert, Platform, Pressable } from "react-native";
-import { auth } from "../../config/firebase";
+import { auth }from "../../config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/index";
@@ -14,13 +16,15 @@ import {
   RegisterBtn,
 } from "../components/Stylesheet";
 
-type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
-export const user = auth.currentUser;
+
+type signInStack = NativeStackNavigationProp<RootStackParamList, "LogIn">;
 
 const LogIn: FC = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, loading, error] = useAuthState(auth);
+
 
   const navigation = useNavigation<signInStack>();
 
@@ -43,7 +47,8 @@ const LogIn: FC = ({}) => {
     try {
       email.replace(/\s/g, "");
       password.replace(/\s/g, "");
-      const userCredential = await auth.signInWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
         email,
         password
       );

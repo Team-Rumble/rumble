@@ -1,5 +1,7 @@
 import firebase from "firebase/compat/app";
 import { getFirestore, collection } from "firebase/firestore";
+import { getAuth, browserLocalPersistence, setPersistence } from "firebase/auth";
+
 
 // import { getAnalytics } from "firebase/analytics";
 import "firebase/compat/auth";
@@ -27,21 +29,31 @@ const firebaseConfig: Config = {
 
 let app;
 
-if (firebase.apps.length === 0) {
+// https://stackoverflow.com/questions/42878179/how-to-persist-a-firebase-login
+// We followed the "Newer Version comment."" Then in Loginscreen we imported new libraries
+// on line 4 & 5. We defined the state within the component.
+// Currently producing errors.
+
+// if (firebase.apps.length === 0) {
   app = firebase.initializeApp(firebaseConfig);
-} else {
-  app = firebase.app();
-}
+  export const auth = getAuth(app);
+  (async () => {
+    await setPersistence(auth, browserLocalPersistence);
+  })();
+// } else {
+//   app = firebase.app();
+// }
+
 
 // const analytics = getAnalytics(app); // export?
 // expo-firebase-analytics
-const db = getFirestore(app);
+export const db = getFirestore(app);
 // console.log(firebase.auth);
 
 // Retrieve the collection of users
 export const userRef = collection(db, 'users');
-export const auth = firebase.auth();
-export default db;
+//export const auth = firebase.auth();
+//export default db;
 
 
 // let prompt: string;
