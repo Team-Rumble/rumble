@@ -1,10 +1,9 @@
 import firebase from "firebase/compat/app";
 import { getFirestore, collection } from "firebase/firestore";
-import { getAuth, browserLocalPersistence, setPersistence } from "firebase/auth";
-
+import { getAuth } from "firebase/auth";
 
 // import { getAnalytics } from "firebase/analytics";
-import "firebase/compat/auth";
+// import "firebase/compat/auth"; // was this line actually doing anything?
 import Constants from "expo-constants";
 
 interface Config {
@@ -34,27 +33,22 @@ let app;
 // on line 4 & 5. We defined the state within the component.
 // Currently producing errors.
 
-// if (firebase.apps.length === 0) {
+if (firebase.apps.length === 0) {
   app = firebase.initializeApp(firebaseConfig);
-  export const auth = getAuth(app);
-  (async () => {
-    await setPersistence(auth, browserLocalPersistence);
-  })();
-// } else {
-//   app = firebase.app();
-// }
+} else {
+  app = firebase.app();
+}
 
-
+export const auth = getAuth(app);
 // const analytics = getAnalytics(app); // export?
 // expo-firebase-analytics
 export const db = getFirestore(app);
 // console.log(firebase.auth);
 
 // Retrieve the collection of users
-export const userRef = collection(db, 'users');
+export const userRef = collection(db, "users");
 //export const auth = firebase.auth();
 //export default db;
-
 
 // let prompt: string;
 
@@ -81,7 +75,6 @@ export const userRef = collection(db, 'users');
 //   const randomNum = Math.floor(Math.random() * prompts.length);
 //   return prompts[randomNum];
 // }
-
 
 // export const auth = app.auth();
 // export const auth = firebase.auth(app);
