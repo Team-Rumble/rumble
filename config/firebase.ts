@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
 import { getFirestore, collection } from "firebase/firestore";
-import { getAuth, browserLocalPersistence, setPersistence } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 
 // import { getAnalytics } from "firebase/analytics";
@@ -34,21 +34,22 @@ let app;
 // on line 4 & 5. We defined the state within the component.
 // Currently producing errors.
 
-// if (firebase.apps.length === 0) {
+if (firebase.apps.length === 0) {
   app = firebase.initializeApp(firebaseConfig);
-  export const auth = getAuth(app);
-  (async () => {
-    await setPersistence(auth, browserLocalPersistence);
-  })();
-// } else {
-//   app = firebase.app();
-// }
+  
+
+} else {
+  app = firebase.app();
+}
+export const auth = getAuth(app);
+
+// SETTING PERSISTENCE TYPE LOCAL 
+// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 
 // const analytics = getAnalytics(app); // export?
 // expo-firebase-analytics
 export const db = getFirestore(app);
-// console.log(firebase.auth);
 
 // Retrieve the collection of users
 export const userRef = collection(db, 'users');

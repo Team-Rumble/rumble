@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import db, { auth } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { RootStackParamList } from "../navigation";
 import {

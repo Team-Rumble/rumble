@@ -2,15 +2,15 @@ import { addDoc, collection, collectionGroup, onSnapshot, orderBy, query } from 
 import React, { FC, useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { Text, Alert, ScrollView, Modal, Button, View } from "react-native";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
-import {
-  RumbleBtn,
-  RumbleTxt,
-  SingleRivalBox,
-  RivalPFP,
-  RivalName,
-  ClickableRival,
-} from "../components/Stylesheet";
-import db, {auth} from '../../config/firebase';
+// import {
+//   RumbleBtn,
+//   RumbleTxt,
+//   SingleRivalBox,
+//   RivalPFP,
+//   RivalName,
+//   ClickableRival,
+// } from "../components/Stylesheet";
+import {db, auth} from '../../config/firebase';
 // props, share a styled component for pfp with homepage?
 // nav to ChatScreen
 
@@ -48,6 +48,8 @@ const ChatScreen: FC<ChatScreenProps> = ({navigation, route}) => {
   /**
    * Will send a message to the firestore
    */
+
+   let roomName = 'chat_' + (currentUser!.uid < rivalUID ? currentUser!.uid +'_'+ rivalUID : rivalUID +'_'+ currentUser!.uid);
   const onSend = useCallback((messages = []) => {
       setMessages(previousMessages =>
           GiftedChat.append(previousMessages, messages)
@@ -63,7 +65,7 @@ const ChatScreen: FC<ChatScreenProps> = ({navigation, route}) => {
           );
   }, [roomName]);
 
-  let roomName = 'chat_' + (currentUser!.uid < rivalUID ? currentUser!.uid +'_'+ rivalUID : rivalUID +'_'+ currentUser!.uid);
+
   return (
     <GiftedChat
     messages={messages}

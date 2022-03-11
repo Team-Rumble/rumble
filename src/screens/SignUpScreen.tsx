@@ -7,7 +7,7 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import db, { auth } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -24,6 +24,7 @@ import {
   BackBtn,
   BackTxt,
 } from "../components/Stylesheet";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 type signUpStack = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
@@ -66,7 +67,7 @@ const SignUpScreen: FC = () => {
               text: "I Accept",
               onPress: async () => {
                 const userCredential =
-                  await auth.createUserWithEmailAndPassword(email, password);
+                  await createUserWithEmailAndPassword(auth, email, password);
 
                 const user = userCredential.user;
                 console.log("Registered with: ", user);

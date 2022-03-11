@@ -12,7 +12,7 @@ import React, {
 } from "react";
 import { Text, View, Image, ScrollView, Pressable, Alert } from "react-native";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
-import db, { auth } from "../../config/firebase";
+import { db, auth } from "../../config/firebase";
 
 import {
   RumbleBtn,

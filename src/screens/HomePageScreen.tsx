@@ -20,7 +20,7 @@ import {
 } from "../components/HomePage.style";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Checkbox from "../components/Checkbox";
-import db from "../../config/firebase";
+import {db} from "../../config/firebase";
 import {
   collection,
   getDocs,

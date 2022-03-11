@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect} from "react";
 import { View, ImageBackground } from "react-native";
+import { auth } from "../../config/firebase";
 import {
   AreYouText,
   ReadyButton,
@@ -14,6 +15,15 @@ type loadingStack = NativeStackNavigationProp<RootStackParamList, "Loading">;
 
 function LoadingScreen(): ReactElement {
   const navigation = useNavigation<loadingStack>();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("HomePage");
+      }
+    });
+    return unsubscribe;
+  }, []);
   //      <Image style={{width: 80, height: 80}} source={require("../../assets/backgroundImage.png")}/>
   return (
     <View style={{ flex: 1 }}>

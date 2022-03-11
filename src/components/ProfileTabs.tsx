@@ -46,10 +46,11 @@ import {
   where,
   updateDoc,
 } from "firebase/firestore";
-import db, { auth } from "../../config/firebase";
+import { db, auth } from "../../config/firebase";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation";
 import { StatusBar } from "expo-status-bar";
+import { signOut } from "firebase/auth";
 
 type profileStack = NativeStackNavigationProp<
   RootStackParamList,
@@ -189,7 +190,7 @@ export const Settings: FC<SingleUserProps> = (props) => {
 
   async function handleSignOut() {
     try {
-      const user = await auth.signOut();
+      const user = await signOut(auth);
       if (!user) {
         navigation.navigate("LogIn");
       }
