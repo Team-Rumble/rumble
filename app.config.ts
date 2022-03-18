@@ -2,13 +2,14 @@ import "dotenv/config"
 
 export default {
   "expo": {
-    "name": "rumble",
+    "owner": "teamrumble",
+    "name": "Rumble",
     "slug": "rumble",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/favicon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/backgroundImage.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,13 +20,17 @@ export default {
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.TeamRumble.Rumble",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.TeamRumble.Rumble",
+      "versionCode": 1,
     },
     "web": {
       "favicon": "./assets/favicon.png"
